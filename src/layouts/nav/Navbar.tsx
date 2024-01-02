@@ -18,6 +18,7 @@ import { FC } from "react";
 import { navItems } from "./navItems";
 import { v4 as uuidv4 } from "uuid";
 import NavbarMobile from "./NavbarMobile";
+import { Outlet } from "react-router-dom";
 
 export const NavLink: FC<{ children: React.ReactNode; path: string }> = ({
   children,
@@ -49,7 +50,7 @@ const NavbarForBiggerScreens: FC = () => {
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box>LMS</Box>
+          <Box fontWeight={"bold"}>EMPOWER ACADEMY</Box>
           <Stack
             direction={"row"}
             spacing={20}
@@ -108,6 +109,7 @@ const NavbarForBiggerScreens: FC = () => {
           </Flex>
         </Flex>
       </Box>
+      <Outlet />
     </>
   );
 };

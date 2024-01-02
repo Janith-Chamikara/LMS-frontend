@@ -20,7 +20,6 @@ import { navVariant } from "../../animationVariants/variants";
 import { motion } from "framer-motion";
 
 const NavbarForSmallerScreens: FC = () => {
-  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -44,13 +43,14 @@ const NavbarForSmallerScreens: FC = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>LMS</DrawerHeader>
+          <DrawerHeader>EMPOWER ACADEMY</DrawerHeader>
 
           <DrawerBody className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-font-semibold tw-text-lg">
             <Flex direction={"column"} justifyContent={"space-around"}>
               {navItems.map((item, index) => {
                 return (
                   <motion.div
+                    key={uuidv4()}
                     variants={navVariant}
                     initial="initial"
                     whileInView={"animate"}
