@@ -1,21 +1,21 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import img1 from "./1.jpg";
-import img2 from "./2.jpg";
-import img3 from "./3.jpg";
-import img4 from "./4.jpg";
-import { motion, useMotionValue } from "framer-motion";
-const imgs: string[] = [img1, img2, img3, img4];
+import { useMotionValue, motion } from "framer-motion";
+import { useMediaQuery } from "@chakra-ui/react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
+import { springOptions } from "./springOptions";
+import { reviews } from "./reviews";
+import Testimonials from "./Testimonials";
 
 const dragBuffer = 50;
 const delay = 10000;
-const springOptions = {
-  type: "spring",
-  damping: "50",
-  stiffness: "400",
-  mass: "3",
-};
 
 const SwipeCarousel: FC = () => {
+  const [isSmallerThanMd] = useMediaQuery("(max-width: 768px)");
   const [dragging, setDragging] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const dragX = useMotionValue(0);
@@ -25,7 +25,7 @@ const SwipeCarousel: FC = () => {
       const x = dragX.get();
       if (x === 0) {
         setImgIndex((previous) => {
-          if (previous === imgs.length - 1) {
+          if (previous === reviews.length - 1) {
             return 0;
           }
           return previous + 1;
@@ -47,7 +47,7 @@ const SwipeCarousel: FC = () => {
     const x = dragX.get();
     console.log(x);
 
-    if (x <= -dragBuffer && imgIndex < imgs.length - 1) {
+    if (x <= -dragBuffer && imgIndex < reviews.length - 1) {
       setImgIndex((p) => p + 1);
     } else if (x > dragBuffer && imgIndex > 0) {
       setImgIndex((p) => p - 1);
@@ -56,7 +56,7 @@ const SwipeCarousel: FC = () => {
 
   return (
     <>
-      <div className="tw-relative tw-overflow-hidden tw-bg-neutral-950 tw-py-8">
+      <div className="tw-relative tw-overflow-hidden tw-py-8 tw-mx-[10px]">
         <motion.div
           drag="x"
           dragConstraints={{
@@ -67,41 +67,19 @@ const SwipeCarousel: FC = () => {
             x: dragX,
           }}
           animate={{
-            translateX: `-${imgIndex * 100}%`,
+            translateX: isSmallerThanMd
+              ? `-${imgIndex * 100}%`
+              : `-${imgIndex * 50}%`,
           }}
           transition={springOptions}
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
-          className="tw-flex tw-items-center tw-cursor-grab tw-w-[100vw] active:tw-cursor-grabbing"
+          className="tw-flex  tw-items-center tw-cursor-grab tw-w-[100vw] md:tw-w-[90vw] active:tw-cursor-grabbing "
         >
-          <Images imgIndex={imgIndex} />
+          <Testimonials ID={imgIndex}/>
         </motion.div>
         <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
       </div>
-    </>
-  );
-};
-
-type ImagesProps = { imgIndex: number };
-
-const Images: FC<ImagesProps> = ({ imgIndex }) => {
-  return (
-    <>
-      {imgs.map((img, index) => (
-        <motion.div
-          key={index}
-          style={{
-            backgroundImage: `url(${img})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          className="tw-aspect-video tw-w-screen tw-shrink-0 tw-object-cover tw-mx-auto"
-          animate={{
-            scale: imgIndex === index ? "0.95" : "0.85",
-          }}
-          transition={springOptions}
-        />
-      ))}
     </>
   );
 };
@@ -114,12 +92,12 @@ type DotsProps = {
 const Dots: FC<DotsProps> = ({ imgIndex, setImgIndex }) => {
   return (
     <div className="tw-flex tw-mt-4 tw-justify-center tw-items-center tw-gap-2 tw-w-full">
-      {imgs.map((_, index) => (
+      {reviews.map((_, index) => (
         <button
           onClick={() => setImgIndex(index)}
           key={index}
           className={`tw-h-3 tw-w-3 tw-rounded-full ${
-            imgIndex === index ? "tw-bg-neutral-50" : "tw-bg-neutral-500"
+            imgIndex === index ? "tw-bg-neutral-300" : "tw-bg-neutral-500"
           }`}
         />
       ))}
