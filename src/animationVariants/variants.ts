@@ -8,9 +8,9 @@ export const heroBackVariant: Variants = {
   animate: {
     x: "0",
     transition: {
-      duration: 1.2,
-      easeIn: "easeInOut",
-      delay: 0.5,
+      type: "spring",
+      stiffness: "200",
+      damping: "50",
     },
   },
 };
@@ -22,27 +22,27 @@ export const heroImgVariant: Variants = {
     x: "0",
 
     transition: {
-      duration: 1,
-      easeIn: "easeInOut",
-      delay: 1,
+      duration: 0.5,
+      ease: "easeInOut",
+      delay: 0,
     },
   },
 };
 export const heroTextVariant: Variants = {
   initial: {
     x: "10vw",
+    opacity: 1,
   },
   animate: {
     x: "0",
-
+    opacity: 1,
     transition: {
-      duration: 1,
-      easeIn: "easeInOut",
-      delay: 1,
+      duration:0.5,
+      ease:"easeInOut",
+      delay: 0,
     },
   },
 };
-
 
 export const navVariant = {
   initial: {
