@@ -1,12 +1,6 @@
 import { useMotionValue, motion } from "framer-motion";
 import { useMediaQuery } from "@chakra-ui/react";
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { springOptions } from "./springOptions";
 import { reviews } from "./reviews";
 import Testimonials from "./Testimonials";
@@ -14,7 +8,11 @@ import Testimonials from "./Testimonials";
 const dragBuffer = 50;
 const delay = 10000;
 
-const SwipeCarousel: FC = () => {
+type SwipeCarouselProps = {
+ widthMax:number | string
+};
+
+const SwipeCarousel: FC<SwipeCarouselProps> = ({ widthMax }) => {
   const [isSmallerThanMd] = useMediaQuery("(max-width: 768px)");
   const [dragging, setDragging] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
@@ -56,7 +54,7 @@ const SwipeCarousel: FC = () => {
 
   return (
     <>
-      <div className="tw-relative tw-overflow-hidden tw-py-8 tw-mx-[10px]">
+      <div className={`tw-relative tw-overflow-hidden tw-py-8 tw-mx-[auto] tw-max-w-[${widthMax}${typeof(widthMax) === "string" ? `%` : `vw`}]`}>
         <motion.div
           drag="x"
           dragConstraints={{
@@ -74,9 +72,16 @@ const SwipeCarousel: FC = () => {
           transition={springOptions}
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
-          className="tw-flex  tw-items-center tw-cursor-grab tw-w-[100vw] md:tw-w-[90vw] active:tw-cursor-grabbing "
+          className={`tw-flex  tw-items-center tw-cursor-grab active:tw-cursor-grabbing tw-mx-auto`}
         >
-          <Testimonials ID={imgIndex}/>
+          {reviews.map((review, index) => (
+            <Testimonials
+              index={index}
+              key={index}
+              review={review}
+              ID={imgIndex}
+            />
+          ))}
         </motion.div>
         <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
       </div>

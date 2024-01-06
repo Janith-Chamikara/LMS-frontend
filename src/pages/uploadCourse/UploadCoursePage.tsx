@@ -1,0 +1,439 @@
+import { FC } from "react";
+import CustomStepper from "../../components/stepper/CustomStepper";
+import { steps } from "../../components/stepper/steps";
+import {
+  Box,
+  Button,
+  Flex,
+  Text,
+  useColorModeValue,
+  useSteps,
+} from "@chakra-ui/react";
+import {
+  Control,
+  FieldErrors,
+  FieldValues,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { courseSchema } from "../../schemas/schema";
+import CustomTextInput from "../../components/CustomTextInput";
+
+const UploadCoursePage: FC = () => {
+  const { activeStep, goToNext, goToPrevious } = useSteps({
+    index: 0,
+    count: steps.length,
+  });
+  const {
+    register,
+    watch,
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    setValue,
+  } = useForm({ resolver: zodResolver(courseSchema) });
+
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+  };
+
+  return (
+    <Box width={"80vw"} mx={"auto"} mt={"20px"}>
+      <CustomStepper steps={steps} activeStep={activeStep} />
+
+      {activeStep === 1 && (
+        <Box padding={"20px"}>
+          <Step1Form
+            control={control}
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+          />
+        </Box>
+      )}
+      {activeStep === 2 && (
+        <Box padding={"20px"}>
+          <Step2Form
+            control={control}
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+          />
+        </Box>
+      )}
+      {activeStep === 3 && (
+        <Box padding={"20px"}>
+          <Step3Form
+            control={control}
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+          />
+        </Box>
+      )}
+      <Flex direction={"row"} justifyContent={"space-between"} mt={"10px"}>
+        <Button colorScheme="teal" onClick={goToPrevious} variant={"solid"}>
+          Previous
+        </Button>
+        <Button
+          colorScheme="teal"
+          onClick={activeStep === 3 ? handleSubmit(onSubmit) : goToNext}
+          variant={"solid"}
+        >
+          {activeStep === 3 ? "Submit" : "Next"}
+        </Button>
+      </Flex>
+    </Box>
+  );
+};
+
+export default UploadCoursePage;
+
+type FormProps = {
+  index?: number;
+  control?: Control<FieldValues> | undefined;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
+  watch: UseFormWatch<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+};
+
+const Step1Form: FC<FormProps> = ({ register, errors, control }) => {
+  return (
+    <>
+      <CustomTextInput
+        errors={errors}
+        register={register}
+        name="courseName"
+        placeholder="Enter course title"
+        type="text"
+        isRequired={false}
+      >
+        Course Title
+      </CustomTextInput>
+      <CustomTextInput
+        errors={errors}
+        register={register}
+        name="courseDescription"
+        placeholder="Provide a course description"
+        type="text"
+        isRequired={false}
+      >
+        Course Description
+      </CustomTextInput>
+      <CustomTextInput
+        errors={errors}
+        register={register}
+        name="coursePrice"
+        placeholder="Enter course price"
+        type="text"
+        isRequired={false}
+      >
+        Course Price
+      </CustomTextInput>
+      <CustomTextInput
+        errors={errors}
+        register={register}
+        name="courseEstimatedPrice"
+        placeholder="Enter estimated course price"
+        type="text"
+        isRequired={false}
+      >
+        Estimated Price
+      </CustomTextInput>
+      <CustomTextInput
+        flushed={true}
+        errors={errors}
+        register={register}
+        name="thumbnail"
+        placeholder="Provide a thumbnail for the course"
+        type="file"
+        isRequired={false}
+      >
+        Thumbnail
+      </CustomTextInput>
+      <CustomTextInput
+        flushed={true}
+        errors={errors}
+        register={register}
+        name="level"
+        placeholder="Beginner | Intermidiate | Advanced"
+        type="text"
+        isRequired={false}
+      >
+        Expected level
+      </CustomTextInput>
+      <Addons
+        title="Course tags"
+        buttonTitle="Click to add course tags"
+        control={control}
+        errors={errors}
+        fieldName={`tags`}
+        propertyName="tag"
+        placeHolder="Add tags here"
+        register={register}
+      />
+    </>
+  );
+};
+const Step2Form: FC<FormProps> = ({ register, control, errors }) => {
+  return (
+    <>
+      <CustomTextInput
+        errors={errors}
+        register={register}
+        name="courseDemo"
+        placeholder="Place demo url here"
+        type="text"
+        isRequired={false}
+      >
+        Course Demo URL
+      </CustomTextInput>
+      <Addons
+        title="Add Course Benifits"
+        buttonTitle="Click to add benifit"
+        control={control}
+        errors={errors}
+        fieldName={`courseBenifits`}
+        propertyName="benifit"
+        placeHolder="Add benifit here"
+        register={register}
+      />
+      <Addons
+        title="Add Pre-Requirements For The Course"
+        buttonTitle="Click to add pre requirement"
+        control={control}
+        errors={errors}
+        fieldName={`preRequirement`}
+        propertyName="requirement"
+        placeHolder="Add requirement here"
+        register={register}
+      />
+    </>
+  );
+};
+
+type AddonsType = {
+  control: Control<FieldValues> | undefined;
+  fieldName: string;
+  title: string;
+  placeHolder: string;
+  buttonTitle: string;
+  propertyName: string;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
+};
+
+const Addons: FC<AddonsType> = ({
+  fieldName,
+  propertyName,
+  title,
+  control,
+  placeHolder,
+  register,
+  buttonTitle,
+  errors,
+}) => {
+  const { append, remove, fields } = useFieldArray({
+    name: fieldName,
+    control,
+  });
+  const color = useColorModeValue("gray.400", "gray.600");
+  return (
+    <Box
+      padding={"20px"}
+      border={"2px"}
+      borderColor={color}
+      borderRadius={"xl"}
+    >
+      <Text fontWeight={"semibold"}>{title}</Text>
+      {fields.map((field, index) => (
+        <Flex
+          key={field.id}
+          direction={"row"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
+          <CustomTextInput
+            fieldName={fieldName}
+            propertyName={propertyName}
+            index={index}
+            errors={errors}
+            register={register}
+            name={`${fieldName}.${index}.${propertyName}`}
+            placeholder={placeHolder}
+            type="text"
+            isRequired={false}
+          />
+          <Button
+            colorScheme="facebook"
+            variant={"solid"}
+            onClick={() => remove(index)}
+          >
+            Delete
+          </Button>
+        </Flex>
+      ))}
+
+      <Button
+        mt={"5px"}
+        colorScheme="facebook"
+        variant={"solid"}
+        onClick={() => append({ propertyName: "" })}
+      >
+        {buttonTitle}
+      </Button>
+    </Box>
+  );
+};
+
+const Step3Form: FC<FormProps> = ({
+  register,
+  errors,
+  watch,
+  setValue,
+  control,
+}) => {
+  const { append, fields, remove } = useFieldArray({
+    name: "courseSections",
+    control: control,
+  });
+  const color = useColorModeValue("gray.400", "gray.600");
+  return (
+    <>
+      {fields.map((field, index) => (
+        <Flex
+          key={field.id}
+          mt={"20px"}
+          padding={"20px"}
+          gap={"20px"}
+          direction={"column"}
+          width={"100%"}
+          border={"2px"}
+          borderColor={color}
+          borderRadius={"xl"}
+        >
+          <Section
+            key={field.id}
+            index={index}
+            control={control}
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+          />
+          <Button
+            maxWidth={"200px"}
+            colorScheme="teal"
+            variant={"solid"}
+            onClick={() => remove(index)}
+          >
+            Delete Section
+          </Button>
+        </Flex>
+      ))}
+      <Flex justifyContent={"center"}>
+        <Button
+          colorScheme="teal"
+          mt={"20px"}
+          variant={"solid"}
+          onClick={() => append({ section: "" })}
+        >
+          Click to add a Course Section
+        </Button>
+      </Flex>
+    </>
+  );
+};
+
+const Section: FC<FormProps> = ({ register, errors, control, index }) => {
+  return (
+    <>
+      <Box>
+        <CustomTextInput
+          errors={errors}
+          fieldName={"courseSections"}
+          propertyName={"section"}
+          index={index}
+          register={register}
+          name={`courseSections.${index}.section`}
+          placeholder="Section title"
+          type="text"
+          isRequired={false}
+        >
+          Course section name
+        </CustomTextInput>
+        <CustomTextInput
+          errors={errors}
+          register={register}
+          fieldName={"courseSections"}
+          propertyName={"videoTitle"}
+          index={index}
+          name={`courseSections.${index}.videoTitle`}
+          placeholder="Video title"
+          type="text"
+          isRequired={false}
+        >
+          Video title
+        </CustomTextInput>
+        <CustomTextInput
+          errors={errors}
+          fieldName={"courseSections"}
+          propertyName={"videoURL"}
+          index={index}
+          register={register}
+          name={`courseSections.${index}.videoURL`}
+          placeholder="Video URL"
+          type="text"
+          isRequired={false}
+        >
+          Video url
+        </CustomTextInput>
+        <CustomTextInput
+          errors={errors}
+          register={register}
+          fieldName={"courseSections"}
+          propertyName={"videoDescription"}
+          index={index}
+          name={`courseSections.${index}.videoDescription`}
+          placeholder="Video description"
+          type="text"
+          isRequired={false}
+        >
+          Video description
+        </CustomTextInput>
+        <CustomTextInput
+          flushed={true}
+          errors={errors}
+          register={register}
+          fieldName={"courseSections"}
+          propertyName={"videoThumbnail"}
+          index={index}
+          name={`courseSections.${index}.videoThumbnail`}
+          placeholder="Provide a thumbnail for the course"
+          type="file"
+          isRequired={false}
+        >
+          Thumbnail
+        </CustomTextInput>
+        <Addons
+          title="Related Links"
+          buttonTitle="Add links related to the video"
+          control={control}
+          errors={errors}
+          fieldName={`courseSections.${index}.links`}
+          propertyName="link"
+          placeHolder="Add links here"
+          register={register}
+        />
+      </Box>
+    </>
+  );
+};

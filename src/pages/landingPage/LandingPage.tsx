@@ -8,21 +8,26 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import hero from "../images/hero.png";
+import hero from "../../images/hero.png";
 import { assests, svgList } from "./partners";
 import { motion } from "framer-motion";
 import {
   heroImgVariant,
   heroTextVariant,
   heroBackVariant,
-} from "../animationVariants/variants";
-import AnimatedText from "../components/AnimatedText";
-import CustomButton from "../components/CustomButton";
+} from "../../animationVariants/variants";
+import AnimatedText from "../../components/AnimatedText";
+import CustomButton from "../../components/CustomButton";
 import { Link } from "react-router-dom";
-import LandingPageCard from "../components/LandingPageCard";
-import SwipeCarousel from "../SwipeCarousel/SwipeCarousel";
+import LandingPageCard from "../../components/LandingPageCard";
+import SwipeCarousel from "../../SwipeCarousel/SwipeCarousel";
+import Benifit from "../../components/BenifitCard/Benifit";
+import { benifits } from "../../components/BenifitCard/benifits";
+import Offer from "../../components/offer/Offer";
+import { offers } from "../../components/offer/offers";
+import Footer from "../../components/footer/Footer";
 
-const Hero: FC = () => {
+const LandingPage: FC = () => {
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <div className="tw-relative tw-mx-auto  tw-overflow-hidden">
@@ -158,16 +163,94 @@ const Hero: FC = () => {
       </Flex>
 
       {/*Testimonials*/}
-      <Box display={"flex"} justifyContent={"center"} alignItems={"center"} bg={"transparent"}>
+      <Box
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        bg={"transparent"}
+      >
         <AnimatedText
           className="tw-w-[80vw] tw-font-bold md:tw-text-5xl tw-text-3xl tw-text-center tw-mt-[50px]"
           text="What people say about Empower Academy?"
           once={true}
         />
       </Box>
-      <SwipeCarousel />
+      <SwipeCarousel widthMax={"100"} />
+
+      {/*Benifits*/}
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        gap={"20px"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        bg={"transparent"}
+      >
+        <AnimatedText
+          className="tw-w-[80vw] tw-font-bold md:tw-text-5xl tw-text-3xl tw-text-center tw-mt-[50px]"
+          text="Level up your skills and your future with Empower acedemy Plus."
+          once={true}
+        />
+        <Text mt={"30px"} textAlign={"center"}>
+          Get access to videos in over 90% of courses, Specializations, and
+          Professional Certificates taught by top instructors from leading
+          universities and companies.
+        </Text>
+      </Box>
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        width={"80vw"}
+        justifyContent={"space-between"}
+        mx={"auto"}
+      >
+        {benifits.map((benifit, index) => (
+          <Benifit
+            color={color}
+            key={index}
+            src={benifit.src}
+            title={benifit.title}
+            description={benifit.description}
+          />
+        ))}
+      </Stack>
+
+      {/*Offers*/}
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        gap={"20px"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        bg={"transparent"}
+      >
+        <AnimatedText
+          className="tw-w-[80vw] tw-font-bold md:tw-text-5xl tw-text-3xl tw-text-center tw-mt-[80px]"
+          text="Start your journey today!"
+          once={true}
+        />
+      </Box>
+      <Stack
+        mt={"80px"}
+        direction={{ base: "column", md: "row" }}
+        width={"90vw"}
+        justifyContent={"space-between"}
+        mx={"auto"}
+      >
+        {offers.map((offer, index) => (
+          <Offer
+            key={index}
+            price={offer.price}
+            needButton={true}
+            width={{ base: "100%", md: "50%" }}
+            tier={offer.tier}
+            advantages={offer.advantages}
+          />
+        ))}
+      </Stack>
+      {/*Footer*/}
+      <Footer color={color} />
     </div>
   );
 };
 
-export default Hero;
+export default LandingPage;
