@@ -1,10 +1,4 @@
-import {
-  HStack,
-  Icon,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { HStack, Icon, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 import { FC } from "react";
 import { ImStarFull } from "react-icons/im";
 
@@ -14,7 +8,7 @@ type reviewType = {
   comment: string;
 };
 type Props = {
-  review: reviewType;
+  review: object;
 };
 const Review: FC<Props> = ({ review }) => {
   const color = useColorModeValue("gray.100", "gray.900");
@@ -29,7 +23,12 @@ const Review: FC<Props> = ({ review }) => {
         justifyContent="center"
         className="tw-shadow-[-5px_5px_16px_0px_#4fd1c5]"
       >
-        <Stack direction="column" spacing={4} textAlign="left" maxW="4xl">
+        <Stack
+          direction="column"
+          justify={"center"}
+          alignItems="center"
+          maxW="4xl"
+        >
           <Text fontSize="md" fontWeight="medium">
             {review.comment}
           </Text>
@@ -41,7 +40,7 @@ const Review: FC<Props> = ({ review }) => {
             <Icon as={ImStarFull} />
             <Icon as={ImStarFull} />
           </HStack>
-          <Stack alignItems="center" spacing={0}>
+          <Stack alignItems="center" justifyContent={"center"} spacing={0}>
             {/* <Avatar
               size="xl"
               showBorder={true}
@@ -50,7 +49,13 @@ const Review: FC<Props> = ({ review }) => {
               src={review.avatar}
             /> */}
             <Text fontWeight="bold" fontSize="lg">
-              {review.name}
+              {review.rating}
+            </Text>
+            <Text fontWeight="bold" fontSize="lg">
+              {review.user.name}
+            </Text>
+            <Text fontWeight="bold" fontSize="sm">
+              {review.user.email}
             </Text>
           </Stack>
         </Stack>

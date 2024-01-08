@@ -49,8 +49,8 @@ const CustomTextInput: FC<InputProps> = ({
   errors,
   isRequired,
 }) => {
-  console.log(errors);
-  console.log(errors?.[fieldName]?.[index]?.[propertyName]?.message)
+  // console.log(errors);
+  // console.log(errors?.[fieldName]?.[index]?.[propertyName]?.message)
   const isInvalid = useMemo(() => (name in errors || fieldName in errors), [errors, name]);
   return (
     <FormControl isInvalid={isInvalid}>

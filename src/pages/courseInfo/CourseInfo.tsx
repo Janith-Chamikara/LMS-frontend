@@ -14,24 +14,28 @@ import ScrollYProgress from "../../components/ScrollYProgress";
 // import SwipeCarousel from "../../SwipeCarousel/SwipeCarousel";
 import Review from "../../components/Review";
 import ModalWithButton from "../../components/ModalWithButton";
+import { useLocation } from "react-router-dom";
 
 const array = [
- {
-   name: "Alice Smith",
-   position: "Software Engineer",
-   comment: "This course was incredibly informative and well-structured. The instructor was engaging and knowledgeable, and I feel much more confident in my programming skills now. Highly recommend!",
- },
- {
-   name: "Bob Johnson",
-   position: "Web Developer",
-   comment: "I found the course challenging but rewarding. The material was comprehensive, and the projects helped me apply my learning in practical ways. I'm excited to use my new skills in my career.",
- },
- {
-   name: "Charlie Williams",
-   position: "Data Analyst",
-   comment: "I was a bit hesitant to take this course, but I'm so glad I did! It was eye-opening and helped me bridge the gap between my technical and analytical skills. I'm already seeing the benefits in my work.",
- },
- // Add more reviews as needed
+  {
+    name: "Alice Smith",
+    position: "Software Engineer",
+    comment:
+      "This course was incredibly informative and well-structured. The instructor was engaging and knowledgeable, and I feel much more confident in my programming skills now. Highly recommend!",
+  },
+  {
+    name: "Bob Johnson",
+    position: "Web Developer",
+    comment:
+      "I found the course challenging but rewarding. The material was comprehensive, and the projects helped me apply my learning in practical ways. I'm excited to use my new skills in my career.",
+  },
+  {
+    name: "Charlie Williams",
+    position: "Data Analyst",
+    comment:
+      "I was a bit hesitant to take this course, but I'm so glad I did! It was eye-opening and helped me bridge the gap between my technical and analytical skills. I'm already seeing the benefits in my work.",
+  },
+  // Add more reviews as needed
 ];
 
 const courseBenifits = [
@@ -40,12 +44,18 @@ const courseBenifits = [
 ];
 
 const CourseInfo: FC = () => {
+  const course = useLocation().state;
+  console.log(course);
+  const contents = course.courseInfo.map((content: object) => ({
+    title: content?.title,
+    description: content?.description,
+  }));
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <>
       <Box bg={color} px={4} position={"sticky"} top="0" width={"100vw"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box fontWeight={"bold"}>Web Designers for beginners</Box>
+          <Box fontWeight={"bold"}>{course.name}</Box>
           <Stack
             direction={"row"}
             spacing={20}
@@ -70,13 +80,8 @@ const CourseInfo: FC = () => {
           className="tw-shadow-[4px_4px_10px_0px_#319795]"
           rounded={"xl"}
         >
-          <Heading>Web Designers for beginners</Heading>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit
-            libero quibusdam voluptatum deleniti error sint nobis itaque. Dolor
-            error laudantium vitae quisquam sequi vel repellendus beatae maiores
-            odio, exercitationem nam!
-          </Text>
+          <Heading>{course.name}</Heading>
+          <Text>{course.description}</Text>
           <Stack
             direction={"row"}
             justify={"space-between"}
@@ -101,15 +106,33 @@ const CourseInfo: FC = () => {
             mx={"auto"}
             gap={"80px"}
           >
-            {courseBenifits.map((offer, index) => (
+            {course.benifits && (
               <Offer
                 width={{ base: "100%" }}
-                key={index}
-                tier={offer.title}
+                tier={"Course Benifits"}
+                propertyName="benifit"
                 needButton={false}
-                advantages={offer.array}
+                advantages={course.benifits}
               />
-            ))}
+            )}
+          </Stack>
+          <Stack
+            mt={"80px"}
+            direction={"column"}
+            width={"100%"}
+            justifyContent={"space-between"}
+            mx={"auto"}
+            gap={"80px"}
+          >
+            {course.preRequisties && (
+              <Offer
+                width={{ base: "100%" }}
+                tier={"Course Requirements"}
+                propertyName="requirement"
+                needButton={false}
+                advantages={course.preRequisties}
+              />
+            )}
           </Stack>
           <Box
             mt={"80px"}
@@ -117,23 +140,23 @@ const CourseInfo: FC = () => {
             className="tw-shadow-[4px_4px_10px_0px_#319795]"
           >
             <Heading mb={"50px"}>Course Contents:</Heading>
-            <TableOfContents />
+            <TableOfContents contents={contents} />
           </Box>
           <Box
             mt={"80px"}
             width={"100%"}
             overflow={"auto"}
             padding={"50px"}
-            
             className="tw-shadow-[4px_4px_10px_0px_#319795]"
           >
             <Heading mb={"50px"}>Course Reviews :</Heading>
             <Flex direction={"row"} gap={"20px"} mb={"50px"}>
-              {array.map((review, index) => (
-                <Review key={index} review={review} />
-              ))}
+              {course.reviews &&
+                course.reviews.map((review: object, index: number) => (
+                  <Review key={index} review={review} />
+                ))}
             </Flex>
-            <ModalWithButton/>
+            <ModalWithButton />
           </Box>
           {/* mt={"80px"}
             width={"100%"}
@@ -158,7 +181,7 @@ const CourseInfo: FC = () => {
           top="16"
           display={{ base: "none", lg: "block" }}
         >
-          <CourseCard />
+          <CourseCard course={course} />
         </Box>
       </Flex>
     </>

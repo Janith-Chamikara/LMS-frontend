@@ -22,10 +22,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { courseSchema } from "../../schemas/schema";
 import CustomTextInput from "../../components/CustomTextInput";
+import axios from "../../axios/axios";
+import useAuthContext from "../../hooks/useAuthContext";
+import { convertToBase64 } from "../../utils/utils";
+import useToastHook from "../../hooks/useToast";
 
 const UploadCoursePage: FC = () => {
   const { activeStep, goToNext, goToPrevious } = useSteps({
-    index: 0,
+    index: 1,
     count: steps.length,
   });
   const {
@@ -36,16 +40,49 @@ const UploadCoursePage: FC = () => {
     handleSubmit,
     setValue,
   } = useForm({ resolver: zodResolver(courseSchema) });
+  const { auth } = useAuthContext();
+  const [newToast] = useToastHook();
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      const file = await convertToBase64(data.thumbnail["0"]);
+      const courseSectionPromises = data.courseSections.map(async (section) => {
+        const thumbnail = await convertToBase64(section.videoThumbnail["0"]);
+        return { ...section, videoThumbnail: thumbnail };
+      });
+      const courseInfo = await Promise.all(courseSectionPromises);
+      console.log(courseInfo);
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+      console.log(file);
+      const reqData = {
+        name: data.courseName,
+        description: data.courseDescription,
+        price: data.coursePrice,
+        estimatedPrice: data.courseEstimatedPrice,
+        thumbnail: file,
+        tags: data.tags,
+        level: data.level,
+        demoUrl: data.courseDemo,
+        benifits: data.courseBenifits,
+        preRequisties: data.preRequirement,
+        courseInfo: courseInfo,
+      };
+      const response = await axios.post("/courses/create", reqData, {
+        headers: {
+          Authorization: `Bearer ${auth?.accessToken}`,
+        },
+      });
+      console.log(response);
+      newToast({ message: response.data.message, condition: "success" });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Box width={"80vw"} mx={"auto"} mt={"20px"}>
       <CustomStepper steps={steps} activeStep={activeStep} />
 
-      {activeStep === 1 && (
+      {activeStep <= 1 && (
         <Box padding={"20px"}>
           <Step1Form
             control={control}
@@ -98,6 +135,7 @@ export default UploadCoursePage;
 
 type FormProps = {
   index?: number;
+  thumbnail?: string;
   control?: Control<FieldValues> | undefined;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors<FieldValues>;
@@ -148,19 +186,9 @@ const Step1Form: FC<FormProps> = ({ register, errors, control }) => {
       >
         Estimated Price
       </CustomTextInput>
+
       <CustomTextInput
-        flushed={true}
-        errors={errors}
-        register={register}
-        name="thumbnail"
-        placeholder="Provide a thumbnail for the course"
-        type="file"
-        isRequired={false}
-      >
-        Thumbnail
-      </CustomTextInput>
-      <CustomTextInput
-        flushed={true}
+        flushed={false}
         errors={errors}
         register={register}
         name="level"
@@ -248,9 +276,10 @@ const Addons: FC<AddonsType> = ({
   const color = useColorModeValue("gray.400", "gray.600");
   return (
     <Box
+      mt={"5px"}
       padding={"20px"}
       border={"2px"}
-      borderColor={color}
+      borderColor={errors[fieldName] ? "red.400" : color}
       borderRadius={"xl"}
     >
       <Text fontWeight={"semibold"}>{title}</Text>
@@ -281,7 +310,6 @@ const Addons: FC<AddonsType> = ({
           </Button>
         </Flex>
       ))}
-
       <Button
         mt={"5px"}
         colorScheme="facebook"
@@ -289,7 +317,10 @@ const Addons: FC<AddonsType> = ({
         onClick={() => append({ propertyName: "" })}
       >
         {buttonTitle}
-      </Button>
+      </Button>{" "}
+      {errors[fieldName] && (
+        <p className="tw-text-red-400 tw-text-sm">{errors[fieldName]?.message}</p>
+      )}
     </Box>
   );
 };
@@ -308,6 +339,17 @@ const Step3Form: FC<FormProps> = ({
   const color = useColorModeValue("gray.400", "gray.600");
   return (
     <>
+      <CustomTextInput
+        flushed={true}
+        errors={errors}
+        register={register}
+        name="thumbnail"
+        placeholder="Provide a thumbnail for the course"
+        type="file"
+        isRequired={false}
+      >
+        Thumbnail
+      </CustomTextInput>
       {fields.map((field, index) => (
         <Flex
           key={field.id}
@@ -331,7 +373,7 @@ const Step3Form: FC<FormProps> = ({
           />
           <Button
             maxWidth={"200px"}
-            colorScheme="teal"
+            colorScheme="facebook"
             variant={"solid"}
             onClick={() => remove(index)}
           >
@@ -339,15 +381,18 @@ const Step3Form: FC<FormProps> = ({
           </Button>
         </Flex>
       ))}
-      <Flex justifyContent={"center"}>
+      <Flex justifyContent={"center"} direction={"column"} gap={"10px"}>
         <Button
-          colorScheme="teal"
+          colorScheme="facebook"
           mt={"20px"}
           variant={"solid"}
           onClick={() => append({ section: "" })}
         >
           Click to add a Course Section
         </Button>
+        {errors["courseSections"] && (
+          <p className="tw-text-red-400 tw-text-sm">{errors["courseSections"]?.message}</p>
+        )}
       </Flex>
     </>
   );

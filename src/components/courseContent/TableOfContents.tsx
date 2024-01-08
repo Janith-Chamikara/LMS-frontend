@@ -24,8 +24,12 @@ const contents = [
  },
 ];
 
+type Props = {
+  contents:[object]
+}
 
-const TableOfContents:FC = () => {
+
+const TableOfContents:FC<Props> = ({contents}) => {
  return <CustomAccordion contents={contents}/>
 }
 

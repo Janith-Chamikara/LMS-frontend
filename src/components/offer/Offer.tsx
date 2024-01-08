@@ -6,19 +6,21 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 type Width = {
+
   base:string;
   md?:string;
 }
 
 type OfferProps = {
   tier: string;
+  propertyName?:string;
   price?: string;
   needButton?: boolean;
   advantages: string[];
   width?:Width;
 };
 
-const Offer: FC<OfferProps> = ({ price, tier, advantages,width, needButton }) => {
+const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, needButton }) => {
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <>
@@ -63,7 +65,7 @@ const Offer: FC<OfferProps> = ({ price, tier, advantages,width, needButton }) =>
         </Stack>
 
         <Stack direction={"column"} gap={"10px"}>
-          {advantages.map((advantage, index) => (
+          {advantages && advantages.map((advantage, index) => (
             <Stack
               key={index}
               direction={"row"}
@@ -71,7 +73,7 @@ const Offer: FC<OfferProps> = ({ price, tier, advantages,width, needButton }) =>
               alignItems={"center"}
             >
               <Icon as={ImCheckmark} w={8} color="green.300" />
-              <Text fontWeight={"semibold"}>{advantage}</Text>
+              <Text fontWeight={"semibold"}>{advantage[propertyName]}</Text>
             </Stack>
           ))}
         </Stack>

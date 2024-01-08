@@ -81,7 +81,7 @@ const sectionSchema = z.object({
     .min(10, { message: "Video description is required." })
     .max(300, { message: "Please procide an abstractive description" }),
   videoThumbnail: thumbnailSchema,
-  links: z.array(z.object({ link: z.string().min(1, { message:"Cannot leave empty."}) })),
+  links: z.array(z.object({ link: z.string()})).min(1, { message:"Minimum 1 link is required."}) ,
 });
 
 export const courseSchema = z.object({
@@ -95,7 +95,7 @@ export const courseSchema = z.object({
   thumbnail: thumbnailSchema,
   tags: z.array(
     z.object({ tag: z.string().min(1, { message: "Tag must be a word." }) })
-  ),
+  ).min(1, { message: "At least 1 tag is required." }),
   level: z.string().min(1, { message: "Level is required." }),
   courseDemo: z.string().min(1, { message: "Demo url is required." }),
   courseBenifits: z
@@ -111,6 +111,6 @@ export const courseSchema = z.object({
         message: "Benifit must be a word or words.",
       }),
     })
-  ),
-  courseSections: z.array(sectionSchema),
+  ).min(2, { message: "Provide at least 2 requirements for your course." }),
+  courseSections: z.array(sectionSchema).min(1, { message: "At least 1 course section is required." }),
 });
