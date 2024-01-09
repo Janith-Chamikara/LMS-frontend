@@ -1,7 +1,10 @@
 import {
   Box,
+  Button,
   Flex,
   Heading,
+  Skeleton,
+  SkeletonText,
   Stack,
   Text,
   useColorModeValue,
@@ -16,35 +19,8 @@ import Review from "../../components/Review";
 import ModalWithButton from "../../components/ModalWithButton";
 import { useLocation } from "react-router-dom";
 
-const array = [
-  {
-    name: "Alice Smith",
-    position: "Software Engineer",
-    comment:
-      "This course was incredibly informative and well-structured. The instructor was engaging and knowledgeable, and I feel much more confident in my programming skills now. Highly recommend!",
-  },
-  {
-    name: "Bob Johnson",
-    position: "Web Developer",
-    comment:
-      "I found the course challenging but rewarding. The material was comprehensive, and the projects helped me apply my learning in practical ways. I'm excited to use my new skills in my career.",
-  },
-  {
-    name: "Charlie Williams",
-    position: "Data Analyst",
-    comment:
-      "I was a bit hesitant to take this course, but I'm so glad I did! It was eye-opening and helped me bridge the gap between my technical and analytical skills. I'm already seeing the benefits in my work.",
-  },
-  // Add more reviews as needed
-];
-
-const courseBenifits = [
-  { title: "What you will learn", array: ["a", "b", "c"] },
-  { title: "Requirements", array: ["a", "b", "c"] },
-];
-
 const CourseInfo: FC = () => {
-  const course = useLocation().state;
+  const { course, isLoading } = useLocation().state;
   console.log(course);
   const contents = course.courseInfo.map((content: object) => ({
     title: content?.title,
@@ -57,10 +33,16 @@ const CourseInfo: FC = () => {
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box fontWeight={"bold"}>{course.name}</Box>
           <Stack
+            mr={"20px"}
             direction={"row"}
-            spacing={20}
-            display={{ base: "none", lg: "flex" }}
-          ></Stack>
+            spacing={2}
+            display={{ base: "flex", md: "none" }}
+          >
+            <Button colorScheme="yellow">Buy Now</Button>
+            <Button colorScheme="yellow" variant={"outline"}>
+              Add to Cart
+            </Button>
+          </Stack>
         </Flex>
       </Box>
       <ScrollYProgress />
@@ -80,23 +62,44 @@ const CourseInfo: FC = () => {
           className="tw-shadow-[4px_4px_10px_0px_#319795]"
           rounded={"xl"}
         >
-          <Heading>{course.name}</Heading>
-          <Text>{course.description}</Text>
+          <SkeletonText isLoaded={!isLoading}>
+            <Heading>{course.name}</Heading>
+          </SkeletonText>
+          <SkeletonText isLoaded={!isLoading}>
+            <Text>{course.description}</Text>
+          </SkeletonText>
           <Stack
             direction={"row"}
-            justify={"space-between"}
+            justifyContent={{base:"center",lg:"space-between"}}
             alignItems={"center"}
           >
             <Stack
               direction={"row"}
-              justify={"space-between"}
+              justifyContent={{base:"center",lg:"space-between"}}
               alignItems={"center"}
+              gap={"10px"}
             >
-              <Box>5stars</Box>
-              <Text>5 reviews</Text>
+              {course.ratings && <SkeletonText display={{base:"none",lg:"block"}} isLoaded={!isLoading}>
+                  <Text fontWeight={"bold"} fontStyle={"italic"}>{course.ratings} stars</Text>
+                </SkeletonText>}
+              {course.reviews && (
+                <SkeletonText isLoaded={!isLoading}>
+                  <Text fontWeight={"bold"} display={{base:"none",lg:"block"}} fontStyle={"italic"}>{course.reviews.length} reviews</Text>
+                </SkeletonText>
+              )}
+              
             </Stack>
-            <Text>Count of orders</Text>
-            <Text>Created By :</Text>
+            {course.purchased && (
+                <SkeletonText isLoaded={!isLoading} display={{base:"none",lg:"block"}}>
+                  <Text fontWeight={"bold"} fontStyle={"italic"}>Count of orders - {course.purchased}</Text>
+                </SkeletonText>
+              )}
+            {course.createdBy && (
+                <SkeletonText isLoaded={!isLoading}>
+                  <Text fontWeight={"bold"} fontStyle={"italic"}>Created By - {course.createdBy.name}</Text>
+                </SkeletonText>
+              )}
+            
           </Stack>
           <Stack
             mt={"80px"}
@@ -107,13 +110,15 @@ const CourseInfo: FC = () => {
             gap={"80px"}
           >
             {course.benifits && (
-              <Offer
-                width={{ base: "100%" }}
-                tier={"Course Benifits"}
-                propertyName="benifit"
-                needButton={false}
-                advantages={course.benifits}
-              />
+              <Skeleton isLoaded={!isLoading}>
+                <Offer
+                  width={{ base: "100%" }}
+                  tier={"Course Benifits"}
+                  propertyName="benifit"
+                  needButton={false}
+                  advantages={course.benifits}
+                />
+              </Skeleton>
             )}
           </Stack>
           <Stack
@@ -125,13 +130,15 @@ const CourseInfo: FC = () => {
             gap={"80px"}
           >
             {course.preRequisties && (
-              <Offer
-                width={{ base: "100%" }}
-                tier={"Course Requirements"}
-                propertyName="requirement"
-                needButton={false}
-                advantages={course.preRequisties}
-              />
+              <Skeleton isLoaded={!isLoading}>
+                <Offer
+                  width={{ base: "100%" }}
+                  tier={"Course Requirements"}
+                  propertyName="requirement"
+                  needButton={false}
+                  advantages={course.preRequisties}
+                />
+              </Skeleton>
             )}
           </Stack>
           <Box
@@ -153,7 +160,9 @@ const CourseInfo: FC = () => {
             <Flex direction={"row"} gap={"20px"} mb={"50px"}>
               {course.reviews &&
                 course.reviews.map((review: object, index: number) => (
-                  <Review key={index} review={review} />
+                  <Skeleton isLoaded={!isLoading} key={index}>
+                    <Review review={review} />
+                  </Skeleton>
                 ))}
             </Flex>
             <ModalWithButton />
@@ -181,7 +190,9 @@ const CourseInfo: FC = () => {
           top="16"
           display={{ base: "none", lg: "block" }}
         >
-          <CourseCard course={course} />
+          <Skeleton isLoaded={!isLoading}>
+            <CourseCard course={course} />
+          </Skeleton>
         </Box>
       </Flex>
     </>

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import CustomStepper from "../../components/stepper/CustomStepper";
 import { steps } from "../../components/stepper/steps";
 import {
@@ -26,8 +26,12 @@ import axios from "../../axios/axios";
 import useAuthContext from "../../hooks/useAuthContext";
 import { convertToBase64 } from "../../utils/utils";
 import useToastHook from "../../hooks/useToast";
+import UploadWidget from "../../components/uploadAssests/UploadWidget.tsx";
 
 const UploadCoursePage: FC = () => {
+  const [demoUrl, setDemoUrl] = useState<string>("");
+  const [sectionUrls, setSectionUrls] = useState<string[]>([]);
+  console.log(demoUrl, sectionUrls);
   const { activeStep, goToNext, goToPrevious } = useSteps({
     index: 1,
     count: steps.length,
@@ -44,13 +48,17 @@ const UploadCoursePage: FC = () => {
   const [newToast] = useToastHook();
   const onSubmit = async (data: FieldValues) => {
     try {
+      console.log(data);
       const file = await convertToBase64(data.thumbnail["0"]);
       const courseSectionPromises = data.courseSections.map(async (section) => {
         const thumbnail = await convertToBase64(section.videoThumbnail["0"]);
         return { ...section, videoThumbnail: thumbnail };
       });
-      const courseInfo = await Promise.all(courseSectionPromises);
-      console.log(courseInfo);
+      const courseSections = await Promise.all(courseSectionPromises);
+      sectonUrls.length > 0 && courseSections.map((section, index) => {
+        return { ...section, video: sectionUrls[index] };
+      });
+      console.log(courseSections);
 
       console.log(file);
       const reqData = {
@@ -61,10 +69,10 @@ const UploadCoursePage: FC = () => {
         thumbnail: file,
         tags: data.tags,
         level: data.level,
-        demoUrl: data.courseDemo,
+        demoUrl: demoUrl,
         benifits: data.courseBenifits,
         preRequisties: data.preRequirement,
-        courseInfo: courseInfo,
+        courseInfo: courseSections,
       };
       const response = await axios.post("/courses/create", reqData, {
         headers: {
@@ -107,6 +115,9 @@ const UploadCoursePage: FC = () => {
       {activeStep === 3 && (
         <Box padding={"20px"}>
           <Step3Form
+            setDemoUrl={setDemoUrl}
+            setSectionUrls={setSectionUrls}
+            sectionUrls={sectionUrls}
             control={control}
             register={register}
             errors={errors}
@@ -134,6 +145,10 @@ const UploadCoursePage: FC = () => {
 export default UploadCoursePage;
 
 type FormProps = {
+  demoUrl?: string;
+  setDemoUrl?: Dispatch<SetStateAction<string>>;
+  sectionUrls?: string[];
+  setSectionUrls?: Dispatch<SetStateAction<string[]>>;
   index?: number;
   thumbnail?: string;
   control?: Control<FieldValues> | undefined;
@@ -214,16 +229,6 @@ const Step1Form: FC<FormProps> = ({ register, errors, control }) => {
 const Step2Form: FC<FormProps> = ({ register, control, errors }) => {
   return (
     <>
-      <CustomTextInput
-        errors={errors}
-        register={register}
-        name="courseDemo"
-        placeholder="Place demo url here"
-        type="text"
-        isRequired={false}
-      >
-        Course Demo URL
-      </CustomTextInput>
       <Addons
         title="Add Course Benifits"
         buttonTitle="Click to add benifit"
@@ -319,7 +324,9 @@ const Addons: FC<AddonsType> = ({
         {buttonTitle}
       </Button>{" "}
       {errors[fieldName] && (
-        <p className="tw-text-red-400 tw-text-sm">{errors[fieldName]?.message}</p>
+        <p className="tw-text-red-400 tw-text-sm">
+          {errors[fieldName]?.message}
+        </p>
       )}
     </Box>
   );
@@ -327,6 +334,9 @@ const Addons: FC<AddonsType> = ({
 
 const Step3Form: FC<FormProps> = ({
   register,
+  setDemoUrl,
+  setSectionUrls,
+  sectionUrls,
   errors,
   watch,
   setValue,
@@ -350,6 +360,24 @@ const Step3Form: FC<FormProps> = ({
       >
         Thumbnail
       </CustomTextInput>
+      {/* <CustomTextInput
+        flushed={true}
+        errors={errors}
+        register={register}
+        name="courseDemo"
+        placeholder="Provide a demo video for the course"
+        type="file"
+        isRequired={false}
+      >
+        Course Demo video
+      </CustomTextInput> */}
+      <UploadWidget
+        text={"Upload Course Demo video"}
+        demo={true}
+        setSectionUrls={setSectionUrls}
+        sectionUrls={sectionUrls}
+        setDemoUrl={setDemoUrl}
+      />
       {fields.map((field, index) => (
         <Flex
           key={field.id}
@@ -363,6 +391,9 @@ const Step3Form: FC<FormProps> = ({
           borderRadius={"xl"}
         >
           <Section
+            setDemoUrl={setDemoUrl}
+            setSectionUrls={setSectionUrls}
+            sectionUrls={sectionUrls}
             key={field.id}
             index={index}
             control={control}
@@ -391,14 +422,24 @@ const Step3Form: FC<FormProps> = ({
           Click to add a Course Section
         </Button>
         {errors["courseSections"] && (
-          <p className="tw-text-red-400 tw-text-sm">{errors["courseSections"]?.message}</p>
+          <p className="tw-text-red-400 tw-text-sm">
+            {errors["courseSections"]?.message}
+          </p>
         )}
       </Flex>
     </>
   );
 };
 
-const Section: FC<FormProps> = ({ register, errors, control, index }) => {
+const Section: FC<FormProps> = ({
+  register,
+  errors,
+  control,
+  index,
+  setDemoUrl,
+  setSectionUrls,
+  sectionUrls,
+}) => {
   return (
     <>
       <Box>
@@ -428,19 +469,13 @@ const Section: FC<FormProps> = ({ register, errors, control, index }) => {
         >
           Video title
         </CustomTextInput>
-        <CustomTextInput
-          errors={errors}
-          fieldName={"courseSections"}
-          propertyName={"videoURL"}
-          index={index}
-          register={register}
-          name={`courseSections.${index}.videoURL`}
-          placeholder="Video URL"
-          type="text"
-          isRequired={false}
-        >
-          Video url
-        </CustomTextInput>
+        <UploadWidget
+          text={"Upload video"}
+          demo={false}
+          setSectionUrls={setSectionUrls}
+          sectionUrls={sectionUrls}
+          setDemoUrl={setDemoUrl}
+        />
         <CustomTextInput
           errors={errors}
           register={register}

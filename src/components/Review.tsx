@@ -29,7 +29,7 @@ const Review: FC<Props> = ({ review }) => {
           alignItems="center"
           maxW="4xl"
         >
-          <Text fontSize="md" fontWeight="medium">
+          <Text fontSize="md" textAlign={'center'} fontWeight="medium">
             {review.comment}
           </Text>
           <HStack>

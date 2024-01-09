@@ -72,16 +72,41 @@ const thumbnailSchema = z.any().refine((file) => {
   return true; // Validation passed
 });
 
+const videoSchema = z
+  .any() // Ensure it's a File object
+  .superRefine((file, ctx) => {
+    // Check file type
+    const selectedFile = file[0];
+    const allowedTypes = ["video/mp4", "video/webm", "video/ogg"]; // Adjust as needed
+    if (!allowedTypes.includes(selectedFile.type)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Invalid video file type",
+      });
+    }
+
+    // Check file size (optional)
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+    if (file.size > maxSize) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Video file exceeds maximum size 100mb",
+      });
+    }
+  });
+
 const sectionSchema = z.object({
   section: z.string().min(1, { message: "Video Section is required." }),
   videoTitle: z.string().min(1, { message: "Video title is required." }),
-  videoURL: z.string().min(1, { message: "Video url is required." }),
+  video: z.string(),
   videoDescription: z
     .string()
     .min(10, { message: "Video description is required." })
     .max(300, { message: "Please procide an abstractive description" }),
   videoThumbnail: thumbnailSchema,
-  links: z.array(z.object({ link: z.string()})).min(1, { message:"Minimum 1 link is required."}) ,
+  links: z
+    .array(z.object({ link: z.string() }))
+    .min(1, { message: "Minimum 1 link is required." }),
 });
 
 export const courseSchema = z.object({
@@ -93,24 +118,32 @@ export const courseSchema = z.object({
   coursePrice: z.string().min(1, { message: "Course price is required." }),
   courseEstimatedPrice: z.string(),
   thumbnail: thumbnailSchema,
-  tags: z.array(
-    z.object({ tag: z.string().min(1, { message: "Tag must be a word." }) })
-  ).min(1, { message: "At least 1 tag is required." }),
+  tags: z
+    .array(
+      z.object({ tag: z.string().min(1, { message: "Tag must be a word." }) })
+    )
+    .min(1, { message: "At least 1 tag is required." }),
   level: z.string().min(1, { message: "Level is required." }),
-  courseDemo: z.string().min(1, { message: "Demo url is required." }),
+  courseDemo: z.string(),
   courseBenifits: z
     .array(
       z.object({
-        benifit: z.string().min(1, { message: "Benifit must be a word or words." }),
+        benifit: z
+          .string()
+          .min(1, { message: "Benifit must be a word or words." }),
       })
     )
     .min(3, { message: "Provide at least 3 benifits of your course." }),
-  preRequirement: z.array(
-    z.object({
-      requirement: z.string().min(1, {
-        message: "Benifit must be a word or words.",
-      }),
-    })
-  ).min(2, { message: "Provide at least 2 requirements for your course." }),
-  courseSections: z.array(sectionSchema).min(1, { message: "At least 1 course section is required." }),
+  preRequirement: z
+    .array(
+      z.object({
+        requirement: z.string().min(1, {
+          message: "Benifit must be a word or words.",
+        }),
+      })
+    )
+    .min(2, { message: "Provide at least 2 requirements for your course." }),
+  courseSections: z
+    .array(sectionSchema)
+    .min(1, { message: "At least 1 course section is required." }),
 });

@@ -26,10 +26,11 @@ type courseType = {
 }
 
 type CourseCardProps ={
-  course:courseType
+  course:courseType;
+  isLoading?:boolean;
 }
 
-const CourseCard: FC<CourseCardProps> = ({course}) => {
+const CourseCard: FC<CourseCardProps> = ({course,isLoading}) => {
   const navigate = useNavigate()
   const color = useColorModeValue("gray.100", "gray.900");
   return (
@@ -59,7 +60,7 @@ const CourseCard: FC<CourseCardProps> = ({course}) => {
           <Divider />
           <CardFooter>
             <ButtonGroup spacing="2">
-              <Button  variant="solid" onClick={()=>navigate("/courseInfo",{state:course})} colorScheme="blue">
+              <Button  variant="solid" onClick={()=>navigate("/courseInfo",{state:{course,isLoading}})} colorScheme="blue">
                 Buy now
               </Button>
               <Button variant="ghost" colorScheme="blue">

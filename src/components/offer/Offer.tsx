@@ -16,12 +16,13 @@ type OfferProps = {
   propertyName?:string;
   price?: string;
   needButton?: boolean;
-  advantages: string[];
+  advantages: object[];
   width?:Width;
 };
 
 const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, needButton }) => {
   const color = useColorModeValue("gray.100", "gray.900");
+  console.log(advantages);
   return (
     <>
       <Stack
@@ -73,7 +74,7 @@ const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, nee
               alignItems={"center"}
             >
               <Icon as={ImCheckmark} w={8} color="green.300" />
-              <Text fontWeight={"semibold"}>{advantage[propertyName]}</Text>
+              <Text fontWeight={"semibold"}>{advantage?.[propertyName]}</Text>
             </Stack>
           ))}
         </Stack>

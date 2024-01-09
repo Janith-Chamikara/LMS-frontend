@@ -26,11 +26,13 @@ import { benifits } from "../../components/BenifitCard/benifits";
 import Offer from "../../components/offer/Offer";
 import { offers } from "../../components/offer/offers";
 import Footer from "../../components/footer/Footer";
+import ScrollYProgress from "../../components/ScrollYProgress";
 
 const LandingPage: FC = () => {
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <div className="tw-relative tw-mx-auto  tw-overflow-hidden">
+      <ScrollYProgress />
       <Box
         as={motion.div}
         bg={color}
@@ -244,6 +246,7 @@ const LandingPage: FC = () => {
             width={{ base: "100%", md: "50%" }}
             tier={offer.tier}
             advantages={offer.advantages}
+            propertyName="offer"
           />
         ))}
       </Stack>

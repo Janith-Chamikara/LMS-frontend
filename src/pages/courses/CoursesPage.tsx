@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import CourseCard from "../../components/CourseCard";
@@ -20,7 +20,7 @@ const CoursesPage: FC = () => {
       } catch (error:unknown) {
         setError(error);
       } finally {
-        setIsLoading(true);
+        setIsLoading(false);
       }
     };
     fetchData()
@@ -49,7 +49,7 @@ const CoursesPage: FC = () => {
         gap={"20px"}
         width={"100%"}
       >
-        {courses && courses.map((course,index)=><CourseCard course={course} key={index}/>)}
+        {courses && courses.map((course,index)=><Skeleton key={index} isLoaded={!isloading}><CourseCard isLoading={isloading} course={course} /></Skeleton>)}
       </Flex>
     </Flex>
   );
