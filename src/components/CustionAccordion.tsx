@@ -7,14 +7,16 @@ type AccordionProps = {
 };
 
 const CustomAccordion: FC<AccordionProps> = ({ contents }) => {
+  console.log(contents);
   return (
-    <Accordion allowToggle allowMultiple>
+    <Accordion allowToggle>
       {contents.map((content, index) => (
         <CustomAcccordionItem
+          videoTitle={content.videoTitle}
+          videoSrc={content.videoUrl}
           key={index}
-          title={content.title}
-          description={content.description}
-          subTopics={content.subTopics}
+          title={content.section}
+          description={content.videoDescription}
         />
       ))}
     </Accordion>

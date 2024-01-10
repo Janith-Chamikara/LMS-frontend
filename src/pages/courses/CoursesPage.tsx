@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { Box, Flex, Heading, Skeleton } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import CourseCard from "../../components/CourseCard";
@@ -11,7 +11,9 @@ const CoursesPage: FC = () => {
   const [newToast] = useToastHook()
   const [isloading, setIsLoading] = useState(true);
   useEffect(() => {
+    // const v = new AbortController;
     const fetchData = async () => {
+      console.log("fetching");
       try {
         const response = await axios.get("/courses/get-all");
         console.log(response);
@@ -23,9 +25,9 @@ const CoursesPage: FC = () => {
         setIsLoading(false);
       }
     };
-    fetchData()
+    fetchData();
   }, []);
-  error && newToast({ message: error.message, condition: "error" });
+  error && newToast({ message: error?.message, condition: "error" });
   console.log(courses);
   return (
     <Flex

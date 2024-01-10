@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
-
+declare const window:any;
 const UploadWidget = ({
   text,
   demo,

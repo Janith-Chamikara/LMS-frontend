@@ -18,13 +18,13 @@ import ScrollYProgress from "../../components/ScrollYProgress";
 import Review from "../../components/Review";
 import ModalWithButton from "../../components/ModalWithButton";
 import { useLocation } from "react-router-dom";
+import VideoPlayer from "../../components/VideoPlayer";
 
 const CourseInfo: FC = () => {
   const { course, isLoading } = useLocation().state;
   console.log(course);
   const contents = course.courseInfo.map((content: object) => ({
-    title: content?.title,
-    description: content?.description,
+    ...content
   }));
   const color = useColorModeValue("gray.100", "gray.900");
   return (
@@ -32,6 +32,7 @@ const CourseInfo: FC = () => {
       <Box bg={color} px={4} position={"sticky"} top="0" width={"100vw"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box fontWeight={"bold"}>{course.name}</Box>
+
           <Stack
             mr={"20px"}
             direction={"row"}
@@ -65,41 +66,62 @@ const CourseInfo: FC = () => {
           <SkeletonText isLoaded={!isLoading}>
             <Heading>{course.name}</Heading>
           </SkeletonText>
+          <Box my={"20px"} className="tw-shadow-[0px_0px_9px_4px_#319795]">
+            <VideoPlayer src={course.demoUrl} width={"100%"} height={"auto"} />
+          </Box>
           <SkeletonText isLoaded={!isLoading}>
             <Text>{course.description}</Text>
           </SkeletonText>
           <Stack
             direction={"row"}
-            justifyContent={{base:"center",lg:"space-between"}}
+            justifyContent={{ base: "center", lg: "space-between" }}
             alignItems={"center"}
           >
             <Stack
               direction={"row"}
-              justifyContent={{base:"center",lg:"space-between"}}
+              justifyContent={{ base: "center", lg: "space-between" }}
               alignItems={"center"}
               gap={"10px"}
             >
-              {course.ratings && <SkeletonText display={{base:"none",lg:"block"}} isLoaded={!isLoading}>
-                  <Text fontWeight={"bold"} fontStyle={"italic"}>{course.ratings} stars</Text>
-                </SkeletonText>}
+              {course.ratings && (
+                <SkeletonText
+                  display={{ base: "none", lg: "block" }}
+                  isLoaded={!isLoading}
+                >
+                  <Text fontWeight={"bold"} fontStyle={"italic"}>
+                    {course.ratings} stars
+                  </Text>
+                </SkeletonText>
+              )}
               {course.reviews && (
                 <SkeletonText isLoaded={!isLoading}>
-                  <Text fontWeight={"bold"} display={{base:"none",lg:"block"}} fontStyle={"italic"}>{course.reviews.length} reviews</Text>
+                  <Text
+                    fontWeight={"bold"}
+                    display={{ base: "none", lg: "block" }}
+                    fontStyle={"italic"}
+                  >
+                    {course.reviews.length} reviews
+                  </Text>
                 </SkeletonText>
               )}
-              
             </Stack>
             {course.purchased && (
-                <SkeletonText isLoaded={!isLoading} display={{base:"none",lg:"block"}}>
-                  <Text fontWeight={"bold"} fontStyle={"italic"}>Count of orders - {course.purchased}</Text>
-                </SkeletonText>
-              )}
+              <SkeletonText
+                isLoaded={!isLoading}
+                display={{ base: "none", lg: "block" }}
+              >
+                <Text fontWeight={"bold"} fontStyle={"italic"}>
+                  Count of orders - {course.purchased}
+                </Text>
+              </SkeletonText>
+            )}
             {course.createdBy && (
-                <SkeletonText isLoaded={!isLoading}>
-                  <Text fontWeight={"bold"} fontStyle={"italic"}>Created By - {course.createdBy.name}</Text>
-                </SkeletonText>
-              )}
-            
+              <SkeletonText isLoaded={!isLoading}>
+                <Text fontWeight={"bold"} fontStyle={"italic"}>
+                  Created By - {course.createdBy.name}
+                </Text>
+              </SkeletonText>
+            )}
           </Stack>
           <Stack
             mt={"80px"}
@@ -149,24 +171,26 @@ const CourseInfo: FC = () => {
             <Heading mb={"50px"}>Course Contents:</Heading>
             <TableOfContents contents={contents} />
           </Box>
-          <Box
-            mt={"80px"}
-            width={"100%"}
-            overflow={"auto"}
-            padding={"50px"}
-            className="tw-shadow-[4px_4px_10px_0px_#319795]"
-          >
-            <Heading mb={"50px"}>Course Reviews :</Heading>
-            <Flex direction={"row"} gap={"20px"} mb={"50px"}>
-              {course.reviews &&
-                course.reviews.map((review: object, index: number) => (
-                  <Skeleton isLoaded={!isLoading} key={index}>
-                    <Review review={review} />
-                  </Skeleton>
-                ))}
-            </Flex>
-            <ModalWithButton />
-          </Box>
+          {course.reviews && (
+            <Box
+              mt={"80px"}
+              width={"100%"}
+              overflow={"auto"}
+              padding={"50px"}
+              className="tw-shadow-[4px_4px_10px_0px_#319795]"
+            >
+              <Heading mb={"50px"}>Course Reviews :</Heading>
+              <Flex direction={"row"} gap={"20px"} mb={"50px"}>
+                {course.reviews &&
+                  course.reviews.map((review: object, index: number) => (
+                    <Skeleton isLoaded={!isLoading} key={index}>
+                      <Review review={review} />
+                    </Skeleton>
+                  ))}
+              </Flex>
+              <ModalWithButton />
+            </Box>
+          )}
           {/* mt={"80px"}
             width={"100%"}
             maxHeight={"80vh"}

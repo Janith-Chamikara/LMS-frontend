@@ -72,33 +72,32 @@ const thumbnailSchema = z.any().refine((file) => {
   return true; // Validation passed
 });
 
-const videoSchema = z
-  .any() // Ensure it's a File object
-  .superRefine((file, ctx) => {
-    // Check file type
-    const selectedFile = file[0];
-    const allowedTypes = ["video/mp4", "video/webm", "video/ogg"]; // Adjust as needed
-    if (!allowedTypes.includes(selectedFile.type)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Invalid video file type",
-      });
-    }
+// const videoSchema = z
+//   .any() // Ensure it's a File object
+//   .superRefine((file, ctx) => {
+//     // Check file type
+//     const selectedFile = file[0];
+//     const allowedTypes = ["video/mp4", "video/webm", "video/ogg"]; // Adjust as needed
+//     if (!allowedTypes.includes(selectedFile.type)) {
+//       ctx.addIssue({
+//         code: z.ZodIssueCode.custom,
+//         message: "Invalid video file type",
+//       });
+//     }
 
-    // Check file size (optional)
-    const maxSize = 10 * 1024 * 1024; // 10 MB
-    if (file.size > maxSize) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Video file exceeds maximum size 100mb",
-      });
-    }
-  });
+//     // Check file size (optional)
+//     const maxSize = 10 * 1024 * 1024; // 10 MB
+//     if (file.size > maxSize) {
+//       ctx.addIssue({
+//         code: z.ZodIssueCode.custom,
+//         message: "Video file exceeds maximum size 100mb",
+//       });
+//     }
+//   });
 
 const sectionSchema = z.object({
   section: z.string().min(1, { message: "Video Section is required." }),
   videoTitle: z.string().min(1, { message: "Video title is required." }),
-  video: z.string(),
   videoDescription: z
     .string()
     .min(10, { message: "Video description is required." })
@@ -124,7 +123,6 @@ export const courseSchema = z.object({
     )
     .min(1, { message: "At least 1 tag is required." }),
   level: z.string().min(1, { message: "Level is required." }),
-  courseDemo: z.string(),
   courseBenifits: z
     .array(
       z.object({

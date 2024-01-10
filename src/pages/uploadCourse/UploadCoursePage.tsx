@@ -55,10 +55,12 @@ const UploadCoursePage: FC = () => {
         return { ...section, videoThumbnail: thumbnail };
       });
       const courseSections = await Promise.all(courseSectionPromises);
-      sectonUrls.length > 0 && courseSections.map((section, index) => {
-        return { ...section, video: sectionUrls[index] };
-      });
-      console.log(courseSections);
+      const courseSectionsUpdated =
+        sectionUrls.length > 0 &&
+        courseSections.map((section, index) => {
+          return { ...section, videoURL: sectionUrls[index] };
+        });
+      console.log(courseSectionsUpdated);
 
       console.log(file);
       const reqData = {
@@ -72,7 +74,7 @@ const UploadCoursePage: FC = () => {
         demoUrl: demoUrl,
         benifits: data.courseBenifits,
         preRequisties: data.preRequirement,
-        courseInfo: courseSections,
+        courseInfo: courseSectionsUpdated,
       };
       const response = await axios.post("/courses/create", reqData, {
         headers: {
@@ -133,6 +135,7 @@ const UploadCoursePage: FC = () => {
         <Button
           colorScheme="teal"
           onClick={activeStep === 3 ? handleSubmit(onSubmit) : goToNext}
+          disabled={activeStep === 3 ? isSubmitting : false}
           variant={"solid"}
         >
           {activeStep === 3 ? "Submit" : "Next"}
