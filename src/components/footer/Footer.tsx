@@ -40,12 +40,15 @@ type FooterProps = {
 const Footer: FC<FooterProps> = ({ color }) => {
   return (
     <Stack
+      position={"relative"}
+      bottom={"0"}
       width={"100%"}
       fontWeight={"bold"}
       mt={"50px"}
       bg={color}
       marginInline="auto"
       p={8}
+      zIndex={"100"}
       spacing={{ base: 8, md: 0 }}
       justifyContent="space-between"
       alignItems="center"

@@ -24,12 +24,19 @@ const CourseInfo: FC = () => {
   const { course, isLoading } = useLocation().state;
   console.log(course);
   const contents = course.courseInfo.map((content: object) => ({
-    ...content
+    ...content,
   }));
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <>
-      <Box bg={color} px={4} position={"sticky"} top="0" width={"100vw"}>
+      <Box
+        bg={color}
+        px={4}
+        position={"sticky"}
+        top="0"
+        width={"100vw"}
+        zIndex={"50"}
+      >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box fontWeight={"bold"}>{course.name}</Box>
 
@@ -37,7 +44,7 @@ const CourseInfo: FC = () => {
             mr={"20px"}
             direction={"row"}
             spacing={2}
-            display={{ base: "flex", md: "none" }}
+            display={{ base: "flex", lg: "none" }}
           >
             <Button colorScheme="yellow">Buy Now</Button>
             <Button colorScheme="yellow" variant={"outline"}>
@@ -50,7 +57,7 @@ const CourseInfo: FC = () => {
       <Flex
         mt={"10px"}
         direction={"row"}
-        width={"80vw"}
+        width={{ base: "90vw", md: "80vw" }}
         mx={{ base: "auto", lg: "0" }}
         textAlign={{ base: "center", lg: "left" }}
       >
@@ -58,7 +65,7 @@ const CourseInfo: FC = () => {
           width={"75%"}
           flex={{ base: "1", lg: "5" }}
           mx={"auto"}
-          padding={"50px"}
+          padding={{ base: "20px", md: "50px" }}
           bg={color}
           className="tw-shadow-[4px_4px_10px_0px_#319795]"
           rounded={"xl"}
@@ -165,13 +172,18 @@ const CourseInfo: FC = () => {
           </Stack>
           <Box
             mt={"80px"}
-            p={"50px"}
+            p={{ base: "20px", md: "50px" }}
             className="tw-shadow-[4px_4px_10px_0px_#319795]"
           >
-            <Heading mb={"50px"}>Course Contents:</Heading>
+            <Heading
+              mb={{ base: "20px", md: "50px" }}
+              fontSize={{ base: "2xl", md: "4xl" }}
+            >
+              Course Contents:
+            </Heading>
             <TableOfContents contents={contents} />
           </Box>
-          {course.reviews && (
+          {course.reviews.length !== 0 ? (
             <Box
               mt={"80px"}
               width={"100%"}
@@ -189,6 +201,16 @@ const CourseInfo: FC = () => {
                   ))}
               </Flex>
               <ModalWithButton />
+            </Box>
+          ) : (
+            <Box
+              mt={"80px"}
+              width={"100%"}
+              overflow={"auto"}
+              padding={"50px"}
+              className="tw-shadow-[4px_4px_10px_0px_#319795]"
+            >
+              <Text>This course hasn't been reviewd yet.</Text>
             </Box>
           )}
           {/* mt={"80px"}
@@ -212,6 +234,7 @@ const CourseInfo: FC = () => {
           position={"fixed"}
           right={"10px"}
           top="16"
+          zIndex={"60"}
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>

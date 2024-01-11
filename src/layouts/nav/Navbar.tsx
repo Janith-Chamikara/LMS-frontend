@@ -22,6 +22,7 @@ import NavbarMobile from "./NavbarMobile";
 import { Link, Outlet } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import CustomButton from "../../components/CustomButton";
+import Footer from "../../components/footer/Footer";
 
 export const NavLink: FC<{ children: React.ReactNode; path: string }> = ({
   children,
@@ -48,6 +49,7 @@ export const NavLink: FC<{ children: React.ReactNode; path: string }> = ({
 
 const NavbarForBiggerScreens: FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const color = useColorModeValue("gray.100", "gray.900");
   const { auth } = useAuthContext();
   console.log(auth);
   return (
@@ -172,6 +174,8 @@ const NavbarForBiggerScreens: FC = () => {
         </Flex>
       </Box>
       <Outlet />
+      {/*Footer*/}
+      <Footer color={color} />
     </>
   );
 };

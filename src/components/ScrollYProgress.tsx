@@ -11,7 +11,7 @@ const ScrollYProgress: FC = () => {
   });
   return (
     <Box
-    zIndex={"10"}
+    zIndex={"70"}
       as={motion.div}
       style={{ scaleX }}
       position={"fixed"}

@@ -16,6 +16,7 @@ import VideoPlayer from "./VideoPlayer";
 
 export type Content = {
   title: string;
+  index:number;
   videoUrl: string;
   videoTitle?: string;
   videoSrc?: string;
@@ -26,6 +27,7 @@ export type Content = {
 const CustomAcccordionItem: FC<Content> = ({
   title,
   description,
+  index,
   videoTitle,
   videoSrc,
   subTopics,
@@ -33,12 +35,12 @@ const CustomAcccordionItem: FC<Content> = ({
   const color = useColorModeValue("gray.300", "gray.600");
   return (
     <>
-      <AccordionItem>
+      <AccordionItem >
         <h2>
           <AccordionButton _expanded={{ bgColor: color }}>
-            <Box as="span" flex="1" textAlign="left" fontWeight={"semibold"}>
-              {title}
-            </Box>
+            <Text as="span" flex="1" textAlign="left" fontWeight={"semibold"}>
+              {index+1}.{title}
+            </Text>
             <AccordionIcon />
           </AccordionButton>
         </h2>
@@ -50,11 +52,11 @@ const CustomAcccordionItem: FC<Content> = ({
           gap={"20px"}
         >
           {videoTitle && (
-            <Text fontStyle={"italic"} fontWeight={"semibold"}>
+            <Text fontStyle={"italic"} fontWeight={"semibold"} textDecorationLine={'underline'}>
               {videoTitle}
             </Text>
           )}
-          {description && description}
+          {description && <Text fontSize={{base:"sm"}} textAlign={"justify"}>{description}</Text>}
           {videoSrc && (
             <Box my={"20px"} className="tw-shadow-[0px_0px_9px_4px_#319795]">
               <VideoPlayer src={videoSrc} width={"100%"} height={"auto"} />

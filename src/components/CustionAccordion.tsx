@@ -12,6 +12,7 @@ const CustomAccordion: FC<AccordionProps> = ({ contents }) => {
     <Accordion allowToggle>
       {contents.map((content, index) => (
         <CustomAcccordionItem
+          index={index}
           videoTitle={content.videoTitle}
           videoSrc={content.videoUrl}
           key={index}

@@ -30,7 +30,7 @@ const Review: FC<Props> = ({ review }) => {
           maxW="4xl"
         >
           <Text fontSize="md" textAlign={'center'} fontWeight="medium">
-            {review.comment}
+            {review.comment ? review.comment : "This course hasn't been reviewed yet."}
           </Text>
           <HStack>
             <Icon as={ImStarFull} />

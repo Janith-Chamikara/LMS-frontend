@@ -31,7 +31,7 @@ const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, nee
         direction={"column"}
         bgColor={color}
         rounded="xl"
-        gap={"50px"}
+        gap={{base:"20px",md:"50px"}}
         animate={{
           border: [
             // Deep sea to ice neon gradients
@@ -54,13 +54,13 @@ const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, nee
             yoyo: true,
           },
         }}
-        padding={"50px"}
+        padding={{base:"20px",md:"50px"}}
       >
         <Stack direction={"column"} gap={"10px"} textAlign={"center"}>
-          <Text className="tw-font-extrabold tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500 tw-text-6xl">
+          <Text className="tw-font-extrabold tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500 tw-text-3xl md:tw-text-6xl">
             {price}
           </Text>
-          <Text className="tw-font-bold tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500 tw-text-4xl">
+          <Text className="tw-font-bold tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500 tw-text-2xl md:tw-text-4xl">
             {tier}
           </Text>
         </Stack>
@@ -74,7 +74,7 @@ const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, nee
               alignItems={"center"}
             >
               <Icon as={ImCheckmark} w={8} color="green.300" />
-              <Text fontWeight={"semibold"}>{advantage?.[propertyName]}</Text>
+              <Text fontWeight={"semibold"} textAlign={"left"} fontSize={{base:"sm",md:"md"}}>{advantage?.[propertyName]}</Text>
             </Stack>
           ))}
         </Stack>

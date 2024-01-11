@@ -25,15 +25,14 @@ import Benifit from "../../components/BenifitCard/Benifit";
 import { benifits } from "../../components/BenifitCard/benifits";
 import Offer from "../../components/offer/Offer";
 import { offers } from "../../components/offer/offers";
-import Footer from "../../components/footer/Footer";
 import ScrollYProgress from "../../components/ScrollYProgress";
-import VideoPlayer from "../../components/VideoPlayer";
+
 
 const LandingPage: FC = () => {
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <div className="tw-relative tw-mx-auto  tw-overflow-hidden">
-      <ScrollYProgress />
+      <ScrollYProgress/>
       <Box
         as={motion.div}
         bg={color}
@@ -251,9 +250,6 @@ const LandingPage: FC = () => {
           />
         ))}
       </Stack>
-      
-      {/*Footer*/}
-      <Footer color={color} />
     </div>
   );
 };
