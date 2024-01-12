@@ -31,15 +31,30 @@ const SignIn: FC = () => {
     };
 
     try {
-      const response = await axios.post("auth/login", req);
+      const response = await axios.post("auth/login", req, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       newToast({ message: response.data.message, condition: "success" });
       console.log(response);
       const {
         accessToken,
         refreshToken,
-        userInfo: { id, name, email, roles, courses,avatar },
+        userInfo: { id, name, email, roles, courses, avatar },
       } = response.data;
-      response && setAuth({ avatar, name, id, roles, courses, email, accessToken, refreshToken });
+      response &&
+        setAuth({
+          avatar,
+          name,
+          id,
+          roles,
+          courses,
+          email,
+          accessToken,
+          refreshToken,
+        });
       navigate("/");
     } catch (err) {
       console.log(err);

@@ -90,7 +90,7 @@ const NavbarForBiggerScreens: FC = () => {
                     showBorder={true}
                     borderColor="green.400"
                     name="avatar"
-                    src={auth && auth?.avatar.url}
+                    src={auth && auth?.avatar?.url}
                   />
                 </MenuButton>
                 <MenuList
@@ -106,7 +106,7 @@ const NavbarForBiggerScreens: FC = () => {
                       showBorder={true}
                       className="tw-shadow-[0px_0px_18px_0px_#39D6B5F7]"
                       name="avatar"
-                      src={auth && auth?.avatar.url}
+                      src={auth && auth?.avatar?.url}
                     />
                   </Center>
                   {auth && (

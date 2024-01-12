@@ -2,32 +2,33 @@ import { Box, Flex, Heading, Skeleton } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import CourseCard from "../../components/CourseCard";
-import axios from "../../axios/axios";
-import useToastHook from "../../hooks/useToast";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const CoursesPage: FC = () => {
-  const [courses, setCourses] = useState<[object]>([{}]);
-  const [error, setError] = useState(null);
-  const [newToast] = useToastHook()
+  const axiosPrivate =  useAxiosPrivate()
+  const [courses, setCourses] = useState<[object]>([{},{},{}]);
   const [isloading, setIsLoading] = useState(true);
+  console.log(isloading);
   useEffect(() => {
-    // const v = new AbortController;
+    let isMounted = true;
+
     const fetchData = async () => {
       console.log("fetching");
       try {
-        const response = await axios.get("/courses/get-all");
+        const response = await axiosPrivate.get("/courses/get-all");
         console.log(response);
-        setCourses(response.data.courses)
+        isMounted && setCourses(response.data.courses);
+        setIsLoading(false);
+
         console.log(courses);
-      } catch (error:unknown) {
-        setError(error);
-      } finally {
+      } catch (error: unknown) {
+        console.log(error.message);
         setIsLoading(false);
       }
     };
     fetchData();
   }, []);
-  error && newToast({ message: error?.message, condition: "error" });
+
   console.log(courses);
   return (
     <Flex
@@ -51,7 +52,11 @@ const CoursesPage: FC = () => {
         gap={"20px"}
         width={"100%"}
       >
-        {courses && courses.map((course,index)=><Skeleton key={index} isLoaded={!isloading}><CourseCard isLoading={isloading} course={course} /></Skeleton>)}
+        {courses.map((course, index) => (
+          <Skeleton key={index} isLoaded={!isloading}>
+            <CourseCard  isLoading={isloading} course={course} />
+          </Skeleton>
+        ))}
       </Flex>
     </Flex>
   );
