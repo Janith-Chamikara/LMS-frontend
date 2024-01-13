@@ -30,6 +30,7 @@ const CourseInfo: FC = () => {
   return (
     <>
       <Box
+        autoFocus
         bg={color}
         px={4}
         position={"sticky"}

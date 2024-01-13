@@ -13,16 +13,17 @@ import {
   useColorMode,
   Center,
   Text,
+  
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { FC } from "react";
 import { navItems } from "./navItems";
 import { v4 as uuidv4 } from "uuid";
 import NavbarMobile from "./NavbarMobile";
-import { Link, Outlet } from "react-router-dom";
-import useAuthContext from "../../hooks/useAuthContext";
+import { Link, Outlet, ScrollRestoration } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
 import Footer from "../../components/footer/Footer";
+import useProfileContext from "../../hooks/useProfileContext";
 
 export const NavLink: FC<{ children: React.ReactNode; path: string }> = ({
   children,
@@ -50,11 +51,12 @@ export const NavLink: FC<{ children: React.ReactNode; path: string }> = ({
 const NavbarForBiggerScreens: FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const color = useColorModeValue("gray.100", "gray.900");
-  const { auth } = useAuthContext();
-  console.log(auth);
+  const { profile } = useProfileContext();
+  console.log(profile);
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <ScrollRestoration />
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} autoFocus>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box fontWeight={"bold"}>EMPOWER ACADEMY</Box>
           <Stack
@@ -90,7 +92,7 @@ const NavbarForBiggerScreens: FC = () => {
                     showBorder={true}
                     borderColor="green.400"
                     name="avatar"
-                    src={auth && auth?.avatar?.url}
+                    src={profile && profile?.url}
                   />
                 </MenuButton>
                 <MenuList
@@ -106,10 +108,10 @@ const NavbarForBiggerScreens: FC = () => {
                       showBorder={true}
                       className="tw-shadow-[0px_0px_18px_0px_#39D6B5F7]"
                       name="avatar"
-                      src={auth && auth?.avatar?.url}
+                      src={profile && profile?.url}
                     />
                   </Center>
-                  {auth && (
+                  {profile && (
                     <Stack
                       p={"20px"}
                       direction={"column"}
@@ -122,10 +124,10 @@ const NavbarForBiggerScreens: FC = () => {
                       rounded={"xl"}
                       margin={"20px"}
                     >
-                      <Text fontSize={"lg"} fontWeight={"bold"}>
-                        {auth && auth?.name}
+                      <Text fontSize={"sm"} fontWeight={"bold"}>
+                        {profile && profile?.name}
                       </Text>
-                      <Text fontSize={"sm"} fontWeight={"semibold"}>
+                      {/* <Text fontSize={"sm"} fontWeight={"semibold"}>
                         {auth && auth?.email}
                       </Text>
                       <Text fontSize={"sm"} fontWeight={"semibold"}>
@@ -133,7 +135,7 @@ const NavbarForBiggerScreens: FC = () => {
                       </Text>
                       <Text fontSize={"sm"} fontWeight={"semibold"}>
                         User ID : {auth && auth?.id}
-                      </Text>
+                      </Text> */}
                     </Stack>
                   )}
 
@@ -145,9 +147,9 @@ const NavbarForBiggerScreens: FC = () => {
                       as={Link}
                       isLoading={false}
                       loadingText="Loading"
-                      text="Settings"
+                      text="Your Profile"
                       variant="solid"
-                      colorSheme="teal"
+                      colorSheme="facebook"
                       height="50px"
                       width={"100%"}
                       to="/"
@@ -160,7 +162,7 @@ const NavbarForBiggerScreens: FC = () => {
                       loadingText="Loading"
                       text="Logout"
                       variant="solid"
-                      colorSheme="teal"
+                      colorSheme="facebook"
                       height="50px"
                       width={"100%"}
                       to="signUp"

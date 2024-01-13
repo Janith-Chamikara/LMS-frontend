@@ -3,14 +3,9 @@ type Props = {
   children: ReactNode;
 };
 
-type Avatar = {
-  public_id: string;
-  url: string;
-};
 
 type Auth = {
   id: string;
-  avatar:Avatar;
   roles: string;
   courses: string[];
   name: string;

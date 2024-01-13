@@ -1,5 +1,8 @@
 import { FC } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import Navbar from "./layouts/nav/Navbar";
 import SignUp from "./pages/signUp/SignUp";
 import SignIn from "./pages/signIn/SignIn";
@@ -28,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/uploadACourse",
-        element: <UploadCoursePage/>,
+        element: <UploadCoursePage />,
       },
     ],
   },

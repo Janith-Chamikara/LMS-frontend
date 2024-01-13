@@ -11,6 +11,7 @@ import useToastHook from "../../hooks/useToast";
 import CustomLink from "../../components/CustomLink";
 import useAuthContext from "../../hooks/useAuthContext";
 import axios from "../../axios/axios";
+import useProfileContext from "../../hooks/useProfileContext";
 
 const SignIn: FC = () => {
   const {
@@ -24,6 +25,7 @@ const SignIn: FC = () => {
   // const axios = useAxiosPrivate()
   const [newToast] = useToastHook();
   const { setAuth } = useAuthContext();
+  const { setProfile } = useProfileContext();
   const onSubmit = async (data: FieldValues) => {
     const req = {
       email: data.email,
@@ -46,7 +48,6 @@ const SignIn: FC = () => {
       } = response.data;
       response &&
         setAuth({
-          avatar,
           name,
           id,
           roles,
@@ -55,6 +56,12 @@ const SignIn: FC = () => {
           accessToken,
           refreshToken,
         });
+      response &&
+        setProfile({
+          name: name,
+          url: avatar.url,
+        });
+
       navigate("/");
     } catch (err) {
       console.log(err);
