@@ -11,6 +11,7 @@ import CoursesPage from "./pages/courses/CoursesPage";
 import LandingPage from "./pages/landingPage/LandingPage";
 import CourseInfo from "./pages/courseInfo/CourseInfo";
 import UploadCoursePage from "./pages/uploadCourse/UploadCoursePage";
+import DashBoard from "./components/DashBoard";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
         path: "/uploadACourse",
         element: <UploadCoursePage />,
       },
+      {
+        path:"/userProfile/:id",
+        element:<DashBoard/>
+      }
     ],
   },
   {

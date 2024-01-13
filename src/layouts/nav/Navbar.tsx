@@ -13,25 +13,35 @@ import {
   useColorMode,
   Center,
   Text,
-  
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { navItems } from "./navItems";
 import { v4 as uuidv4 } from "uuid";
-import NavbarMobile from "./NavbarMobile";
+
 import { Link, Outlet, ScrollRestoration } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
 import Footer from "../../components/footer/Footer";
 import useProfileContext from "../../hooks/useProfileContext";
+import NavbarMobile from "./NavbarMobile";
 
-export const NavLink: FC<{ children: React.ReactNode; path: string }> = ({
-  children,
-  path,
-}) => {
+export const NavLink: FC<{
+  children: React.ReactNode;
+  onClose?: () => void;
+  path: string;
+  setActiveLink?: Dispatch<SetStateAction<string>>;
+}> = ({ children, path, setActiveLink, onClose }) => {
   return (
     <Box
       as={Link}
+      onClick={
+        !setActiveLink
+          ? () => onClose()
+          : () => {
+              setActiveLink(path);
+              onClose();
+            }
+      }
       px={2}
       verticalAlign={"center"}
       py={1}
@@ -40,7 +50,7 @@ export const NavLink: FC<{ children: React.ReactNode; path: string }> = ({
         textDecoration: "none",
         bg: useColorModeValue("gray.200", "gray.700"),
       }}
-      to={path}
+      to={!setActiveLink ? path : undefined}
       className="tw-flex tw-justify-center tw-items-center"
     >
       {children}
@@ -152,7 +162,7 @@ const NavbarForBiggerScreens: FC = () => {
                       colorSheme="facebook"
                       height="50px"
                       width={"100%"}
-                      to="/"
+                      to={`userProfile/${profile.id}`}
                     />
                   </MenuItem>
                   <MenuItem bg={useColorModeValue("gray.100", "gray.900")}>
@@ -170,7 +180,11 @@ const NavbarForBiggerScreens: FC = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-              <NavbarMobile />
+              <NavbarMobile
+                navItems={navItems}
+                isNavbar={true}
+                title={"EMPOWER ACADEMY"}
+              />
             </Stack>
           </Flex>
         </Flex>

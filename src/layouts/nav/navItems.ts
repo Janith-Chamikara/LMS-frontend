@@ -1,4 +1,4 @@
-type navType = {
+export type navType = {
   name: string;
   url: string;
 };
@@ -24,3 +24,14 @@ export const navItems: navType[] = [
     url: "/faq",
   },
 ];
+
+export const profileOptions:navType[] =[
+  {
+    name:"My Cart",
+    url:"/"
+  },
+  {
+    name:"My Courses",
+    url:"/courses/me"
+  },
+]

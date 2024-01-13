@@ -58,6 +58,7 @@ const SignIn: FC = () => {
         });
       response &&
         setProfile({
+          id:id,
           name: name,
           url: avatar.url,
         });

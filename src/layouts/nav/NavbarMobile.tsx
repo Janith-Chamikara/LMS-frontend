@@ -10,16 +10,27 @@ import {
   Flex,
   Spacer,
 } from "@chakra-ui/react";
-import { FC, useRef } from "react";
+import { Dispatch, FC, SetStateAction, useRef } from "react";
 
-import { navItems } from "./navItems";
 import { NavLink } from "./Navbar";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { v4 as uuidv4 } from "uuid";
 import { navVariant } from "../../animationVariants/variants";
 import { motion } from "framer-motion";
+import { navType } from "./navItems";
+type NavbarProps = {
+  navItems: navType[];
+  isNavbar?: boolean;
+  title?: string;
+  setActiveLink?: Dispatch<SetStateAction<string>>;
+};
 
-const NavbarForSmallerScreens: FC = () => {
+const NavbarMobile: FC<NavbarProps> = ({
+  setActiveLink,
+  navItems,
+  title,
+  isNavbar,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -29,24 +40,27 @@ const NavbarForSmallerScreens: FC = () => {
         ref={btnRef}
         colorScheme="gray"
         onClick={onOpen}
-        display={{ base: "inline-block", lg: "none" }}
+        display={{
+          base: "inline-block",
+          lg: isNavbar ? "none" : "inline-block",
+        }}
       >
         <HamburgerIcon />
       </Button>
       <Drawer
-        size={"sm"}
+        size={"xs"}
         isOpen={isOpen}
-        placement="right"
+        placement={isNavbar ? "right" : "left"}
         onClose={onClose}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>EMPOWER ACADEMY</DrawerHeader>
+          <DrawerHeader>{title}</DrawerHeader>
 
           <DrawerBody className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-font-semibold tw-text-lg">
-            <Flex direction={"column"} justifyContent={"space-around"}>
+            <Flex direction={"column"} justifyContent={"space-between"}>
               {navItems.map((item, index) => {
                 return (
                   <motion.div
@@ -56,7 +70,12 @@ const NavbarForSmallerScreens: FC = () => {
                     whileInView={"animate"}
                     custom={index}
                   >
-                    <NavLink key={uuidv4()} path={item.url}>
+                    <NavLink
+                      onClose={onClose}
+                      setActiveLink={setActiveLink}
+                      key={uuidv4()}
+                      path={item.url}
+                    >
                       {item.name}
                     </NavLink>
                     <Spacer />
@@ -71,4 +90,4 @@ const NavbarForSmallerScreens: FC = () => {
   );
 };
 
-export default NavbarForSmallerScreens;
+export default NavbarMobile;

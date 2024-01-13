@@ -3,6 +3,7 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 type Profile = {
   name: string;
   url: string;
+  id:string;
 };
 
 export const ProfileContext = createContext<Profile | null>(null);
