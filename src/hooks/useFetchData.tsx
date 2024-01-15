@@ -24,6 +24,7 @@ const useFetchData = (
         setIsLoading(false);
       } catch (error) {
         console.error(error)
+        
       }
     };
 

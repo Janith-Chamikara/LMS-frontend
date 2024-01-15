@@ -56,7 +56,7 @@ const ProfileSettings: FC = () => {
     <>
       <Skeleton isLoaded={!isLoading}>
         {
-          <Flex height={"60vh"} justifyContent={"center"} alignItems={"center"}>
+          <Flex height={isLoading ? "60vh" : {base:"max-content",md:"60vh"}} justifyContent={"center"} alignItems={"center"}>
             <ProfileCard
               name={data?.user?.name}
               url={data?.user?.avatar?.url}

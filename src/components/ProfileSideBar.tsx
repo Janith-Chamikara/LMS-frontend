@@ -20,7 +20,7 @@ const ProfileSideBar = () => {
     },
     {
       name: "Create a course",
-      url: "/uploadACourse",
+      url: "/userProfile/uploadACourse",
     },
   ];
   return (

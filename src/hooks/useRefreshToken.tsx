@@ -22,8 +22,8 @@ const useRefreshToken = () => {
       
       if(newAccessToken)return newAccessToken;
     } catch (error) {
-
-      newToast({ message: error.message, condition: "error" });
+      console.log(error.response.data.message);
+      newToast({ message: error.response.data.message, condition: "error" });
     }
   };
   return refresh;

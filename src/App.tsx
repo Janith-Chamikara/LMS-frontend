@@ -29,21 +29,22 @@ const router = createBrowserRouter([
         path: "/courseInfo",
         element: <CourseInfo />,
       },
-      {
-        path: "/uploadACourse",
-        element: <UploadCoursePage />,
-      },
+
       {
         path: "/userProfile",
         element: <ProfileSideBar />,
         children: [
           {
-            path: "/userProfile",
+            path: "",
             element: <ProfileSettings />,
           },
           {
-            path: "/userProfile/myCourses",
+            path: "myCourses",
             element: <MyCourses />,
+          },
+          {
+            path: "uploadACourse",
+            element: <UploadCoursePage />,
           },
         ],
       },
