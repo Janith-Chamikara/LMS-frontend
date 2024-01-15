@@ -41,7 +41,7 @@ const Footer: FC<FooterProps> = ({ color }) => {
   return (
     <Stack
       position={"relative"}
-      bottom={"0"}
+      bottom={0}
       width={"100%"}
       fontWeight={"bold"}
       mt={"50px"}

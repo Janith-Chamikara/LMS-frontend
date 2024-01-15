@@ -20,7 +20,7 @@ const useToastHook = () => {
         isClosable: true,
       });
     }
-  }, []);
+  }, [state]);
   return [setState];
 };
 

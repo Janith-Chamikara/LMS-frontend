@@ -25,13 +25,4 @@ export const navItems: navType[] = [
   },
 ];
 
-export const profileOptions:navType[] =[
-  {
-    name:"My Cart",
-    url:"/"
-  },
-  {
-    name:"My Courses",
-    url:"/courses/me"
-  },
-]
+

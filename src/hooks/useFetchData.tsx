@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
-import useToastHook from "./useToast";
+// import useToastHook from "./useToast";
 
 const useFetchData = (
   url: string,
 ) => {
   const [data, setData] = useState({});
-  const [newToast] = useToastHook();
+  // const [newToast] = useToastHook();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   console.log(data,isLoading);
   const axiosPrivate = useAxiosPrivate();
@@ -23,7 +23,7 @@ const useFetchData = (
         isMounted && setData(response.data);
         setIsLoading(false);
       } catch (error) {
-        newToast({ condition: "error", message: error.message });
+        console.error(error)
       }
     };
 
@@ -35,7 +35,7 @@ const useFetchData = (
     };
   }, [url]);
 
-  return { data,isLoading };
+  return [ data,isLoading ];
 };
 
 export default useFetchData;

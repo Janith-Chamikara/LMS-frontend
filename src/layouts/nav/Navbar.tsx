@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import { navItems } from "./navItems";
 import { v4 as uuidv4 } from "uuid";
 
@@ -26,31 +26,23 @@ import useProfileContext from "../../hooks/useProfileContext";
 import NavbarMobile from "./NavbarMobile";
 
 export const NavLink: FC<{
-  children: React.ReactNode;
-  onClose?: () => void;
+  children: string;
   path: string;
-  setActiveLink?: Dispatch<SetStateAction<string>>;
-}> = ({ children, path, setActiveLink, onClose }) => {
+  onClose?: () => void;
+}> = ({ children, path, onClose }) => {
   return (
     <Box
       as={Link}
-      onClick={
-        !setActiveLink
-          ? () => onClose()
-          : () => {
-              setActiveLink(path);
-              onClose();
-            }
-      }
       px={2}
       verticalAlign={"center"}
       py={1}
+      onClick={onClose ? ()=>onClose() : undefined}
       rounded={"md"}
       _hover={{
         textDecoration: "none",
         bg: useColorModeValue("gray.200", "gray.700"),
       }}
-      to={!setActiveLink ? path : undefined}
+      to={path}
       className="tw-flex tw-justify-center tw-items-center"
     >
       {children}
@@ -162,7 +154,7 @@ const NavbarForBiggerScreens: FC = () => {
                       colorSheme="facebook"
                       height="50px"
                       width={"100%"}
-                      to={`userProfile/${profile.id}`}
+                      to={`/userProfile`}
                     />
                   </MenuItem>
                   <MenuItem bg={useColorModeValue("gray.100", "gray.900")}>

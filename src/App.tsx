@@ -1,8 +1,5 @@
 import { FC } from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Navbar from "./layouts/nav/Navbar";
 import SignUp from "./pages/signUp/SignUp";
 import SignIn from "./pages/signIn/SignIn";
@@ -11,7 +8,9 @@ import CoursesPage from "./pages/courses/CoursesPage";
 import LandingPage from "./pages/landingPage/LandingPage";
 import CourseInfo from "./pages/courseInfo/CourseInfo";
 import UploadCoursePage from "./pages/uploadCourse/UploadCoursePage";
-import DashBoard from "./components/DashBoard";
+import ProfileSideBar from "./components/ProfileSideBar";
+import MyCourses from "./pages/MyCourses";
+import ProfileSettings from "./components/ProfileSettings";
 
 const router = createBrowserRouter([
   {
@@ -35,9 +34,19 @@ const router = createBrowserRouter([
         element: <UploadCoursePage />,
       },
       {
-        path:"/userProfile/:id",
-        element:<DashBoard/>
-      }
+        path: "/userProfile",
+        element: <ProfileSideBar />,
+        children: [
+          {
+            path: "/userProfile",
+            element: <ProfileSettings />,
+          },
+          {
+            path: "/userProfile/myCourses",
+            element: <MyCourses />,
+          },
+        ],
+      },
     ],
   },
   {

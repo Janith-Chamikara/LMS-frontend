@@ -9,6 +9,7 @@ import {
   useDisclosure,
   Flex,
   Spacer,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction, useRef } from "react";
 
@@ -21,12 +22,12 @@ import { navType } from "./navItems";
 type NavbarProps = {
   navItems: navType[];
   isNavbar?: boolean;
+  asButton?: boolean;
+  handleNavItemClick?: (index: number) => void;
   title?: string;
-  setActiveLink?: Dispatch<SetStateAction<string>>;
 };
 
 const NavbarMobile: FC<NavbarProps> = ({
-  setActiveLink,
   navItems,
   title,
   isNavbar,
@@ -50,6 +51,7 @@ const NavbarMobile: FC<NavbarProps> = ({
       <Drawer
         size={"xs"}
         isOpen={isOpen}
+       
         placement={isNavbar ? "right" : "left"}
         onClose={onClose}
         finalFocusRef={btnRef}
@@ -71,10 +73,9 @@ const NavbarMobile: FC<NavbarProps> = ({
                     custom={index}
                   >
                     <NavLink
-                      onClose={onClose}
-                      setActiveLink={setActiveLink}
                       key={uuidv4()}
                       path={item.url}
+                      onClose={onClose}
                     >
                       {item.name}
                     </NavLink>
