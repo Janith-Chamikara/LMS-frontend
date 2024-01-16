@@ -1,3 +1,5 @@
+
+
 export type navType = {
   name: string;
   url: string;
@@ -24,5 +26,4 @@ export const navItems: navType[] = [
     url: "/faq",
   },
 ];
-
 

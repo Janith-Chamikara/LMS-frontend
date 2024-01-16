@@ -11,6 +11,7 @@ import UploadCoursePage from "./pages/uploadCourse/UploadCoursePage";
 import ProfileSideBar from "./components/ProfileSideBar";
 import MyCourses from "./pages/MyCourses";
 import ProfileSettings from "./components/ProfileSettings";
+import AdminPanel from "./components/AdminPanel";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/courseInfo",
         element: <CourseInfo />,
+      },
+      {
+        path: "/admin",
+        element: <AdminPanel />,
       },
 
       {
