@@ -3,6 +3,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { FaBookOpenReader } from "react-icons/fa6";
 import { FaUsersGear } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
+import { MdOutlineNotificationsActive } from "react-icons/md";
 import { RiImageEditFill } from "react-icons/ri";
 
 export type itemsType = {
@@ -35,5 +36,10 @@ export const panalItems: itemsType[] = [
    name: "Update Hero",
    url: "upadateHeroImage",
    icon: RiImageEditFill,
+ },
+ {
+   name: "Notifications",
+   url: "notifications",
+   icon: MdOutlineNotificationsActive,
  },
 ];

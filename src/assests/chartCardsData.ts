@@ -74,3 +74,55 @@ export const chartCardData: cardType[] = [
     chartData: data,
   },
 ];
+
+export const pieChartData = [
+  { name: "Laptop", value: 400, color: "#0088FE" },
+  { name: "Smart Phones", value: 300, color: "#00C49F" },
+  { name: "Tablet", value: 300, color: "#FFBB28" },
+  { name: "Other", value: 200, color: "#FF8042" },
+];
+
+export const areaChartData = [
+  {
+    name: 'IT',
+    "2021": 40,
+    "2022": 24,
+    "2023": 31,
+  },
+  {
+    name: "Business",
+    "2021": 30,
+    "2022": 13,
+    "2023": 22,
+  },
+  {
+    name: "Tech",
+    "2021": 20,
+    "2022": 98,
+    "2023": 22,
+  },
+  {
+    name: "Arts",
+    "2021": 27,
+    "2022": 39,
+    "2023": 20,
+  },
+  {
+    name: "Education",
+    "2021": 18,
+    "2022": 48,
+    "2023": 21,
+  },
+  {
+    name: "Science",
+    "2021": 23,
+    "2022": 38,
+    "2023": 25,
+  },
+  {
+    name: "Soft skills",
+    "2021": 34,
+    "2022": 43,
+    "2023": 21,
+  },
+];
