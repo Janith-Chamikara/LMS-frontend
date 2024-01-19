@@ -7,39 +7,39 @@ import { MdOutlineNotificationsActive } from "react-icons/md";
 import { RiImageEditFill } from "react-icons/ri";
 
 export type itemsType = {
- name: string;
- url: string;
- icon: IconType;
+  name: string;
+  url: string;
+  icon: IconType;
 };
 export const panalItems: itemsType[] = [
- {
-   name: "Dashboard",
-   url: "",
-   icon: MdOutlineDashboard,
- },
- {
-   name: "Courses",
-   url: "courses",
-   icon: FaBookOpenReader,
- },
- {
-   name: "Mange users",
-   url: "users",
-   icon: FaUsersGear,
- },
- {
-   name: "Edit course",
-   url: "editCourse",
-   icon: FaRegEdit,
- },
- {
-   name: "Update Hero",
-   url: "upadateHeroImage",
-   icon: RiImageEditFill,
- },
- {
-   name: "Notifications",
-   url: "notifications",
-   icon: MdOutlineNotificationsActive,
- },
+  {
+    name: "Dashboard",
+    url: "",
+    icon: MdOutlineDashboard,
+  },
+  {
+    name: "Courses",
+    url: "manageCourses",
+    icon: FaBookOpenReader,
+  },
+  {
+    name: "Mange users",
+    url: "admin/manageUsers",
+    icon: FaUsersGear,
+  },
+  {
+    name: "Edit course",
+    url: "editCourse",
+    icon: FaRegEdit,
+  },
+  {
+    name: "Update Hero",
+    url: "upadateHeroImage",
+    icon: RiImageEditFill,
+  },
+  {
+    name: "Notifications",
+    url: "notifications",
+    icon: MdOutlineNotificationsActive,
+  },
 ];

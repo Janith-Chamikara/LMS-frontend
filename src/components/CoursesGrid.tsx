@@ -95,113 +95,113 @@ const CoursesGrid: FC = () => {
 
   const color = useColorModeValue("ag-theme-quartz", "ag-theme-quartz-dark");
   return (
-    <Box padding={"20px"} className={color} width={"100vw"} height={"100vh"}>
-      <Flex my={"30px"} justify={"center"} alignItems={"center"}>
-        <Button colorScheme="yellow" onClick={onOpen}>
+    <Box paddingX={"20px"} mb={'20px'} className={color} width={"99vw"} height={"90vh"}>
+      <Flex  my={"10px"} justify={"center"} alignItems={"center"}>
+        <Button colorScheme="yellow" width={"100%"} onClick={onOpen}>
           Select row and click here to update data
         </Button>
-        <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            {currentCourse.id ? (
-              <>
-                <ModalHeader>
-                  Update Course Data
-                  <Text
-                    fontSize={"sm"}
-                    fontWeight={"semibold"}
-                    fontStyle={"italic"}
-                  >
-                    (ID - {currentCourse.id})
-                  </Text>
-                </ModalHeader>
-
-                <ModalCloseButton />
-                <ModalBody pb={6}>
-                  <CustomTextInput
-                    errors={errors}
-                    register={register}
-                    name="name"
-                    placeholder="Enter new course Name "
-                    type="text"
-                    isRequired={false}
-                  >
-                    Name
-                  </CustomTextInput>
-                  <CustomTextInput
-                    errors={errors}
-                    register={register}
-                    name="price"
-                    placeholder="Enter new price "
-                    type="text"
-                    isRequired={false}
-                  >
-                    Price
-                  </CustomTextInput>
-                  <CustomTextInput
-                    errors={errors}
-                    register={register}
-                    name="estimatedPrice"
-                    placeholder="Enter new estimated price"
-                    type="text"
-                    isRequired={false}
-                  >
-                    Estimated Price
-                  </CustomTextInput>
-                  <CustomTextInput
-                    errors={errors}
-                    register={register}
-                    name="level"
-                    placeholder="Enter new course level "
-                    type="text"
-                    isRequired={false}
-                  >
-                    Level
-                  </CustomTextInput>
-                  <CustomTextInput
-                    flushed={true}
-                    errors={errors}
-                    register={register}
-                    name="thumbnail"
-                    placeholder="Provide a thumbnail for the course"
-                    type="file"
-                    isRequired={false}
-                  >
-                    Thumbnail
-                  </CustomTextInput>
-                </ModalBody>
-
-                <ModalFooter>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitSuccessful}
-                    isLoading={isSubmitting}
-                    loadingText={"Updating Course"}
-                    onClick={handleSubmit(updateCourse)}
-                    colorScheme="blue"
-                    mr={3}
-                  >
-                    Update
-                  </Button>
-                  <Button onClick={onClose}>Cancel</Button>
-                </ModalFooter>
-              </>
-            ) : (
-              <>
-                <ModalHeader
-                  padding={"50px"}
-                  textColor={"red.300"}
-                  textAlign={"center"}
-                >
-                  Please first select the course you want to update from the
-                  grid
-                </ModalHeader>
-                <ModalCloseButton />
-              </>
-            )}
-          </ModalContent>
-        </Modal>
       </Flex>
+      <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          {currentCourse.id ? (
+            <>
+              <ModalHeader>
+                Update Course Data
+                <Text
+                  fontSize={"sm"}
+                  fontWeight={"semibold"}
+                  fontStyle={"italic"}
+                >
+                  (ID - {currentCourse.id})
+                </Text>
+              </ModalHeader>
+
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                <CustomTextInput
+                  errors={errors}
+                  register={register}
+                  name="name"
+                  placeholder="Enter new course Name "
+                  type="text"
+                  isRequired={false}
+                >
+                  Name
+                </CustomTextInput>
+                <CustomTextInput
+                  errors={errors}
+                  register={register}
+                  name="price"
+                  placeholder="Enter new price "
+                  type="text"
+                  isRequired={false}
+                >
+                  Price
+                </CustomTextInput>
+                <CustomTextInput
+                  errors={errors}
+                  register={register}
+                  name="estimatedPrice"
+                  placeholder="Enter new estimated price"
+                  type="text"
+                  isRequired={false}
+                >
+                  Estimated Price
+                </CustomTextInput>
+                <CustomTextInput
+                  errors={errors}
+                  register={register}
+                  name="level"
+                  placeholder="Enter new course level "
+                  type="text"
+                  isRequired={false}
+                >
+                  Level
+                </CustomTextInput>
+                <CustomTextInput
+                  flushed={true}
+                  errors={errors}
+                  register={register}
+                  name="thumbnail"
+                  placeholder="Provide a thumbnail for the course"
+                  type="file"
+                  isRequired={false}
+                >
+                  Thumbnail
+                </CustomTextInput>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button
+                  type="submit"
+                  disabled={isSubmitSuccessful}
+                  isLoading={isSubmitting}
+                  loadingText={"Updating Course"}
+                  onClick={handleSubmit(updateCourse)}
+                  colorScheme="blue"
+                  mr={3}
+                >
+                  Update
+                </Button>
+                <Button onClick={onClose}>Cancel</Button>
+              </ModalFooter>
+            </>
+          ) : (
+            <>
+              <ModalHeader
+                padding={"50px"}
+                textColor={"red.300"}
+                textAlign={"center"}
+              >
+                Please first select the course you want to update from the grid
+              </ModalHeader>
+              <ModalCloseButton />
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+     
       <AgGridReact
         onRowSelected={onRowClicked}
         pagination={true}

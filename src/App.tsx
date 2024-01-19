@@ -12,9 +12,8 @@ import ProfileSideBar from "./components/ProfileSideBar";
 import MyCourses from "./pages/MyCourses";
 import ProfileSettings from "./components/ProfileSettings";
 import AdminPanel from "./components/AdminPanel";
-import ReactGridExample from "./components/ReactGridExample";
-import DataGrid from "./components/DataGrid";
 import CoursesGrid from "./components/CoursesGrid";
+import Analytics from "./components/Analytics";
 
 const router = createBrowserRouter([
   {
@@ -36,10 +35,16 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminPanel />,
-      },
-      {
-        path: "/grid",
-        element: <CoursesGrid />,
+        children: [
+          {
+            path: "",
+            element: <Analytics />,
+          },
+          {
+            path: "manageCourses",
+            element: <CoursesGrid />,
+          },
+        ],
       },
 
       {
