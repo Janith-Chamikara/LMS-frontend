@@ -149,7 +149,7 @@ export const courseSchema = z.object({
 export const updateCourseSchema = z.object({
   name: z.string().min(1, { message: "New course Name is required." }),
   level: z.string().min(1, { message: "New Course level is required." }),
-  price: z.number().min(1, { message: "New price is required." }),
-  estimatedPrice: z.number().min(1, { message: "New estimated price is required." }),
-  thumbnail: z.string().min(1, { message: "New course thumbnail is required." }),
+  price: z.string().min(1, { message: "Course price is required." }),
+  estimatedPrice: z.string().min(1, { message: "Course Estimated price is required." }),
+  thumbnail: thumbnailSchema,
 });

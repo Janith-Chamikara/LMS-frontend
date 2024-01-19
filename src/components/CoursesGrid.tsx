@@ -7,9 +7,6 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -27,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCourseSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
+import { convertToBase64 } from "../utils/utils";
 const CoursesGrid: FC = () => {
   const {
     formState: { errors, isSubmitting, isSubmitSuccessful },
@@ -41,9 +39,10 @@ const CoursesGrid: FC = () => {
   });
   console.log(currentCourse);
   const [newToast] = useToastHook();
-  const updateCourse = async (params: object) => {
-    console.log(params);
-    const { name, price, level } = params;
+  const updateCourse = async (data: object) => {
+    console.log(data);
+    const thumbnail = await convertToBase64(data.thumbnail["0"]);
+    const { name, price, level } = data;
     try {
       const response = await axiosPrivate.put(
         `/courses/update/${currentCourse.id}`,
@@ -51,6 +50,7 @@ const CoursesGrid: FC = () => {
           name,
           price,
           level,
+          thumbnail,
         }
       );
       console.log(response);
@@ -105,15 +105,19 @@ const CoursesGrid: FC = () => {
           <ModalContent>
             {currentCourse.id ? (
               <>
-                <ModalHeader>Update Course Data
-                <Text fontSize={"sm"} fontWeight={"semibold"} fontStyle={'italic'}>
+                <ModalHeader>
+                  Update Course Data
+                  <Text
+                    fontSize={"sm"}
+                    fontWeight={"semibold"}
+                    fontStyle={"italic"}
+                  >
                     (ID - {currentCourse.id})
                   </Text>
                 </ModalHeader>
 
                 <ModalCloseButton />
                 <ModalBody pb={6}>
-                  
                   <CustomTextInput
                     errors={errors}
                     register={register}
@@ -155,11 +159,12 @@ const CoursesGrid: FC = () => {
                     Level
                   </CustomTextInput>
                   <CustomTextInput
+                    flushed={true}
                     errors={errors}
                     register={register}
                     name="thumbnail"
-                    placeholder="Enter new course thumbnail"
-                    type="text"
+                    placeholder="Provide a thumbnail for the course"
+                    type="file"
                     isRequired={false}
                   >
                     Thumbnail
@@ -183,7 +188,11 @@ const CoursesGrid: FC = () => {
               </>
             ) : (
               <>
-                <ModalHeader textColor={"red.300"}>
+                <ModalHeader
+                  padding={"50px"}
+                  textColor={"red.300"}
+                  textAlign={"center"}
+                >
                   Please first select the course you want to update from the
                   grid
                 </ModalHeader>
