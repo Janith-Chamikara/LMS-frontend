@@ -145,3 +145,11 @@ export const courseSchema = z.object({
     .array(sectionSchema)
     .min(1, { message: "At least 1 course section is required." }),
 });
+
+export const updateCourseSchema = z.object({
+  name: z.string().min(1, { message: "New course Name is required." }),
+  level: z.string().min(1, { message: "New Course level is required." }),
+  price: z.number().min(1, { message: "New price is required." }),
+  estimatedPrice: z.number().min(1, { message: "New estimated price is required." }),
+  thumbnail: z.string().min(1, { message: "New course thumbnail is required." }),
+});

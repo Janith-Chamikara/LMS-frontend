@@ -5,7 +5,7 @@ import useAxiosPrivate from "./useAxiosPrivate";
 const useFetchData = (
   url: string,
 ) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   // const [newToast] = useToastHook();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   console.log(data,isLoading);
@@ -36,7 +36,7 @@ const useFetchData = (
     };
   }, [url]);
 
-  return [ data,isLoading ];
+  return [ data,isLoading,setData ];
 };
 
 export default useFetchData;

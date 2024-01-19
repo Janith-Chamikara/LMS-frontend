@@ -40,13 +40,15 @@ const AdminPanel: FC = () => {
           borderRadius={"lg"}
           bgColor={backgroundColor}
           gridRow={"span 2"}
-        ><Box width={"100%"} height={"100%"} padding={"20px"}>
-        <BarChartComponent
-          title="Total Income"
-          data={data}
-          barColor="#14FE04 "
-        />
-      </Box></GridItem>
+        >
+          <Box width={"100%"} height={"100%"} padding={"20px"}>
+            <BarChartComponent
+              title="Total Income"
+              data={data}
+              barColor="#008AD8 "
+            />
+          </Box>
+        </GridItem>
         <GridItem
           borderRadius={"lg"}
           className="tw-shadow-[4px_4px_5px_0px_#38b2ac]"
@@ -83,7 +85,7 @@ const AdminPanel: FC = () => {
           bgColor={backgroundColor}
           gridRow={"span 2"}
         >
-          <Box width={"100%"} height={"100%"} padding={"40px"}>
+          <Box width={"100%"} height={"100%"} padding={"20px"}>
             <CustomPieChart title="Leads by source" data={pieChartData} />
           </Box>
         </GridItem>
@@ -134,7 +136,6 @@ const AdminPanel: FC = () => {
           bgColor={backgroundColor}
           borderRadius={"lg"}
           gridRow={"span 2"}
-          
         >
           <Box width={"100%"} height={"100%"} padding={"20px"}>
             <BarChartComponent
@@ -144,7 +145,6 @@ const AdminPanel: FC = () => {
             />
           </Box>
         </GridItem>
-     
       </Grid>
     </Flex>
   );
