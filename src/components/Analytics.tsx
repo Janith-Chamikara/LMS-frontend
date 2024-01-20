@@ -7,8 +7,7 @@ import BarChartComponent from "./BarChart";
 import CustomPieChart from "./CustomPieChart";
 import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react";
 import CustomAreaChart from "./CustomAreaChart";
-import Navigation from "./Navigation";
-import { panalItems } from "../assests/panelItems";
+
 const Analytics: FC = () => {
   const backgroundColor = useColorModeValue("gray.100", "gray.900");
   return (
