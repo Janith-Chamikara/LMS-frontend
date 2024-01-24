@@ -1,3 +1,70 @@
+// import { FC, useState } from "react";
+// import useFetchData from "../hooks/useFetchData";
+// import { AgGridReact } from "ag-grid-react";
+// import "ag-grid-community/styles/ag-grid.css"; // Core CSS
+// import "ag-grid-community/styles/ag-theme-quartz.css";
+// import { Link } from "react-router-dom";
+// import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
+
+// const AvatarRenderer = ({ value }: { value: string }) => (
+//   <Flex
+//     height={"100%"}
+//     width={"100%"}
+//     justifyContent={"center"}
+//     alignItems={"center"}
+//   >
+//     <Link to={value}>
+//       <img
+//         alt={`${value} Flag`}
+//         src={value}
+//         style={{
+//           display: "block",
+//           width: "50px",
+//           filter: "brightness(1.1)",
+//         }}
+//       />
+//     </Link>
+//   </Flex>
+// );
+
+// const DataGrid: FC = () => {
+//   const [colDefs, setColDefs] = useState([
+//     { field: "avatar", cellRenderer: AvatarRenderer },
+//     { field: "name" },
+//     { field: "_id" },
+//     { field: "email" },
+//     { field: "createdAt" },
+//     { field: "updatedAt" },
+//     { field: "courses" },
+//   ]);
+//   const [data] = useFetchData("/auth/admin/get-all-users");
+//   console.log(data);
+//   const rowData = data?.users?.map((item) => ({
+//     name: item.name,
+//     _id: item._id,
+//     email: item.email,
+//     createdAt: item.createdAt,
+//     updatedAt: item.updatedAt,
+//     avatar: item.avatar.url,
+//     courses: item.courses.map((course) => course.course_id),
+//   }));
+//   const color = useColorModeValue("ag-theme-quartz","ag-theme-quartz-dark")
+//   console.log(rowData);
+//   return (
+//     <Box padding={"20px"} className={color} width={"100vw"} height={'100vh'}>
+//       <AgGridReact
+//         onSelectionChanged={(e) => console.log("changed row selection")}
+//         rowSelection="multiple"
+//         pagination={true}
+//         rowData={rowData}
+//         columnDefs={colDefs}
+//       />
+//     </Box>
+//   );
+// };
+
+// export default DataGrid;
+
 import { FC, useState } from "react";
 import useFetchData from "../hooks/useFetchData";
 import { AgGridReact } from "ag-grid-react";
@@ -24,51 +91,44 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCourseSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
-import { convertToBase64 } from "../utils/utils";
 import AvatarRenderer from "./AvatarRenderer";
-const CoursesGrid: FC = () => {
+
+const UsersGrid: FC = () => {
   const {
     formState: { errors, isSubmitting, isSubmitSuccessful },
     register,
     handleSubmit,
   } = useForm({ resolver: zodResolver(updateCourseSchema) });
-  const [currentCourse, setCurrentCourse] = useState({
+  const [selectedUser, setSelectedUser] = useState({
     id: null,
+    role: "",
     name: "",
-    level: "",
-    thumbnail: "",
   });
   const [isDeleting, setIsDeleting] = useState(false);
-  console.log(currentCourse);
+  console.log(selectedUser);
   const [newToast] = useToastHook();
-  console.log(isDeleting);
-  const deleteCourse = async () => {
+
+  const deleteUser = async () => {
     try {
       setIsDeleting(true);
-      console.log(isDeleting);
       const response = await axiosPrivate.delete(
-        `/auth/admin/delete-a-course/${currentCourse.id}`
+        `/auth/admin/delete-a-user/${selectedUser.id}`
       );
       setIsDeleting(false);
-      console.log(isDeleting);
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
     } catch (error) {
       newToast({ message: error.data.message, condition: "error" });
     }
   };
-  const updateCourse = async (data: object) => {
+  const updateUserRole = async (data: object) => {
     console.log(data);
-    const thumbnail = await convertToBase64(data.thumbnail["0"]);
-    const { name, price, level } = data;
+    const { role } = data;
     try {
       const response = await axiosPrivate.put(
-        `/courses/update/${currentCourse.id}`,
+        `/auth/admin/update-user-role/${selectedUser.id}`,
         {
-          name,
-          price,
-          level,
-          thumbnail,
+          role,
         }
       );
       console.log(response);
@@ -81,36 +141,34 @@ const CoursesGrid: FC = () => {
 
   const onRowClicked = (params: object) => {
     console.log(params);
-    setCurrentCourse({
+    setSelectedUser({
       id: params.data._id,
       name: params.data.name,
-      level: params.data.level,
-      thumbnail: params.data.thumbnail,
+      role: params.data.roles,
     });
   };
   const [colDefs, setColDefs] = useState([
-    { field: "thumbnail", cellRenderer: AvatarRenderer },
-    {
-      field: "name",
-    },
-    { field: "_id",headerName:"Course ID" },
-    { field: "price" },
+    { field: "avatar", cellRenderer: AvatarRenderer },
+    { field: "name" },
+    { field: "_id", headerName: "User ID" },
+    { field: "email" },
+    { field: "roles", headerName: "User Role" },
     { field: "createdAt" },
     { field: "updatedAt" },
-    { field: "level" },
+    { field: "courses", headerName: "Paid Courses" },
   ]);
-  const [data] = useFetchData("/courses/auth/admin/get-all-courses");
+  const [data] = useFetchData("/auth/admin/get-all-users");
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const rowData = data?.courses?.map((course) => ({
-    name: course.name,
-    _id: course._id,
-    price: course.price,
-    createdAt: course.createdAt,
-    updatedAt: course.updatedAt,
-    thumbnail: course.thumbnail?.url,
-    level: course.level,
+  const rowData = data?.users?.map((item) => ({
+    name: item.name,
+    _id: item._id,
+    email: item.email,
+    roles: item.roles,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
+    avatar: item.avatar.url,
+    courses: item.courses.map((course) => course.course_id),
   }));
-
   const color = useColorModeValue("ag-theme-quartz", "ag-theme-quartz-dark");
   return (
     <Box
@@ -128,16 +186,30 @@ const CoursesGrid: FC = () => {
       <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          {currentCourse.id ? (
+          {selectedUser.id ? (
             <>
               <ModalHeader>
-                Update Course Data
+                Update User Roles
                 <Text
                   fontSize={"sm"}
                   fontWeight={"semibold"}
                   fontStyle={"italic"}
                 >
-                  (ID - {currentCourse.id})
+                  (ID - {selectedUser.id})
+                </Text>
+                <Text
+                  fontSize={"sm"}
+                  fontWeight={"semibold"}
+                  fontStyle={"italic"}
+                >
+                  Name - {selectedUser.name}
+                </Text>
+                <Text
+                  fontSize={"sm"}
+                  fontWeight={"semibold"}
+                  fontStyle={"italic"}
+                >
+                  Current Role - {selectedUser.role}
                 </Text>
               </ModalHeader>
 
@@ -146,53 +218,12 @@ const CoursesGrid: FC = () => {
                 <CustomTextInput
                   errors={errors}
                   register={register}
-                  name="name"
-                  placeholder="Enter new course Name "
+                  name="role"
+                  placeholder="Enter new user role "
                   type="text"
                   isRequired={false}
                 >
-                  Name
-                </CustomTextInput>
-                <CustomTextInput
-                  errors={errors}
-                  register={register}
-                  name="price"
-                  placeholder="Enter new price "
-                  type="text"
-                  isRequired={false}
-                >
-                  Price
-                </CustomTextInput>
-                <CustomTextInput
-                  errors={errors}
-                  register={register}
-                  name="estimatedPrice"
-                  placeholder="Enter new estimated price"
-                  type="text"
-                  isRequired={false}
-                >
-                  Estimated Price
-                </CustomTextInput>
-                <CustomTextInput
-                  errors={errors}
-                  register={register}
-                  name="level"
-                  placeholder="Enter new course level "
-                  type="text"
-                  isRequired={false}
-                >
-                  Level
-                </CustomTextInput>
-                <CustomTextInput
-                  flushed={true}
-                  errors={errors}
-                  register={register}
-                  name="thumbnail"
-                  placeholder="Provide a thumbnail for the course"
-                  type="file"
-                  isRequired={false}
-                >
-                  Thumbnail
+                  New Role
                 </CustomTextInput>
               </ModalBody>
 
@@ -202,7 +233,7 @@ const CoursesGrid: FC = () => {
                   disabled={isSubmitSuccessful}
                   isLoading={isSubmitting}
                   loadingText={"Updating Course"}
-                  onClick={handleSubmit(updateCourse)}
+                  onClick={handleSubmit(updateUserRole)}
                   colorScheme="blue"
                   mr={3}
                 >
@@ -214,7 +245,7 @@ const CoursesGrid: FC = () => {
                   disabled={isSubmitSuccessful}
                   isLoading={isDeleting}
                   loadingText={"Deleting Course"}
-                  onClick={deleteCourse}
+                  onClick={deleteUser}
                   colorScheme="red"
                   mr={3}
                 >
@@ -230,7 +261,7 @@ const CoursesGrid: FC = () => {
                 textColor={"red.300"}
                 textAlign={"center"}
               >
-                Please first select the course you want to update from the grid
+                Please first select the User you want to update from the grid
               </ModalHeader>
               <ModalCloseButton />
             </>
@@ -249,4 +280,4 @@ const CoursesGrid: FC = () => {
   );
 };
 
-export default CoursesGrid;
+export default UsersGrid;

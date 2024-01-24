@@ -13,23 +13,28 @@ export type itemsType = {
 };
 export const panalItems: itemsType[] = [
   {
-    name: "Dashboard",
+    name: "Analytics",
     url: "",
     icon: MdOutlineDashboard,
   },
   {
-    name: "Courses",
+    name: "Manage courses",
     url: "manageCourses",
     icon: FaBookOpenReader,
   },
   {
     name: "Mange users",
-    url: "admin/manageUsers",
+    url: "manageUsers",
     icon: FaUsersGear,
   },
   {
-    name: "Edit course",
-    url: "editCourse",
+    name: "Mange Orders",
+    url: "admin/manageOrders",
+    icon: FaUsersGear,
+  },
+  {
+    name: "Create course",
+    url: "uploadACourse",
     icon: FaRegEdit,
   },
   {

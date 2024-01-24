@@ -2,6 +2,7 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 
 type Profile = {
   name: string;
+  roles:string;
   url: string;
   id:string;
 };

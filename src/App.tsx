@@ -14,6 +14,7 @@ import ProfileSettings from "./components/ProfileSettings";
 import AdminPanel from "./components/AdminPanel";
 import CoursesGrid from "./components/CoursesGrid";
 import Analytics from "./components/Analytics";
+import UsersGrid from "./components/UsersGrid";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
           {
             path: "manageCourses",
             element: <CoursesGrid />,
+          },
+          {
+            path: "manageUsers",
+            element: <UsersGrid />,
+          },
+          {
+            path: "uploadACourse",
+            element: <UploadCoursePage />,
           },
         ],
       },

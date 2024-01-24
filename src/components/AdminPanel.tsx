@@ -18,7 +18,6 @@ const AdminPanel: FC = () => {
     >
       <Box
         width={"max-content"}
-        height={"63vh"}
         borderRight={"1px"}
         borderRightColor={"gray.500"}
       >

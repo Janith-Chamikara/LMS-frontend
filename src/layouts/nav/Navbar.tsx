@@ -24,6 +24,7 @@ import CustomButton from "../../components/CustomButton";
 import Footer from "../../components/footer/Footer";
 import useProfileContext from "../../hooks/useProfileContext";
 import NavbarMobile from "./NavbarMobile";
+import useAuthContext from "../../hooks/useAuthContext";
 
 export const NavLink: FC<{
   children: string;
@@ -36,7 +37,7 @@ export const NavLink: FC<{
       px={2}
       verticalAlign={"center"}
       py={1}
-      onClick={onClose ? ()=>onClose() : undefined}
+      onClick={onClose ? () => onClose() : undefined}
       rounded={"md"}
       _hover={{
         textDecoration: "none",
@@ -129,10 +130,10 @@ const NavbarForBiggerScreens: FC = () => {
                       <Text fontSize={"sm"} fontWeight={"bold"}>
                         {profile && profile?.name}
                       </Text>
-                      {/* <Text fontSize={"sm"} fontWeight={"semibold"}>
-                        {auth && auth?.email}
-                      </Text>
                       <Text fontSize={"sm"} fontWeight={"semibold"}>
+                        {profile && profile?.roles}
+                      </Text>
+                      {/*<Text fontSize={"sm"} fontWeight={"semibold"}>
                         Role : {auth && auth?.roles}
                       </Text>
                       <Text fontSize={"sm"} fontWeight={"semibold"}>
@@ -149,12 +150,12 @@ const NavbarForBiggerScreens: FC = () => {
                       as={Link}
                       isLoading={false}
                       loadingText="Loading"
-                      text="Your Profile"
+                      text={profile?.roles === "Admin" ? "Admin Panel" : "Your Profile"}
                       variant="solid"
                       colorSheme="facebook"
                       height="50px"
                       width={"100%"}
-                      to={`/userProfile`}
+                      to={profile?.roles === "Admin" ? `admin` : `/userProfile`}
                     />
                   </MenuItem>
                   <MenuItem bg={useColorModeValue("gray.100", "gray.900")}>
