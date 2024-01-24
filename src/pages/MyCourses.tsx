@@ -35,7 +35,7 @@ const MyCourses: FC = () => {
             gap={"20px"}
             width={"100%"}
           >
-            {coursesData.purchasedCourses?.map((course, index) => (
+            {coursesData?.purchasedCourses?.map((course, index) => (
               <CourseCard
                 isOneButton={true}
                 buttonTitle="Start Learning"

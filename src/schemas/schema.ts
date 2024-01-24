@@ -150,6 +150,11 @@ export const updateCourseSchema = z.object({
   name: z.string().min(1, { message: "New course Name is required." }),
   level: z.string().min(1, { message: "New Course level is required." }),
   price: z.string().min(1, { message: "Course price is required." }),
-  estimatedPrice: z.string().min(1, { message: "Course Estimated price is required." }),
+  estimatedPrice: z
+    .string()
+    .min(1, { message: "Course Estimated price is required." }),
   thumbnail: thumbnailSchema,
+});
+export const updateUserRoleSchema = z.object({
+  role: z.string().min(1, { message: "Role must be either Admin or User" }),
 });

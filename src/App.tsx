@@ -15,6 +15,9 @@ import AdminPanel from "./components/AdminPanel";
 import CoursesGrid from "./components/CoursesGrid";
 import Analytics from "./components/Analytics";
 import UsersGrid from "./components/UsersGrid";
+import Success from "./components/paymentStatus/Success";
+import Failed from "./components/paymentStatus/Failed";
+import CourseInfoWithParams from "./pages/courseInfo/CourseInfoWithParams";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +29,21 @@ const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
+        path: "/success",
+        element: <Success />,
+      },
+      {
+        path: "/failed",
+        element: <Failed />,
+      },
+      {
         path: "/courses",
         element: <CoursesPage />,
+      },
+
+      {
+        path: "courses/courseInfo/:id",
+        element: <CourseInfoWithParams />,
       },
       {
         path: "/courseInfo",

@@ -86,14 +86,15 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import useToastHook from "../hooks/useToast";
-import { axiosPrivate } from "../axios/axios";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCourseSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
 import AvatarRenderer from "./AvatarRenderer";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const UsersGrid: FC = () => {
+  const axiosPrivate = useAxiosPrivate()
   const {
     formState: { errors, isSubmitting, isSubmitSuccessful },
     register,
@@ -121,7 +122,7 @@ const UsersGrid: FC = () => {
       newToast({ message: error.data.message, condition: "error" });
     }
   };
-  const updateUserRole = async (data: object) => {
+  const updateUserRole = async (data:FieldValues) => {
     console.log(data);
     const { role } = data;
     try {
@@ -169,6 +170,7 @@ const UsersGrid: FC = () => {
     avatar: item.avatar.url,
     courses: item.courses.map((course) => course.course_id),
   }));
+
   const color = useColorModeValue("ag-theme-quartz", "ag-theme-quartz-dark");
   return (
     <Box

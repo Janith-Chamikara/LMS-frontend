@@ -19,21 +19,23 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import useToastHook from "../hooks/useToast";
-import { axiosPrivate } from "../axios/axios";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCourseSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
 import { convertToBase64 } from "../utils/utils";
 import AvatarRenderer from "./AvatarRenderer";
+import { unknown } from "zod";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 const CoursesGrid: FC = () => {
+  const axiosPrivate = useAxiosPrivate()
   const {
     formState: { errors, isSubmitting, isSubmitSuccessful },
     register,
     handleSubmit,
   } = useForm({ resolver: zodResolver(updateCourseSchema) });
   const [currentCourse, setCurrentCourse] = useState({
-    id: null,
+    id: "",
     name: "",
     level: "",
     thumbnail: "",
@@ -57,7 +59,7 @@ const CoursesGrid: FC = () => {
       newToast({ message: error.data.message, condition: "error" });
     }
   };
-  const updateCourse = async (data: object) => {
+  const updateCourse = async (data: FieldValues) => {
     console.log(data);
     const thumbnail = await convertToBase64(data.thumbnail["0"]);
     const { name, price, level } = data;
@@ -73,7 +75,7 @@ const CoursesGrid: FC = () => {
       );
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
-    } catch (error) {
+    } catch (error: unknown) {
       console.log(error);
       newToast(error.data.message);
     }
@@ -93,7 +95,7 @@ const CoursesGrid: FC = () => {
     {
       field: "name",
     },
-    { field: "_id",headerName:"Course ID" },
+    { field: "_id", headerName: "Course ID" },
     { field: "price" },
     { field: "createdAt" },
     { field: "updatedAt" },
