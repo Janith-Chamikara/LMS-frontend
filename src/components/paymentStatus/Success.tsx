@@ -4,35 +4,48 @@ import CustomButton from "../CustomButton";
 import { Link, useSearchParams } from "react-router-dom";
 import Stripe from "stripe";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useToastHook from "../../hooks/useToast";
 const Success: FC = () => {
+  const [newToast] = useToastHook();
   const color = useColorModeValue("gray.100", "gray.900");
-  const axiosPrivate =  useAxiosPrivate()
+  const axiosPrivate = useAxiosPrivate();
   const [searchParams] = useSearchParams();
   const [data, setData] = useState();
   console.log(data);
   const sessionId = searchParams.get("session_id");
   console.log(sessionId);
+  const stripe = new Stripe(
+    "sk_test_51Oc4LoFlCSzpCWS8KB8l3KDwZ5ETrX1v2nlYH3ALG40Hwwzvg9JdTdCjpKCj3kNVxOEmkq7iOQHJJ9GkGW1AHoHB00ZGkyOTg6"
+  );
   useEffect(() => {
+    const controller = new AbortController();
     const getSuccessData = async () => {
-      const stripe = new Stripe(
-        "sk_test_51Oc4LoFlCSzpCWS8KB8l3KDwZ5ETrX1v2nlYH3ALG40Hwwzvg9JdTdCjpKCj3kNVxOEmkq7iOQHJJ9GkGW1AHoHB00ZGkyOTg6"
-      );
-      const session = await stripe.checkout.sessions.retrieve(sessionId);
-      const orderData = session.metadata; // Your custom data stored in the session
-      // Use orderData in your success page rendering
-      setData(orderData);
-      const response = await axiosPrivate.post(
-        "/courses/auth/purchase-a-course",
-        {
-          courseId:orderData.courseId,
-          paymentInfo: sessionId,
-        })
-      return orderData;
+      try {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        const orderData = session.metadata; // Your custom data stored in the session
+        // Use orderData in your success page rendering
+        setData(orderData);
+        const response = await axiosPrivate.post(
+          "/courses/auth/purchase-a-course",
+          {
+            courseId: orderData.courseId,
+            paymentInfo: sessionId,
+          },
+          {
+            signal: controller.signal,
+          }
+        );
+        newToast({ message: response.data.message, condition: "success" });
+      } catch (error) {
+       console.log(error);
+        newToast({ message: error.response.data.message, condition: "error" });
+      }
     };
     getSuccessData();
+    return () => {
+      controller.abort();
+    };
   }, []);
-
-
 
   return (
     <Flex
