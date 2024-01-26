@@ -22,11 +22,11 @@ import VideoPlayer from "../../components/VideoPlayer";
 import useFetchData from "../../hooks/useFetchData";
 
 const CourseInfo: FC = () => {
- const {courseId} = useParams();
- const [data, isLoading] = useFetchData(`/courses/auth/get-paid-course/${courseId}`)
+ const {id}= useParams();
+ const [data, isLoading] = useFetchData(`/courses/auth/get-paid-course/${id}`)
  const course = data?.course;
  console.log(course);
- const contents = course.courseInfo.map((content: object) => ({
+ const contents = course?.courseInfo?.map((content: object) => ({
    ...content,
  }));
  const color = useColorModeValue("gray.100", "gray.900");

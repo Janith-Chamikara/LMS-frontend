@@ -9,7 +9,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import CourseCard from "../../components/CourseCard";
 import Offer from "../../components/offer/Offer";
 import TableOfContents from "../../components/courseContent/TableOfContents";
@@ -19,10 +19,28 @@ import Review from "../../components/Review";
 import ModalWithButton from "../../components/ModalWithButton";
 import { useLocation } from "react-router-dom";
 import VideoPlayer from "../../components/VideoPlayer";
+import useFetchData from "../../hooks/useFetchData";
+import useProfileContext from "../../hooks/useProfileContext";
+import useCourseStatusContext from "../../hooks/useCourseStatusContex";
 
 const CourseInfo: FC = () => {
   const { course, isLoading } = useLocation().state;
-  console.log(course);
+  const { status, setStatus } = useCourseStatusContext();
+  const [loading , setLoading] = useState(true);
+  console.log(status);
+  const { profile } = useProfileContext();
+  const [data, dataIsLoading] = useFetchData(`/auth/${profile.id}`);
+  useEffect(() => {
+    data?.user?.courses?.map((item) => {
+      if (item.course_id === course._id) {
+        setStatus(true);
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+    });
+  }, [data]);
+
   const contents = course.courseInfo.map((content: object) => ({
     ...content,
   }));
@@ -35,7 +53,7 @@ const CourseInfo: FC = () => {
         px={4}
         position={"sticky"}
         top="0"
-        width={"100vw"}
+        width={"100%"}
         zIndex={"50"}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
@@ -182,7 +200,9 @@ const CourseInfo: FC = () => {
             >
               Course Contents:
             </Heading>
-            <TableOfContents contents={contents} />
+            <SkeletonText  isLoaded={!dataIsLoading}>
+              <TableOfContents contents={contents} />
+            </SkeletonText>
           </Box>
           {course.reviews.length !== 0 ? (
             <Box
@@ -239,7 +259,7 @@ const CourseInfo: FC = () => {
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>
-            <CourseCard course={course} />
+            <CourseCard course={course} isLoading={loading}/>
           </Skeleton>
         </Box>
       </Flex>

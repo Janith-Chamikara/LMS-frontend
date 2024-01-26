@@ -54,7 +54,7 @@ const CoursesPage: FC = () => {
       >
         {courses.map((course, index) => (
           <Skeleton key={index} isLoaded={!isloading}>
-            <CourseCard  isLoading={isloading} course={course} />
+            <CourseCard viewCourse={true}  isLoading={isloading} course={course} />
           </Skeleton>
         ))}
       </Flex>

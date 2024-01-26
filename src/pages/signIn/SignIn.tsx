@@ -24,8 +24,9 @@ const SignIn: FC = () => {
   const navigate = useNavigate();
   // const axios = useAxiosPrivate()
   const [newToast] = useToastHook();
-  const { setAuth } = useAuthContext();
+  const { auth,setAuth } = useAuthContext();
   const { setProfile } = useProfileContext();
+  console.log(auth)
   const onSubmit = async (data: FieldValues) => {
     const req = {
       email: data.email,
@@ -46,6 +47,7 @@ const SignIn: FC = () => {
         refreshToken,
         userInfo: { id, name, email, roles, courses, avatar },
       } = response.data;
+      console.log(id,name)
       response &&
         setAuth({
           name,

@@ -18,6 +18,7 @@ import UsersGrid from "./components/UsersGrid";
 import Success from "./components/paymentStatus/Success";
 import Failed from "./components/paymentStatus/Failed";
 import CourseInfoWithParams from "./pages/courseInfo/CourseInfoWithParams";
+import CourseStatusProvider from "./context/CourseStatusProvider";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/courseInfo",
-        element: <CourseInfo />,
+        element: (
+          <CourseStatusProvider>
+            <CourseInfo />
+          </CourseStatusProvider>
+        ),
       },
       {
         path: "/admin",

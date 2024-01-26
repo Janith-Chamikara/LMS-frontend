@@ -8,6 +8,7 @@ import {
   Divider,
   Heading,
   Image,
+  Skeleton,
   Stack,
   Text,
   useColorModeValue,
@@ -16,6 +17,7 @@ import { FC } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
 import { axiosPrivate } from "../axios/axios";
+import useCourseStatusContext from "../hooks/useCourseStatusContex";
 
 type courseType = {
   thumbnail: {
@@ -30,6 +32,7 @@ type courseType = {
 type CourseCardProps = {
   course: courseType;
   isLoading?: boolean;
+  viewCourse?: boolean;
   isOneButton?: boolean;
   buttonTitle?: string;
 };
@@ -38,8 +41,10 @@ const CourseCard: FC<CourseCardProps> = ({
   course,
   isLoading,
   isOneButton,
+  viewCourse,
   buttonTitle,
 }) => {
+  const { status } = useCourseStatusContext();
   const makePayment = async () => {
     try {
       const stripe = await loadStripe(
@@ -82,7 +87,7 @@ const CourseCard: FC<CourseCardProps> = ({
               maxHeight={"40vh"}
             >
               <Image
-                src={course.thumbnail?.url}
+                src={course?.thumbnail?.url}
                 alt="Green double couch with wooden legs"
                 width={"100%"}
                 className="tw-transition tw-duration-300 tw-ease-in-out hover:tw-scale-110"
@@ -90,38 +95,66 @@ const CourseCard: FC<CourseCardProps> = ({
             </Box>
 
             <Stack mt="6" spacing="3">
-              <Heading size="md">{course.name}</Heading>
-              <Text>{course.description}</Text>
+              <Heading size="md">{course?.name}</Heading>
+              <Text>{course?.description}</Text>
               <Text color="blue.600" fontSize="2xl">
-                ${course.price}
+                ${course?.price}
               </Text>
             </Stack>
           </CardBody>
           <Divider />
           <CardFooter>
-            <ButtonGroup spacing="2">
-              <Button
+            {!status ? (
+              <Skeleton isLoaded={!isLoading}>
+              <ButtonGroup spacing="2" mt={0}>
+                <Button
+                  variant="solid"
+                  onClick={
+                    buttonTitle
+                      ? () =>
+                          navigate("/courseInfo", {
+                            state: { course, isLoading },
+                          })
+                      : makePayment
+                  }
+                  colorScheme="blue"
+                >
+                  {buttonTitle ? buttonTitle : "Buy now"}
+                </Button>
+                {viewCourse && (
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      navigate("/courseInfo", {
+                        state: { course, isLoading },
+                      })
+                    }
+                    colorScheme="blue"
+                  >
+                    View Course
+                  </Button>
+                )}
+                <Button
+                  display={isOneButton ? "none" : "block"}
+                  variant="outline"
+                  colorScheme="whatsapp"
+                >
+                  Add to cart
+                </Button>
+              </ButtonGroup></Skeleton>
+            ) : (
+              <Skeleton isLoaded={!isLoading}><Button
                 variant="solid"
-                onClick={
-                  buttonTitle
-                    ? () =>
-                        navigate("/courseInfo", {
-                          state: { course, isLoading },
-                        })
-                    : makePayment
+                onClick={() =>
+                  navigate("/courseInfo", {
+                    state: { course, isLoading },
+                  })
                 }
-                colorScheme="blue"
+                colorScheme="yellow"
               >
-                {buttonTitle ? buttonTitle : "Buy now"}
-              </Button>
-              <Button
-                display={isOneButton ? "none" : "block"}
-                variant="ghost"
-                colorScheme="blue"
-              >
-                Add to cart
-              </Button>
-            </ButtonGroup>
+                Start Learning
+              </Button></Skeleton>
+            )}
           </CardFooter>
         </Card>
       </Box>
