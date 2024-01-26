@@ -24,10 +24,11 @@ import useProfileContext from "../../hooks/useProfileContext";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
 
 const CourseInfo: FC = () => {
+  const initialReviewsPerRow = 1;
+  const [next, setNext] = useState(initialReviewsPerRow);
   const { course, isLoading } = useLocation().state;
   const { status, setStatus } = useCourseStatusContext();
-  const [loading , setLoading] = useState(true);
-  console.log(status);
+  const [loading, setLoading] = useState(true);
   const { profile } = useProfileContext();
   const [data, dataIsLoading] = useFetchData(`/auth/${profile.id}`);
   useEffect(() => {
@@ -44,6 +45,7 @@ const CourseInfo: FC = () => {
   const contents = course.courseInfo.map((content: object) => ({
     ...content,
   }));
+  console.log(contents);
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <>
@@ -58,18 +60,23 @@ const CourseInfo: FC = () => {
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box fontWeight={"bold"}>{course.name}</Box>
-
-          <Stack
-            mr={"20px"}
-            direction={"row"}
-            spacing={2}
-            display={{ base: "flex", lg: "none" }}
-          >
-            <Button colorScheme="yellow">Buy Now</Button>
-            <Button colorScheme="yellow" variant={"outline"}>
-              Add to Cart
-            </Button>
-          </Stack>
+          <Skeleton isLoaded={!loading} rounded={"xl"}>
+            <Stack
+              mr={"20px"}
+              direction={"row"}
+              spacing={2}
+              display={{ base: "flex", lg: "none" }}
+            >
+              {!status && (
+                <>
+                  <Button colorScheme="yellow">Buy Now</Button>
+                  <Button colorScheme="yellow" variant={"outline"}>
+                    Add to Cart
+                  </Button>
+                </>
+              )}
+            </Stack>
+          </Skeleton>
         </Flex>
       </Box>
       <ScrollYProgress />
@@ -200,7 +207,7 @@ const CourseInfo: FC = () => {
             >
               Course Contents:
             </Heading>
-            <SkeletonText  isLoaded={!dataIsLoading}>
+            <SkeletonText isLoaded={!dataIsLoading}>
               <TableOfContents contents={contents} />
             </SkeletonText>
           </Box>
@@ -213,15 +220,41 @@ const CourseInfo: FC = () => {
               className="tw-shadow-[4px_4px_10px_0px_#319795]"
             >
               <Heading mb={"50px"}>Course Reviews :</Heading>
-              <Flex direction={"row"} gap={"20px"} mb={"50px"}>
+              <Flex direction={"column"} gap={"20px"} mb={"50px"}>
                 {course.reviews &&
-                  course.reviews.map((review: object, index: number) => (
-                    <Skeleton isLoaded={!isLoading} key={index}>
-                      <Review review={review} />
-                    </Skeleton>
-                  ))}
+                  course.reviews
+                    .slice(0, next)
+                    .map((review: object, index: number) => (
+                      <Skeleton isLoaded={!isLoading} key={index}>
+                        <Review review={review} />
+                      </Skeleton>
+                    ))}
               </Flex>
-              <ModalWithButton />
+              <Flex
+                direction={"column"}
+                gap={"10px"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                {course.reviews.length > 1 && (
+                  <Skeleton isLoaded={!loading}>
+                    <Button
+                      onClick={() =>
+                        setNext((prev) => prev + initialReviewsPerRow)
+                      }
+                      variant={"outline"}
+                      colorScheme="teal"
+                    >
+                      Load more...
+                    </Button>
+                  </Skeleton>
+                )}
+                {status && (
+                  <Skeleton isLoaded={!loading}>
+                    <ModalWithButton courseId={course._id} />
+                  </Skeleton>
+                )}
+              </Flex>
             </Box>
           ) : (
             <Box
@@ -232,6 +265,12 @@ const CourseInfo: FC = () => {
               className="tw-shadow-[4px_4px_10px_0px_#319795]"
             >
               <Text>This course hasn't been reviewd yet.</Text>
+              <br />
+              {status && (
+                <Skeleton isLoaded={!loading}>
+                  <ModalWithButton courseId={course._id} />
+                </Skeleton>
+              )}
             </Box>
           )}
           {/* mt={"80px"}
@@ -259,7 +298,7 @@ const CourseInfo: FC = () => {
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>
-            <CourseCard course={course} isLoading={loading}/>
+            <CourseCard course={course} isLoading={loading} />
           </Skeleton>
         </Box>
       </Flex>

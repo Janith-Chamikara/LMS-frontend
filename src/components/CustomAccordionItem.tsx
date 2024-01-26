@@ -6,6 +6,7 @@ import {
   Box,
   Flex,
   Icon,
+  Image,
   Stack,
   Text,
   useColorModeValue,
@@ -14,10 +15,11 @@ import { FC } from "react";
 import { ImCheckmark } from "react-icons/im";
 import VideoPlayer from "./VideoPlayer";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
-
+import { FaLock } from "react-icons/fa6";
 export type Content = {
   title: string;
   index: number;
+  videoThumbnail: string;
   videoUrl: string;
   videoTitle?: string;
   videoSrc?: string;
@@ -31,10 +33,10 @@ const CustomAcccordionItem: FC<Content> = ({
   index,
   videoTitle,
   videoSrc,
+  videoThumbnail,
   subTopics,
 }) => {
   const { status } = useCourseStatusContext();
-  console.log(status);
   const color = useColorModeValue("gray.300", "gray.600");
   return (
     <>
@@ -89,9 +91,31 @@ const CustomAcccordionItem: FC<Content> = ({
               ))}
           </Flex>
         ) : (
-          <Text as={AccordionPanel}>
-            Purchase course to access course files
-          </Text>
+          <AccordionPanel>
+            <Box position={"relative"}>
+              <Box  className="tw-shadow-[0px_0px_9px_4px_#319795]">
+                <Image src={videoThumbnail} width={"100%"} height={"100%"} />
+              </Box>
+
+              <Flex
+                direction={"column"}
+                position={"absolute"}
+                width={"100%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                height={"100%"}
+                top={"0"}
+                backdropFilter="auto"
+                backdropBlur={"8px"}
+                zIndex={5}
+              >
+                <Icon as={FaLock} w={20} h={50} />
+                <Text fontWeight={"bold"} textShadow="0 0 15px black">
+                  Purchase course to access course files
+                </Text>
+              </Flex>
+            </Box>
+          </AccordionPanel>
         )}
       </AccordionItem>
     </>

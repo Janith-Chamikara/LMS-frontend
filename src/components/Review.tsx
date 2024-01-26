@@ -1,7 +1,16 @@
-import { HStack, Icon, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Avatar,
+  Flex,
+  HStack,
+  Icon,
+  Stack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { FC } from "react";
 import { ImStarFull } from "react-icons/im";
-
+import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
+import { FaQ } from "react-icons/fa6";
 type reviewType = {
   name: string;
   position: string;
@@ -29,33 +38,35 @@ const Review: FC<Props> = ({ review }) => {
           alignItems="center"
           maxW="4xl"
         >
-          <Text fontSize="md" textAlign={'center'} fontWeight="medium">
-            {review.comment ? review.comment : "This course hasn't been reviewed yet."}
+          <Text
+            as="span"
+            fontSize="sm"
+            fontStyle={"italic"}
+            textAlign={"justify"}
+            fontWeight="medium"
+          >
+            <FaQuoteLeft />{" "}
+            {review.comment
+              ? review.comment
+              : "This course hasn't been reviewed yet."}
           </Text>
-          <HStack>
-            <Icon as={ImStarFull} />
-            <Icon as={ImStarFull} />
-            <Icon as={ImStarFull} />
-            <Icon as={ImStarFull} />
-            <Icon as={ImStarFull} />
-            <Icon as={ImStarFull} />
-          </HStack>
+
           <Stack alignItems="center" justifyContent={"center"} spacing={0}>
-            {/* <Avatar
+            <Avatar
               size="xl"
               showBorder={true}
               borderColor="green.400"
               name="avatar"
               src={review.avatar}
-            /> */}
-            <Text fontWeight="bold" fontSize="lg">
-              {review.rating}
-            </Text>
-            <Text fontWeight="bold" fontSize="lg">
-              {review.user.name}
-            </Text>
+            />
+            <Flex gap={"2px"} alignItems="center" fontWeight="bold" fontSize="sm">
+              <Text fontWeight="bold" fontSize="sm">
+                {review.rating}
+              </Text>
+              <Icon as={ImStarFull} color={"yellow"} />
+            </Flex>
             <Text fontWeight="bold" fontSize="sm">
-              {review.user.email}
+              {review.name}
             </Text>
           </Stack>
         </Stack>

@@ -158,3 +158,13 @@ export const updateCourseSchema = z.object({
 export const updateUserRoleSchema = z.object({
   role: z.string().min(1, { message: "Role must be either Admin or User" }),
 });
+
+export const reviewFormSchema = z.object({
+  review: z
+    .string()
+    .min(1, { message: "Review must contain at least 20 characters" }),
+  rating: z
+    .string()
+    .min(0, { message: "Minimum rating is zero." })
+    .max(5, { message: "Maximum rating is 5" }),
+});
