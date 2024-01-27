@@ -122,7 +122,7 @@ const CourseInfo: FC = () => {
                   isLoaded={!isLoading}
                 >
                   <Text fontWeight={"bold"} fontStyle={"italic"}>
-                    {course.ratings} stars
+                    {course.ratings} stars rating  |
                   </Text>
                 </SkeletonText>
               )}

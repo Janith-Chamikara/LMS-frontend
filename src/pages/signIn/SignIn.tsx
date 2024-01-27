@@ -41,13 +41,11 @@ const SignIn: FC = () => {
         },
       });
       newToast({ message: response.data.message, condition: "success" });
-      console.log(response);
       const {
         accessToken,
         refreshToken,
         userInfo: { id, name, email, roles, courses, avatar },
       } = response.data;
-      console.log(id,name)
       response &&
         setAuth({
           name,
@@ -66,7 +64,7 @@ const SignIn: FC = () => {
           url: avatar.url,
         });
 
-      navigate("/");
+      setTimeout(()=>navigate("/"),2000);
     } catch (err) {
       console.log(err);
       if (err.response) {

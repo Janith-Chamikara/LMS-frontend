@@ -19,6 +19,7 @@ import Success from "./components/paymentStatus/Success";
 import Failed from "./components/paymentStatus/Failed";
 import CourseInfoWithParams from "./pages/courseInfo/CourseInfoWithParams";
 import CourseStatusProvider from "./context/CourseStatusProvider";
+import MyCart from "./pages/MyCart";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,11 @@ const router = createBrowserRouter([
 
       {
         path: "courses/courseInfo/:id",
-        element: <CourseStatusProvider><CourseInfoWithParams/></CourseStatusProvider>,
+        element: (
+          <CourseStatusProvider>
+            <CourseInfoWithParams />
+          </CourseStatusProvider>
+        ),
       },
       {
         path: "/courseInfo",
@@ -88,6 +93,10 @@ const router = createBrowserRouter([
           {
             path: "myCourses",
             element: <MyCourses />,
+          },
+          {
+            path: "myCart",
+            element: <MyCart />,
           },
           {
             path: "uploadACourse",

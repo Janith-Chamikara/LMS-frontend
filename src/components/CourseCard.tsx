@@ -13,11 +13,13 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
-import { axiosPrivate } from "../axios/axios";
+import axios from "../axios/axios";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
+import useToastHook from "../hooks/useToast";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 type courseType = {
   thumbnail: {
@@ -44,7 +46,10 @@ const CourseCard: FC<CourseCardProps> = ({
   viewCourse,
   buttonTitle,
 }) => {
+  const [newToast] = useToastHook();
   const { status } = useCourseStatusContext();
+  const [cartButtonLoading, setCartButtonLoading] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
   const makePayment = async () => {
     try {
       const stripe = await loadStripe(
@@ -66,6 +71,20 @@ const CourseCard: FC<CourseCardProps> = ({
       console.log(result);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    setCartButtonLoading(true);
+    try {
+      const response = await axiosPrivate.put(
+        `/auth/courses/add-to-cart/${course._id}`
+      );
+      newToast({ message: response.data.message, condition: "success" });
+      setCartButtonLoading(false);
+    } catch (error) {
+      newToast({ message: error.response.data.message, condition: "error" });
+      setCartButtonLoading(false);
     }
   };
 
@@ -106,54 +125,60 @@ const CourseCard: FC<CourseCardProps> = ({
           <CardFooter>
             {!status ? (
               <Skeleton isLoaded={!isLoading}>
-              <ButtonGroup spacing="2" mt={0}>
-                <Button
-                  variant="solid"
-                  onClick={
-                    buttonTitle
-                      ? () =>
-                          navigate("/courseInfo", {
-                            state: { course, isLoading },
-                          })
-                      : makePayment
-                  }
-                  colorScheme="blue"
-                >
-                  {buttonTitle ? buttonTitle : "Buy now"}
-                </Button>
-                {viewCourse && (
+                <ButtonGroup spacing="2" mt={0}>
                   <Button
-                    variant="outline"
-                    onClick={() =>
-                      navigate("/courseInfo", {
-                        state: { course, isLoading },
-                      })
+                    variant="solid"
+                    onClick={
+                      buttonTitle
+                        ? () =>
+                            navigate("/courseInfo", {
+                              state: { course, isLoading },
+                            })
+                        : makePayment
                     }
                     colorScheme="blue"
                   >
-                    View Course
+                    {buttonTitle ? buttonTitle : "Buy now"}
                   </Button>
-                )}
-                <Button
-                  display={isOneButton ? "none" : "block"}
-                  variant="outline"
-                  colorScheme="whatsapp"
-                >
-                  Add to cart
-                </Button>
-              </ButtonGroup></Skeleton>
+                  {viewCourse && (
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        navigate("/courseInfo", {
+                          state: { course, isLoading },
+                        })
+                      }
+                      colorScheme="blue"
+                    >
+                      View Course
+                    </Button>
+                  )}
+                  <Button
+                    display={isOneButton ? "none" : "block"}
+                    variant="outline"
+                    isLoading={cartButtonLoading}
+                    loadingText="Adding"
+                    colorScheme="whatsapp"
+                    onClick={handleAddToCart}
+                  >
+                    Add to cart
+                  </Button>
+                </ButtonGroup>
+              </Skeleton>
             ) : (
-              <Skeleton isLoaded={!isLoading}><Button
-                variant="solid"
-                onClick={() =>
-                  navigate("/courseInfo", {
-                    state: { course, isLoading },
-                  })
-                }
-                colorScheme="yellow"
-              >
-                Start Learning
-              </Button></Skeleton>
+              <Skeleton isLoaded={!isLoading}>
+                <Button
+                  variant="solid"
+                  onClick={() =>
+                    navigate("/courseInfo", {
+                      state: { course, isLoading },
+                    })
+                  }
+                  colorScheme="yellow"
+                >
+                  Start Learning
+                </Button>
+              </Skeleton>
             )}
           </CardFooter>
         </Card>

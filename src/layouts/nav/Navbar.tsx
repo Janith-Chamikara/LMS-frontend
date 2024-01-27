@@ -19,12 +19,14 @@ import { FC } from "react";
 import { navItems } from "./navItems";
 import { v4 as uuidv4 } from "uuid";
 
-import { Link, Outlet, ScrollRestoration } from "react-router-dom";
+import { Link, Outlet, ScrollRestoration, useNavigate } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
 import Footer from "../../components/footer/Footer";
 import useProfileContext from "../../hooks/useProfileContext";
 import NavbarMobile from "./NavbarMobile";
 import useAuthContext from "../../hooks/useAuthContext";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useToastHook from "../../hooks/useToast";
 
 export const NavLink: FC<{
   children: string;
@@ -56,6 +58,18 @@ const NavbarForBiggerScreens: FC = () => {
   const color = useColorModeValue("gray.100", "gray.900");
   const { profile } = useProfileContext();
   console.log(profile);
+  const [newToast] = useToastHook();
+  const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+  const handleSignOut = async () => {
+    try {
+      const response = await axiosPrivate.post("auth/logout");
+      newToast({ message: response.data.message, condition: "success" });
+      setTimeout(() => navigate("/signUp"), 2000);
+    } catch (error) {
+      newToast({ message: error.response.data.message, condition: "error" });
+    }
+  };
   return (
     <>
       <ScrollRestoration />
@@ -150,7 +164,11 @@ const NavbarForBiggerScreens: FC = () => {
                       as={Link}
                       isLoading={false}
                       loadingText="Loading"
-                      text={profile?.roles === "Admin" ? "Admin Panel" : "Your Profile"}
+                      text={
+                        profile?.roles === "Admin"
+                          ? "Admin Panel"
+                          : "Your Profile"
+                      }
                       variant="solid"
                       colorSheme="facebook"
                       height="50px"
@@ -159,17 +177,16 @@ const NavbarForBiggerScreens: FC = () => {
                     />
                   </MenuItem>
                   <MenuItem bg={useColorModeValue("gray.100", "gray.900")}>
-                    <CustomButton
-                      as={Link}
-                      isLoading={false}
-                      loadingText="Loading"
-                      text="Logout"
+                    <Button
+                      onClick={handleSignOut}
+                      loadingText="logging out"
                       variant="solid"
-                      colorSheme="facebook"
+                      colorScheme="facebook"
                       height="50px"
                       width={"100%"}
-                      to="signUp"
-                    />
+                    >
+                      Logout
+                    </Button>
                   </MenuItem>
                 </MenuList>
               </Menu>
