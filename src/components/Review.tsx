@@ -1,7 +1,6 @@
 import {
   Avatar,
   Flex,
-  HStack,
   Icon,
   Stack,
   Text,
@@ -9,13 +8,9 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { ImStarFull } from "react-icons/im";
-import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
-import { FaQ } from "react-icons/fa6";
-type reviewType = {
-  name: string;
-  position: string;
-  comment: string;
-};
+import { FaQuoteLeft } from "react-icons/fa";
+
+
 type Props = {
   review: object;
 };

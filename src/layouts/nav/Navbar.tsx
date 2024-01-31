@@ -100,6 +100,7 @@ const NavbarForBiggerScreens: FC = () => {
                   as={Button}
                   rounded={"full"}
                   variant={"link"}
+                  
                   cursor={"pointer"}
                   minW={0}
                   display={{ base: "none", lg: "flex" }}
@@ -114,6 +115,7 @@ const NavbarForBiggerScreens: FC = () => {
                 </MenuButton>
                 <MenuList
                   border={"2px"}
+                  zIndex={'1000'}
                   borderColor={"cyan.500"}
                   alignItems={"center"}
                   bg={useColorModeValue("gray.100", "gray.900")}

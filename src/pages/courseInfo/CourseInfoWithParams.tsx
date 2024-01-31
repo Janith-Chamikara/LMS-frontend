@@ -235,6 +235,17 @@ const CourseInfoWithParams: FC = () => {
                     >
                       Load more...
                     </Button>
+                    {next > 1 && (
+                      <Button
+                        onClick={() =>
+                          setNext((prev) => prev - initialReviewsPerRow)
+                        }
+                        variant={"outline"}
+                        colorScheme="teal"
+                      >
+                        Load less...
+                      </Button>
+                    )}
                   </Skeleton>
                 )}
                 {status && (
@@ -283,7 +294,7 @@ const CourseInfoWithParams: FC = () => {
             position={"fixed"}
             right={"10px"}
             top="16"
-            zIndex={"60"}
+            zIndex={"500"}
             display={{ base: "none", lg: "block" }}
           >
             <CourseCard course={course} isLoading={isLoading} />

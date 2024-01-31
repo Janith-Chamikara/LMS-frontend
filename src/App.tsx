@@ -20,6 +20,7 @@ import Failed from "./components/paymentStatus/Failed";
 import CourseInfoWithParams from "./pages/courseInfo/CourseInfoWithParams";
 import CourseStatusProvider from "./context/CourseStatusProvider";
 import MyCart from "./pages/MyCart";
+import ResetPassword from "./pages/resetPassword/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +119,10 @@ const router = createBrowserRouter([
   {
     path: "/verify",
     element: <VerifyOTP />,
+  },
+  {
+    path: "/resetPassword",
+    element: <ResetPassword />,
   },
 ]);
 

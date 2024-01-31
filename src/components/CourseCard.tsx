@@ -16,7 +16,6 @@ import {
 import { FC, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
-import axios from "../axios/axios";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
 import useToastHook from "../hooks/useToast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
@@ -34,7 +33,6 @@ type courseType = {
 type CourseCardProps = {
   course: courseType;
   isLoading?: boolean;
-  viewCourse?: boolean;
   isOneButton?: boolean;
   buttonTitle?: string;
 };
@@ -43,7 +41,6 @@ const CourseCard: FC<CourseCardProps> = ({
   course,
   isLoading,
   isOneButton,
-  viewCourse,
   buttonTitle,
 }) => {
   const [newToast] = useToastHook();
@@ -140,19 +137,7 @@ const CourseCard: FC<CourseCardProps> = ({
                   >
                     {buttonTitle ? buttonTitle : "Buy now"}
                   </Button>
-                  {viewCourse && (
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        navigate("/courseInfo", {
-                          state: { course, isLoading },
-                        })
-                      }
-                      colorScheme="blue"
-                    >
-                      View Course
-                    </Button>
-                  )}
+                  
                   <Button
                     display={isOneButton ? "none" : "block"}
                     variant="outline"

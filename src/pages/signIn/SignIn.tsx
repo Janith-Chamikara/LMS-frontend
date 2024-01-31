@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { FC } from "react";
 import CustomTextInput from "../../components/CustomTextInput";
 import Password from "../../components/password";
@@ -12,6 +12,7 @@ import CustomLink from "../../components/CustomLink";
 import useAuthContext from "../../hooks/useAuthContext";
 import axios from "../../axios/axios";
 import useProfileContext from "../../hooks/useProfileContext";
+import CustomModalForResetPassword from "../../components/CustomModalForResetPassword"
 
 const SignIn: FC = () => {
   const {
@@ -24,9 +25,9 @@ const SignIn: FC = () => {
   const navigate = useNavigate();
   // const axios = useAxiosPrivate()
   const [newToast] = useToastHook();
-  const { auth,setAuth } = useAuthContext();
+  const { auth, setAuth } = useAuthContext();
   const { setProfile } = useProfileContext();
-  console.log(auth)
+  console.log(auth);
   const onSubmit = async (data: FieldValues) => {
     const req = {
       email: data.email,
@@ -58,13 +59,13 @@ const SignIn: FC = () => {
         });
       response &&
         setProfile({
-          id:id,
-          roles:roles,
+          id: id,
+          roles: roles,
           name: name,
           url: avatar.url,
         });
 
-      setTimeout(()=>navigate("/"),2000);
+      setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       console.log(err);
       if (err.response) {
@@ -114,13 +115,17 @@ const SignIn: FC = () => {
             Confirm password
           </Password>
           <span>
-            Don't have an account yet?{" "}
+            Don't have an account yet ?
             <CustomLink
-              text="Sign Up"
+              text=" Sign up now"
               to="/signUp"
               className="tw-text-teal-500"
             />
           </span>
+
+          <Flex justifyContent={"center"} alignItems={"center"}>
+            <CustomModalForResetPassword buttonTitle="Forgot Password" />
+          </Flex>
           <div className="tw-flex tw-flex-row tw-justify-center tw-items-center">
             <CustomButton
               as="button"

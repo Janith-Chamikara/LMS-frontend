@@ -186,7 +186,7 @@ const UsersGrid: FC = () => {
         </Button>
       </Flex>
       <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        <ModalOverlay backdropFilter={'auto'} backdropBlur={'8px'}/>
         <ModalContent>
           {selectedUser.id ? (
             <>

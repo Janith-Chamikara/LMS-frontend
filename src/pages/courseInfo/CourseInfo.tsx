@@ -22,6 +22,7 @@ import VideoPlayer from "../../components/VideoPlayer";
 import useFetchData from "../../hooks/useFetchData";
 import useProfileContext from "../../hooks/useProfileContext";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
+import { useMotionValue, useScroll } from "framer-motion";
 
 const CourseInfo: FC = () => {
   const initialReviewsPerRow = 1;
@@ -122,7 +123,7 @@ const CourseInfo: FC = () => {
                   isLoaded={!isLoading}
                 >
                   <Text fontWeight={"bold"} fontStyle={"italic"}>
-                    {course.ratings} stars rating  |
+                    {course.ratings} stars rating |
                   </Text>
                 </SkeletonText>
               )}
@@ -247,6 +248,17 @@ const CourseInfo: FC = () => {
                     >
                       Load more...
                     </Button>
+                    {next > 1 && (
+                      <Button
+                        onClick={() =>
+                          setNext((prev) => prev - initialReviewsPerRow)
+                        }
+                        variant={"outline"}
+                        colorScheme="teal"
+                      >
+                        Load less...
+                      </Button>
+                    )}
                   </Skeleton>
                 )}
                 {status && (
@@ -294,7 +306,8 @@ const CourseInfo: FC = () => {
           position={"fixed"}
           right={"10px"}
           top="16"
-          zIndex={"60"}
+          pb={'500px'}
+          zIndex={"500"}
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>

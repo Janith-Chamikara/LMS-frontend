@@ -1,5 +1,28 @@
 import * as z from "zod";
 
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, { message: "Password must have at least 6 characters." }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Password must have at least 6 characters." }),
+  })
+  .superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["confirmPassword"],
+        message: "The passwords did not match",
+      });
+    }
+  });
+
+export const emailSchema = z.object({
+  email: z.string().email().min(1, { message: "Your email is required" }),
+});
+
 export const signUpSchema = z
   .object({
     firstName: z.string().min(1, { message: "First Name is required." }),

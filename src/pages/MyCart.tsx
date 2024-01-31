@@ -1,10 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import useFetchData from "../hooks/useFetchData";
 import { Box, Flex, Heading, Skeleton } from "@chakra-ui/react";
 import CourseCard from "../components/CourseCard";
 import SearchBar from "../components/SearchBar";
 import useProfileContext from "../hooks/useProfileContext";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const MyCart: FC = () => {
   const { profile } = useProfileContext();
@@ -66,7 +65,7 @@ const MyCart: FC = () => {
             {coursesData?.courses?.map((course, index) => (
               <CourseCard
                 isOneButton={true}
-                buttonTitle="Start Learning"
+                buttonTitle="View Course"
                 key={index}
                 isLoading={coursesDataIsLoading}
                 course={course}
