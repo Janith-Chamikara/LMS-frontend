@@ -93,9 +93,9 @@ const CoursesGrid: FC = () => {
   const [colDefs, setColDefs] = useState([
     { field: "thumbnail", cellRenderer: AvatarRenderer },
     {
-      field: "name",
+      field: "name",filter:true
     },
-    { field: "_id", headerName: "Course ID" },
+    { field: "_id", headerName: "Course ID",filter:true },
     { field: "price" },
     { field: "createdAt" },
     { field: "updatedAt" },

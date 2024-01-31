@@ -150,10 +150,10 @@ const UsersGrid: FC = () => {
   };
   const [colDefs, setColDefs] = useState([
     { field: "avatar", cellRenderer: AvatarRenderer },
-    { field: "name" },
-    { field: "_id", headerName: "User ID" },
-    { field: "email" },
-    { field: "roles", headerName: "User Role" },
+    { field: "name",filter:true },
+    { field: "_id", headerName: "User ID",filter:true },
+    { field: "email",filter:true },
+    { field: "roles", headerName: "User Role",filter:true },
     { field: "createdAt" },
     { field: "updatedAt" },
     { field: "courses", headerName: "Paid Courses" },
