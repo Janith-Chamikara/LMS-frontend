@@ -21,6 +21,8 @@ import CourseInfoWithParams from "./pages/courseInfo/CourseInfoWithParams";
 import CourseStatusProvider from "./context/CourseStatusProvider";
 import MyCart from "./pages/MyCart";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
+import OrderGrid from "./components/datagrids/OrderGrid";
+import Notifiactions from "./components/datagrids/Notifications";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +77,14 @@ const router = createBrowserRouter([
           {
             path: "manageUsers",
             element: <UsersGrid />,
+          },
+          {
+            path: "manageOrders",
+            element: <OrderGrid />,
+          },
+          {
+            path: "notifications",
+            element: <Notifiactions />,
           },
           {
             path: "uploadACourse",

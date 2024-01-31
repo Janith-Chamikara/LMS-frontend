@@ -29,7 +29,7 @@ export const panalItems: itemsType[] = [
   },
   {
     name: "Mange Orders",
-    url: "admin/manageOrders",
+    url: "manageOrders",
     icon: FaUsersGear,
   },
   {

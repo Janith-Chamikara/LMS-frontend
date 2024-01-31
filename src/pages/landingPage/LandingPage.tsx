@@ -42,6 +42,8 @@ const LandingPage: FC = () => {
         className="tw-hidden tw-absolute -tw-top-[80vh] tw-z-0 tw-w-[70vw] tw-h-[170vh] -tw-left-[28vw] lg:tw-block"
       />
       <Flex
+        width={'90vw'}
+        mx={'auto'}
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
         justifyContent={{ base: "space-between", lg: "center" }}
@@ -235,6 +237,7 @@ const LandingPage: FC = () => {
         mt={"80px"}
         direction={{ base: "column", md: "row" }}
         width={"90vw"}
+        height={'max-content'}
         justifyContent={"space-between"}
         mx={"auto"}
       >

@@ -33,6 +33,7 @@ const CourseInfo: FC = () => {
   const { profile } = useProfileContext();
   const [data, dataIsLoading] = useFetchData(`/auth/${profile.id}`);
   useEffect(() => {
+    if (data?.user?.courses.length === 0) setLoading(false);
     data?.user?.courses?.map((item) => {
       if (item.course_id === course._id) {
         setStatus(true);
@@ -42,6 +43,7 @@ const CourseInfo: FC = () => {
       setLoading(false);
     });
   }, [data]);
+  console.log(loading);
 
   const contents = course.courseInfo.map((content: object) => ({
     ...content,
@@ -306,7 +308,7 @@ const CourseInfo: FC = () => {
           position={"fixed"}
           right={"10px"}
           top="16"
-          pb={'500px'}
+          pb={"500px"}
           zIndex={"500"}
           display={{ base: "none", lg: "block" }}
         >

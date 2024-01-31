@@ -6,6 +6,7 @@ import {
   CardBody,
   CardFooter,
   Divider,
+  Flex,
   Heading,
   Image,
   Skeleton,
@@ -122,7 +123,7 @@ const CourseCard: FC<CourseCardProps> = ({
           <CardFooter>
             {!status ? (
               <Skeleton isLoaded={!isLoading}>
-                <ButtonGroup spacing="2" mt={0}>
+                <Flex gap="2">
                   <Button
                     variant="solid"
                     onClick={
@@ -148,7 +149,7 @@ const CourseCard: FC<CourseCardProps> = ({
                   >
                     Add to cart
                   </Button>
-                </ButtonGroup>
+                </Flex>
               </Skeleton>
             ) : (
               <Skeleton isLoaded={!isLoading}>
