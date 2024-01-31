@@ -90,7 +90,7 @@ const CustomModalForResetPassword: FC<ModalProps> = ({ buttonTitle }) => {
             <Button
               isDisabled={isSubmitSuccessful}
               isLoading={isSubmitting}
-              loadingText="Publishing your review"
+              loadingText="Please wait."
               type="submit"
               onClick={handleSubmit(onClick)}
               colorScheme="blue"
