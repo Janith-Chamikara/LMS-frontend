@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import AvatarRenderer from "../AvatarRenderer";
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -42,6 +42,7 @@ const OrderGrid: FC = () => {
       width={"99vw"}
       height={"90vh"}
     >
+      <Heading fontSize={'4xl'} mb={'2'}>Manage Orders</Heading>
       <AgGridReact
         pagination={true}
         rowData={rowData}

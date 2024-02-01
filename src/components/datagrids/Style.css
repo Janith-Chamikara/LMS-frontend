@@ -1,0 +1,6 @@
+.status-unread {
+  background-color: rgba(246, 4, 4, 0.284);
+}
+.status-read {
+  background-color: rgba(63, 245, 3, 0.228);
+}

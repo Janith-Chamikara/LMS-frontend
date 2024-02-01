@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -121,7 +122,7 @@ const CoursesGrid: FC = () => {
       className={color}
       width={"99vw"}
       height={"90vh"}
-    >
+    ><Heading fontSize={'4xl'} mb={'2'}>Manage Courses</Heading>
       <Flex my={"10px"} justify={"center"} alignItems={"center"}>
         <Button colorScheme="yellow" width={"100%"} onClick={onOpen}>
           Select row and click here to update data
