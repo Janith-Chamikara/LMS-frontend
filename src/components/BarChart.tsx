@@ -25,10 +25,10 @@ const BarChartComponent: FC<Props>= ({title,data,barColor}) => {
           <BarChart width={150} height={40} data={data}>
             <XAxis dataKey="name" display={"none"} />
             <Tooltip
-              content={<CustomTooltip bgColor={'slate-600'} />}
-              contentStyle={{ backgroundColor: "#2a3447" }}
+              content={<CustomTooltip/>}
+            
               cursor={{ fill: "none" }}
-              labelStyle={{ display: "none" }}
+              
             />
             <Bar dataKey="uv" fill={barColor ? barColor :"#8884d8"} />
           </BarChart>

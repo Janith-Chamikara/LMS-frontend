@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useFetchData from "../hooks/useFetchData";
-import { Box, Flex, Heading, Skeleton } from "@chakra-ui/react";
+import { Box, Flex, Heading, Skeleton, Text } from "@chakra-ui/react";
 import CourseCard from "../components/CourseCard";
 import SearchBar from "../components/SearchBar";
 
@@ -25,7 +25,11 @@ const MyCourses: FC = () => {
           >
             My courses :
           </Heading>
-          <SearchBar/>
+          {coursesData?.purchasedCourses?.length === 0 && (
+            <Text>Currently you haven't purchased any course yet.</Text>
+          )}
+          {coursesData?.purchasedCourses?.length !== 0 && <SearchBar />}
+
           <Flex
             mt={"20px"}
             direction={"row"}

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useFetchData from "../hooks/useFetchData";
-import { Box, Flex, Heading, Skeleton } from "@chakra-ui/react";
+import { Box, Flex, Heading, Skeleton, Text } from "@chakra-ui/react";
 import CourseCard from "../components/CourseCard";
 import SearchBar from "../components/SearchBar";
 import useProfileContext from "../hooks/useProfileContext";
@@ -52,7 +52,12 @@ const MyCart: FC = () => {
           >
             My Cart :
           </Heading>
-          <SearchBar />
+          {(coursesData?.courses?.length === 0 || !coursesData?.courses) && (
+            <Text>Your cary is empty right now</Text>
+          )}
+          {(coursesData?.courses?.length !== 0 && coursesData?.courses) && (
+            <SearchBar />
+          )}
           <Flex
             mt={"20px"}
             direction={"row"}

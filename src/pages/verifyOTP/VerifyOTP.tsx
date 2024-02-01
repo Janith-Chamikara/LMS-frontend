@@ -4,10 +4,11 @@ import { FC } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { OTPSchema } from "../../schemas/schema";
 import CustomTextInput from "../../components/CustomTextInput";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useToastHook from "../../hooks/useToast";
 import axios from "../../axios/axios";
 import CustomButton from "../../components/CustomButton";
+import useProfileContext from "../../hooks/useProfileContext";
 
 const VerifyOTP: FC = () => {
   const {
@@ -19,6 +20,8 @@ const VerifyOTP: FC = () => {
   });
   const [newToast] = useToastHook();
   const location = useLocation();
+  const { setProfile } = useProfileContext();
+  const navigate = useNavigate();
   const token = location.state.token;
   const onSubmit = async (data: FieldValues) => {
     const keyFromBody = data.verification;
@@ -30,9 +33,19 @@ const VerifyOTP: FC = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          withCredentials: true,
         }
       );
+      const user = response?.data?.user;
+      response &&
+        setProfile({
+          id: user._id,
+          roles: user.roles,
+          name: user.name,
+          url: user.avatar.url,
+        });
       newToast({ message: response.data.message, condition: "success" });
+      setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       console.log(err);
       if (err.response) {
@@ -51,7 +64,10 @@ const VerifyOTP: FC = () => {
         <Text className="tw-text-xl tw-font-bold tw-p-2 tw-border-b-2 tw-mb-5 tw-text-center">
           Verify your account.
         </Text>
-        <Text>We have sended a OTP to your email.</Text>
+        <Text>
+          We have sended a OTP to your email.It will be expired within 10
+          minutes.
+        </Text>
         <div>
           <CustomTextInput
             errors={errors}

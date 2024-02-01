@@ -1,5 +1,26 @@
 import * as z from "zod";
 
+const thumbnailSchema = z.any().refine((file) => {
+  if (!file || !file.length) {
+    return "File is required";
+  }
+
+  const selectedFile = file[0]; // Access the first selected file
+
+  // Validate file type
+  if (!selectedFile.type.startsWith("image/")) {
+    return "Only image files are allowed";
+  }
+
+  // Validate file size
+  if (selectedFile.size > 10485760) {
+    // 10 MB limit
+    return "File size cannot exceed 10 MB";
+  }
+
+  return true; // Validation passed
+});
+
 export const resetPasswordSchema = z
   .object({
     password: z
@@ -34,6 +55,7 @@ export const signUpSchema = z
     confirmPassword: z
       .string()
       .min(6, { message: "Password must have at least 6 characters." }),
+    profileImg: thumbnailSchema,
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
@@ -44,6 +66,7 @@ export const signUpSchema = z
       });
     }
   }); //.parse({ name:"janith",lastName:"chshaiofh",password: "asdfff", confirmPassword: "qwerff" });
+
 export const signInSchema = z
   .object({
     email: z
@@ -72,27 +95,6 @@ export const OTPSchema = z.object({
     .string()
     .max(9, { message: "Invalid OTP" })
     .min(0, { message: "Invalid OTP" }),
-});
-
-const thumbnailSchema = z.any().refine((file) => {
-  if (!file || !file.length) {
-    return "File is required";
-  }
-
-  const selectedFile = file[0]; // Access the first selected file
-
-  // Validate file type
-  if (!selectedFile.type.startsWith("image/")) {
-    return "Only image files are allowed";
-  }
-
-  // Validate file size
-  if (selectedFile.size > 10485760) {
-    // 10 MB limit
-    return "File size cannot exceed 10 MB";
-  }
-
-  return true; // Validation passed
 });
 
 // const videoSchema = z

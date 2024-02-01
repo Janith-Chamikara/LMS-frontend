@@ -63,6 +63,7 @@ const NavbarForBiggerScreens: FC = () => {
   const axiosPrivate = useAxiosPrivate();
   const handleSignOut = async () => {
     try {
+      localStorage.removeItem("profile");
       const response = await axiosPrivate.post("auth/logout");
       newToast({ message: response.data.message, condition: "success" });
       setTimeout(() => navigate("/signUp"), 2000);
@@ -100,7 +101,6 @@ const NavbarForBiggerScreens: FC = () => {
                   as={Button}
                   rounded={"full"}
                   variant={"link"}
-                  
                   cursor={"pointer"}
                   minW={0}
                   display={{ base: "none", lg: "flex" }}
@@ -115,7 +115,7 @@ const NavbarForBiggerScreens: FC = () => {
                 </MenuButton>
                 <MenuList
                   border={"2px"}
-                  zIndex={'1000'}
+                  zIndex={"1000"}
                   borderColor={"cyan.500"}
                   alignItems={"center"}
                   bg={useColorModeValue("gray.100", "gray.900")}
@@ -201,7 +201,10 @@ const NavbarForBiggerScreens: FC = () => {
           </Flex>
         </Flex>
       </Box>
-      <Outlet />
+      <Box minHeight={"60vh"}>
+        <Outlet />
+      </Box>
+
       {/*Footer*/}
       <Footer color={color} />
     </>

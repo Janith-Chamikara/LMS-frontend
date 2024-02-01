@@ -10,6 +10,8 @@ import useToastHook from "../../hooks/useToast";
 import CustomButton from "../../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 import CustomLink from "../../components/CustomLink";
+import { convertToBase64 } from "../../utils/utils";
+import useProfileContext from "../../hooks/useProfileContext";
 const SignUp: FC = () => {
   const {
     register,
@@ -21,8 +23,11 @@ const SignUp: FC = () => {
   const [newToast] = useToastHook();
   const navigate = useNavigate();
   const onSubmit = async (data: FieldValues) => {
+    console.log(data);
+    const file = await convertToBase64(data.profileImg["0"]);
     const name = data.firstName + " " + data.lastName;
     const req = {
+      profileImg: file,
       name: name,
       email: data.email,
       password: data.password,
@@ -33,7 +38,8 @@ const SignUp: FC = () => {
       newToast({ message: response.data.message, condition: "success" });
       console.log(response);
       const token = response.data.token;
-      navigate("/verify", { state: { token: token } });
+      newToast({message:response.data.message,condition:'success'})
+      setTimeout(()=>navigate("/verify", { state: { token: token } }),2000);
     } catch (err) {
       console.log(err);
       if (err.response) {
@@ -101,6 +107,17 @@ const SignUp: FC = () => {
         >
           Confirm password
         </Password>
+        <CustomTextInput
+          flushed={true}
+          errors={errors}
+          register={register}
+          name="profileImg"
+          placeholder="Provide a profile image"
+          type="file"
+          isRequired={false}
+        >
+          Profile Image
+        </CustomTextInput>
         <span>
           Already have an account?{" "}
           <CustomLink
