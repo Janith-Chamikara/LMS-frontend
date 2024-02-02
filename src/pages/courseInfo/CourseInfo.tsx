@@ -1,12 +1,18 @@
 import {
+  Avatar,
   Box,
   Button,
   Flex,
+  HStack,
   Heading,
+  Image,
   Skeleton,
   SkeletonText,
   Stack,
+  Tag,
+  TagLabel,
   Text,
+  Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
@@ -22,7 +28,6 @@ import VideoPlayer from "../../components/VideoPlayer";
 import useFetchData from "../../hooks/useFetchData";
 import useProfileContext from "../../hooks/useProfileContext";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
-import { useMotionValue, useScroll } from "framer-motion";
 
 const CourseInfo: FC = () => {
   const initialReviewsPerRow = 1;
@@ -109,7 +114,7 @@ const CourseInfo: FC = () => {
             <Text>{course.description}</Text>
           </SkeletonText>
           <Stack
-            direction={"row"}
+            direction={{ base: "column", lg: "row" }}
             justifyContent={{ base: "center", lg: "space-between" }}
             alignItems={"center"}
           >
@@ -120,12 +125,13 @@ const CourseInfo: FC = () => {
               gap={"10px"}
             >
               {course.ratings && (
-                <SkeletonText
-                  display={{ base: "none", lg: "block" }}
-                  isLoaded={!isLoading}
-                >
-                  <Text fontWeight={"bold"} fontStyle={"italic"}>
-                    {course.ratings} stars rating |
+                <SkeletonText isLoaded={!isLoading}>
+                  <Text
+                    fontWeight={"bold"}
+                    fontSize={{ base: "sm", md: "md" }}
+                    fontStyle={"italic"}
+                  >
+                    {course.ratings} stars rating
                   </Text>
                 </SkeletonText>
               )}
@@ -133,7 +139,7 @@ const CourseInfo: FC = () => {
                 <SkeletonText isLoaded={!isLoading}>
                   <Text
                     fontWeight={"bold"}
-                    display={{ base: "none", lg: "block" }}
+                    fontSize={{ base: "sm", md: "md" }}
                     fontStyle={"italic"}
                   >
                     {course.reviews.length} reviews
@@ -142,23 +148,52 @@ const CourseInfo: FC = () => {
               )}
             </Stack>
             {course.purchased && (
-              <SkeletonText
-                isLoaded={!isLoading}
-                display={{ base: "none", lg: "block" }}
-              >
-                <Text fontWeight={"bold"} fontStyle={"italic"}>
+              <SkeletonText isLoaded={!isLoading}>
+                <Text
+                  fontWeight={"bold"}
+                  fontSize={{ base: "sm", md: "md" }}
+                  fontStyle={"italic"}
+                >
                   Count of orders - {course.purchased}
                 </Text>
               </SkeletonText>
             )}
             {course.createdBy && (
               <SkeletonText isLoaded={!isLoading}>
-                <Text fontWeight={"bold"} fontStyle={"italic"}>
-                  Created By - {course.createdBy.name}
-                </Text>
+                <Tooltip
+                  hasArrow
+                  padding={'10px'}
+                  label={<Image className="tw-shadow-[0px_0px_18px_0px_#39D6B5F7]" src={course.createdBy.url} />}
+                >
+                  <Text
+                    fontSize={{ base: "sm", md: "md" }}
+                    fontWeight={"bold"}
+                    fontStyle={"italic"}
+                  >
+                    Created By - {course.createdBy.name}
+                  </Text>
+                </Tooltip>
               </SkeletonText>
             )}
           </Stack>
+          {course?.tags && (
+            <Flex alignItems={"center"} mt={"20px"}>
+              <SkeletonText isLoaded={!isLoading}>
+                <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
+                  {course.tags.map((tag: object) => (
+                    <Tag
+                      key={tag}
+                      rounded="full"
+                      variant="subtle"
+                      colorScheme="teal"
+                    >
+                      <TagLabel>{tag.tag}</TagLabel>
+                    </Tag>
+                  ))}
+                </Flex>
+              </SkeletonText>
+            </Flex>
+          )}
           <Stack
             mt={"80px"}
             direction={"column"}

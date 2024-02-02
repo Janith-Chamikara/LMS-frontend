@@ -9,9 +9,9 @@ import {
   useDisclosure,
   Flex,
   Spacer,
-  useMediaQuery,
+  DrawerFooter,
 } from "@chakra-ui/react";
-import { Dispatch, FC, SetStateAction, useRef } from "react";
+import { FC, useRef } from "react";
 
 import { NavLink } from "./Navbar";
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -19,6 +19,11 @@ import { v4 as uuidv4 } from "uuid";
 import { navVariant } from "../../animationVariants/variants";
 import { motion } from "framer-motion";
 import { navType } from "./navItems";
+import CustomButton from "../../components/CustomButton";
+import useProfileContext from "../../hooks/useProfileContext";
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useToastHook from "../../hooks/useToast";
 type NavbarProps = {
   navItems: navType[];
   isNavbar?: boolean;
@@ -27,13 +32,24 @@ type NavbarProps = {
   title?: string;
 };
 
-const NavbarMobile: FC<NavbarProps> = ({
-  navItems,
-  title,
-  isNavbar,
-}) => {
+const NavbarMobile: FC<NavbarProps> = ({ navItems, title, isNavbar }) => {
+  const { profile } = useProfileContext();
+  const axiosPrivate = useAxiosPrivate();
+  const [newToast] = useToastHook();
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<HTMLButtonElement>(null);
+  const handleSignOut = async () => {
+    try {
+      localStorage.removeItem("profile");
+      const response = await axiosPrivate.post("auth/logout");
+      newToast({ message: response.data.message, condition: "success" });
+      setTimeout(() => navigate("/signUp"), 2000);
+      
+    } catch (error) {
+      newToast({ message: error.response.data.message, condition: "error" });
+    }
+  };
 
   return (
     <>
@@ -51,7 +67,6 @@ const NavbarMobile: FC<NavbarProps> = ({
       <Drawer
         size={"xs"}
         isOpen={isOpen}
-       
         placement={isNavbar ? "right" : "left"}
         onClose={onClose}
         finalFocusRef={btnRef}
@@ -72,11 +87,7 @@ const NavbarMobile: FC<NavbarProps> = ({
                     whileInView={"animate"}
                     custom={index}
                   >
-                    <NavLink
-                      key={uuidv4()}
-                      path={item.url}
-                      onClose={onClose}
-                    >
+                    <NavLink key={uuidv4()} path={item.url} onClose={onClose}>
                       {item.name}
                     </NavLink>
                     <Spacer />
@@ -85,6 +96,32 @@ const NavbarMobile: FC<NavbarProps> = ({
               })}
             </Flex>
           </DrawerBody>
+          <DrawerFooter>
+            <Flex direction={"column"}>
+              <CustomButton
+                as={Link}
+                isLoading={false}
+                loadingText="Loading"
+                text={
+                  profile?.roles === "Admin" ? "Admin Panel" : "Your Profile"
+                }
+                variant="outline"
+                colorSheme="teal"
+                width={"100%"}
+                to={profile?.roles === "Admin" ? `admin` : `/userProfile`}
+              />
+              <Button
+                mt={"2px"}
+                onClick={handleSignOut}
+                loadingText="logging out"
+                variant="outline"
+                colorScheme="teal"
+                width={"100%"}
+              >
+                Logout
+              </Button>
+            </Flex>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

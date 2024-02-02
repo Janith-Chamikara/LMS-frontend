@@ -44,7 +44,7 @@ const Footer: FC<FooterProps> = ({ color }) => {
       bottom={0}
       width={"100%"}
       fontWeight={"bold"}
-      mt={"100px"}
+      mt={"80px"}
       bg={color}
       marginInline="auto"
       p={8}

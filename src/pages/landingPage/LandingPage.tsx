@@ -26,13 +26,14 @@ import { benifits } from "../../components/BenifitCard/benifits";
 import Offer from "../../components/offer/Offer";
 import { offers } from "../../components/offer/offers";
 import ScrollYProgress from "../../components/ScrollYProgress";
-
+import useProfileContext from "../../hooks/useProfileContext";
 
 const LandingPage: FC = () => {
   const color = useColorModeValue("gray.100", "gray.900");
+  const { profile } = useProfileContext();
   return (
     <div className="tw-relative tw-mx-auto  tw-overflow-hidden">
-      <ScrollYProgress/>
+      <ScrollYProgress />
       <Box
         as={motion.div}
         bg={color}
@@ -42,8 +43,8 @@ const LandingPage: FC = () => {
         className="tw-hidden tw-absolute -tw-top-[80vh] tw-z-0 tw-w-[70vw] tw-h-[170vh] -tw-left-[28vw] lg:tw-block"
       />
       <Flex
-        width={'90vw'}
-        mx={'auto'}
+        width={"90vw"}
+        mx={"auto"}
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
         justifyContent={{ base: "space-between", lg: "center" }}
@@ -92,30 +93,41 @@ const LandingPage: FC = () => {
             your chosen field
           </Text>
 
-          <Stack direction="row" gap="20px">
-            <CustomButton
-              as={Link}
-              isLoading={false}
-              loadingText="Loading"
-              text="Sign Up"
-              variant="solid"
-              colorSheme="teal"
-              height="50px"
-              width={{ base: "110px", md: "150px" }}
-              to="/signup"
-            />
-            <CustomButton
-              as={Link}
-              isLoading={false}
-              loadingText="Loading"
-              text="Log in"
-              variant="outline"
-              colorSheme="teal"
-              height="50px"
-              width={{ base: "110px", md: "150px" }}
-              to="signin"
-            />
-          </Stack>
+          {profile ? (
+            <Heading
+              flex={"1"}
+              fontWeight={"bold"}
+              fontSize={{ base: "2xl", lg: "3xl" }}
+              
+            >
+              Welcome, <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500">{profile.name}</span>
+            </Heading>
+          ) : (
+            <Stack direction="row" gap="20px">
+              <CustomButton
+                as={Link}
+                isLoading={false}
+                loadingText="Loading"
+                text="Sign Up"
+                variant="solid"
+                colorSheme="teal"
+                height="50px"
+                width={{ base: "110px", md: "150px" }}
+                to="/signup"
+              />
+              <CustomButton
+                as={Link}
+                isLoading={false}
+                loadingText="Loading"
+                text="Log in"
+                variant="outline"
+                colorSheme="teal"
+                height="50px"
+                width={{ base: "110px", md: "150px" }}
+                to="signin"
+              />
+            </Stack>
+          )}
         </Flex>
       </Flex>
 
@@ -235,9 +247,10 @@ const LandingPage: FC = () => {
       </Box>
       <Stack
         mt={"80px"}
+        paddingBottom={"50px"}
         direction={{ base: "column", md: "row" }}
         width={"90vw"}
-        height={'max-content'}
+        height={"max-content"}
         justifyContent={"space-between"}
         mx={"auto"}
       >

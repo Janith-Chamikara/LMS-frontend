@@ -93,7 +93,7 @@ const CustomAcccordionItem: FC<Content> = ({
         ) : (
           <AccordionPanel>
             <Box position={"relative"}>
-              <Box  className="tw-shadow-[0px_0px_9px_4px_#319795]">
+              <Box height={'50vh'}  className="tw-shadow-[0px_0px_9px_4px_#319795]">
                 <Image src={videoThumbnail} width={"100%"} height={"100%"} />
               </Box>
 

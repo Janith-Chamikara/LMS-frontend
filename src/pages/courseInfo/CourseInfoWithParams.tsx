@@ -3,10 +3,14 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Skeleton,
   SkeletonText,
   Stack,
+  Tag,
+  TagLabel,
   Text,
+  Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FC, useState } from "react";
@@ -94,7 +98,7 @@ const CourseInfoWithParams: FC = () => {
             <Text>{course?.description}</Text>
           </SkeletonText>
           <Stack
-            direction={"row"}
+            direction={{ base: "column", lg: "row" }}
             justifyContent={{ base: "center", lg: "space-between" }}
             alignItems={"center"}
           >
@@ -105,12 +109,13 @@ const CourseInfoWithParams: FC = () => {
               gap={"10px"}
             >
               {course?.ratings && (
-                <SkeletonText
-                  display={{ base: "none", lg: "block" }}
-                  isLoaded={!isLoading}
-                >
-                  <Text fontWeight={"bold"} fontStyle={"italic"}>
-                    {course?.ratings} stars
+                <SkeletonText isLoaded={!isLoading}>
+                  <Text
+                    fontWeight={"bold"}
+                    fontSize={{ base: "sm", md: "md" }}
+                    fontStyle={"italic"}
+                  >
+                    {course?.ratings} stars rating
                   </Text>
                 </SkeletonText>
               )}
@@ -118,7 +123,7 @@ const CourseInfoWithParams: FC = () => {
                 <SkeletonText isLoaded={!isLoading}>
                   <Text
                     fontWeight={"bold"}
-                    display={{ base: "none", lg: "block" }}
+                    fontSize={{ base: "sm", md: "md" }}
                     fontStyle={"italic"}
                   >
                     {course?.reviews.length} reviews
@@ -127,23 +132,52 @@ const CourseInfoWithParams: FC = () => {
               )}
             </Stack>
             {course?.purchased && (
-              <SkeletonText
-                isLoaded={!isLoading}
-                display={{ base: "none", lg: "block" }}
-              >
-                <Text fontWeight={"bold"} fontStyle={"italic"}>
+              <SkeletonText isLoaded={!isLoading}>
+                <Text
+                  fontSize={{ base: "sm", md: "md" }}
+                  fontWeight={"bold"}
+                  fontStyle={"italic"}
+                >
                   Count of orders - {course?.purchased}
                 </Text>
               </SkeletonText>
             )}
             {course?.createdBy && (
               <SkeletonText isLoaded={!isLoading}>
-                <Text fontWeight={"bold"} fontStyle={"italic"}>
-                  Created By - {course?.createdBy.name}
-                </Text>
+                <Tooltip
+                  hasArrow
+                  padding={"10px"}
+                  label={<Image src={course?.createdBy.url} />}
+                >
+                  <Text
+                    fontSize={{ base: "sm", md: "md" }}
+                    fontWeight={"bold"}
+                    fontStyle={"italic"}
+                  >
+                    Created By - {course?.createdBy.name}
+                  </Text>
+                </Tooltip>
               </SkeletonText>
             )}
           </Stack>
+          {course?.tags && (
+            <Flex alignItems={"center"} mt={"20px"}>
+              <SkeletonText isLoaded={!isLoading}>
+                <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
+                  {course.tags.map((tag: object) => (
+                    <Tag
+                      key={tag}
+                      rounded="full"
+                      variant="subtle"
+                      colorScheme="teal"
+                    >
+                      <TagLabel>{tag.tag}</TagLabel>
+                    </Tag>
+                  ))}
+                </Flex>
+              </SkeletonText>
+            </Flex>
+          )}
           <Stack
             mt={"80px"}
             direction={"column"}

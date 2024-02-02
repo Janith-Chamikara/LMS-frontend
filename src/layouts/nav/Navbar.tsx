@@ -24,7 +24,6 @@ import CustomButton from "../../components/CustomButton";
 import Footer from "../../components/footer/Footer";
 import useProfileContext from "../../hooks/useProfileContext";
 import NavbarMobile from "./NavbarMobile";
-import useAuthContext from "../../hooks/useAuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
 
@@ -97,22 +96,24 @@ const NavbarForBiggerScreens: FC = () => {
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={"full"}
-                  variant={"link"}
-                  cursor={"pointer"}
-                  minW={0}
-                  display={{ base: "none", lg: "flex" }}
-                >
-                  <Avatar
-                    size="sm"
-                    showBorder={true}
-                    borderColor="green.400"
-                    name="avatar"
-                    src={profile && profile?.url}
-                  />
-                </MenuButton>
+                {profile && (
+                  <MenuButton
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                    display={{ base: "none", lg: "flex" }}
+                  >
+                    <Avatar
+                      size="sm"
+                      showBorder={true}
+                      borderColor="green.400"
+                      name="avatar"
+                      src={profile && profile?.url}
+                    />
+                  </MenuButton>
+                )}
                 <MenuList
                   border={"2px"}
                   zIndex={"1000"}
@@ -126,7 +127,7 @@ const NavbarForBiggerScreens: FC = () => {
                       size="2xl"
                       showBorder={true}
                       className="tw-shadow-[0px_0px_18px_0px_#39D6B5F7]"
-                      name="avatar"
+                      name={profile && profile.name}
                       src={profile && profile?.url}
                     />
                   </Center>
