@@ -138,7 +138,7 @@ export const courseSchema = z.object({
   courseDescription: z
     .string()
     .min(40, { message: "Description is way too small." })
-    .max(300, { message: "Desription is way too large" }),
+    .max(3000, { message: "Desription is way too large" }),
   coursePrice: z.string().min(1, { message: "Course price is required." }),
   courseEstimatedPrice: z.string(),
   thumbnail: thumbnailSchema,

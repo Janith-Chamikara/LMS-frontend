@@ -33,6 +33,7 @@ type courseType = {
 
 type CourseCardProps = {
   course: courseType;
+  noNeedDescription?:boolean;
   isLoading?: boolean;
   isOneButton?: boolean;
   buttonTitle?: string;
@@ -42,6 +43,7 @@ const CourseCard: FC<CourseCardProps> = ({
   course,
   isLoading,
   isOneButton,
+  noNeedDescription,
   buttonTitle,
 }) => {
   const [newToast] = useToastHook();
@@ -113,8 +115,8 @@ const CourseCard: FC<CourseCardProps> = ({
 
             <Stack mt="6" spacing="3">
               <Heading size="md">{course?.name}</Heading>
-              <Text>{course?.description}</Text>
-              <Text color="blue.600" fontSize="2xl">
+              {!noNeedDescription && <Text fontSize={"sm"}>{course?.description}</Text>}
+              <Text className="tw-font-extrabold tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500" fontSize="2xl">
                 ${course?.price}
               </Text>
             </Stack>

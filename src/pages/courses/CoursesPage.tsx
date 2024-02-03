@@ -42,7 +42,6 @@ const CoursesPage: FC = () => {
       <Heading textAlign={"center"}>
         Over 100+ Courses.Pick favourite and start learning
       </Heading>
-      <Box></Box>
       <SearchBar />
       <Flex
         direction={"row"}

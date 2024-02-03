@@ -43,7 +43,7 @@ const UploadCoursePage: FC = () => {
     register,
     watch,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitSuccessful },
     handleSubmit,
     setValue,
   } = useForm({ resolver: zodResolver(courseSchema) });
@@ -143,8 +143,8 @@ const UploadCoursePage: FC = () => {
         <Button
           colorScheme="teal"
           onClick={activeStep === 3 ? handleSubmit(onSubmit) : goToNext}
-          isDisabled={activeStep === 3 ? isSubmitting : false}
-          isLoading={isSubmitting}
+          isDisabled={activeStep === 3 ? isSubmitSuccessful : false}
+          isLoading={isLoading}
           loadingText="Creating Course"
           variant={"solid"}
         >

@@ -162,8 +162,13 @@ const CourseInfo: FC = () => {
               <SkeletonText isLoaded={!isLoading}>
                 <Tooltip
                   hasArrow
-                  padding={'10px'}
-                  label={<Image className="tw-shadow-[0px_0px_18px_0px_#39D6B5F7]" src={course.createdBy.url} />}
+                  padding={"10px"}
+                  label={
+                    <Image
+                      className="tw-shadow-[0px_0px_18px_0px_#39D6B5F7]"
+                      src={course.createdBy.url}
+                    />
+                  }
                 >
                   <Text
                     fontSize={{ base: "sm", md: "md" }}
@@ -343,12 +348,11 @@ const CourseInfo: FC = () => {
           position={"fixed"}
           right={"10px"}
           top="16"
-          pb={"500px"}
           zIndex={"500"}
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>
-            <CourseCard course={course} isLoading={loading} />
+            <CourseCard  course={course} isLoading={loading} />
           </Skeleton>
         </Box>
       </Flex>

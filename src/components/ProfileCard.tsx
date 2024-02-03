@@ -21,9 +21,9 @@ type ProfileCardProps = {
 const ProfileCard: FC<ProfileCardProps> = ({ name, email, url, id }) => {
   return (
     <>
-      <Card direction={{ base: "column", lg: "row" }} variant="filled">
-        <Image borderLeftRadius={"xl"} objectFit="cover" width={"30%"} display={{base:"none",lg:"block"}} src={url} alt="Profile image" />
-        <Flex pt={"50px"} justifyContent={"center"} alignItems={"center"}>
+      <Card direction={{ base: "column", lg: "row" }} variant="filled" >
+        <Image className="tw-shadow-[4px_4px_10px_0px_#319795]" borderLeftRadius={"xl"} objectFit="cover" width={"30%"} display={{base:"none",lg:"block"}} src={url} alt="Profile image" />
+        <Flex pt={"50px"} className="tw-shadow-[4px_4px_10px_0px_#319795]" justifyContent={"center"} alignItems={"center"}>
         <Avatar
           display={{base:"block",lg:'none'}}
           size={"xl"}
@@ -34,7 +34,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ name, email, url, id }) => {
           src={url}
         /></Flex>
 
-        <Stack width={"100%"}>
+        <Stack width={"100%"} className="tw-shadow-[4px_4px_10px_0px_#319795]">
           <CardBody>
             <Heading size="md">Welcome , {name}</Heading>
             <Flex mt={"10px"} gap={"5px"} direction={"column"} fontSize={{ base: "sm", md: "md" }}>
