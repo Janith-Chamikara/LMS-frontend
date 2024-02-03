@@ -27,9 +27,12 @@ import useAuthContext from "../../hooks/useAuthContext";
 import { convertToBase64 } from "../../utils/utils";
 import useToastHook from "../../hooks/useToast";
 import UploadWidget from "../../components/uploadAssests/UploadWidget.tsx";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate.tsx";
 
 const UploadCoursePage: FC = () => {
   const [demoUrl, setDemoUrl] = useState<string>("");
+  const axiosPrivate = useAxiosPrivate();
+  const [isLoading, setIsLoading] = useState(false);
   const [sectionUrls, setSectionUrls] = useState<string[]>([]);
   console.log(demoUrl, sectionUrls);
   const { activeStep, goToNext, goToPrevious } = useSteps({
@@ -46,8 +49,10 @@ const UploadCoursePage: FC = () => {
   } = useForm({ resolver: zodResolver(courseSchema) });
   const { auth } = useAuthContext();
   const [newToast] = useToastHook();
+
   const onSubmit = async (data: FieldValues) => {
     try {
+      setIsLoading(true);
       console.log(data);
       const file = await convertToBase64(data.thumbnail["0"]);
       const courseSectionPromises = data.courseSections.map(async (section) => {
@@ -70,21 +75,24 @@ const UploadCoursePage: FC = () => {
         estimatedPrice: data.courseEstimatedPrice,
         thumbnail: file,
         tags: data.tags,
+        user: {
+          name: auth?.name,
+          email: auth?.email,
+        },
         level: data.level,
         demoUrl: demoUrl,
         benifits: data.courseBenifits,
         preRequisties: data.preRequirement,
         courseInfo: courseSectionsUpdated,
       };
-      const response = await axios.post("/courses/create", reqData, {
-        headers: {
-          Authorization: `Bearer ${auth?.accessToken}`,
-        },
-      });
+
+      const response = await axiosPrivate.post("/courses/create", reqData);
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -135,7 +143,9 @@ const UploadCoursePage: FC = () => {
         <Button
           colorScheme="teal"
           onClick={activeStep === 3 ? handleSubmit(onSubmit) : goToNext}
-          disabled={activeStep === 3 ? isSubmitting : false}
+          isDisabled={activeStep === 3 ? isSubmitting : false}
+          isLoading={isSubmitting}
+          loadingText="Creating Course"
           variant={"solid"}
         >
           {activeStep === 3 ? "Submit" : "Next"}
