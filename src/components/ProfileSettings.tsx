@@ -1,4 +1,4 @@
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import useProfileContext from "../hooks/useProfileContext";
 import NavbarMobile from "../layouts/nav/NavbarMobile";
@@ -38,10 +38,18 @@ const ProfileSettings: FC = () => {
   //   };
   // }, []);
   const [data, isLoading] = useFetchData(`/auth/${profile.id}`);
-  console.log("renderd");
   // const sectionRefs = useRef<HTMLDivElement[]>(Array(3).fill(null));
   // console.log(sectionRefs.current);
-
+  const [name, setName] = useState();
+  const [img , setImg] = useState()
+  useEffect(()=>{
+    if(data?.user?.name){
+      setName(data.user.name)
+    }
+    if(data?.user?.avatar?.url){
+      setImg(data.user.avatar.url)
+    }
+  },[data])
   const handleNavItemClick = (index: number) => {
     console.log(index);
     const targetSection = sectionRefs.current[index];
@@ -58,8 +66,10 @@ const ProfileSettings: FC = () => {
         {
           <Flex height={isLoading ? "60vh" : {base:"max-content",md:"60vh"}} justifyContent={"center"} alignItems={"center"}>
             <ProfileCard
-              name={data?.user?.name}
-              url={data?.user?.avatar?.url}
+              setName={setName}
+              setImg={setImg}
+              name={name}
+              url={img}
               id={data?.user?._id}
               email={data?.user?.email}
             />

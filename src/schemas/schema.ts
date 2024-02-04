@@ -43,6 +43,12 @@ export const resetPasswordSchema = z
 export const emailSchema = z.object({
   email: z.string().email().min(1, { message: "Your email is required" }),
 });
+export const nameSchema = z.object({
+  newName: z.string().min(1, { message: "Your new name is required" }),
+});
+export const avatarSchema = z.object({
+  avatar: thumbnailSchema,
+});
 
 export const signUpSchema = z
   .object({
