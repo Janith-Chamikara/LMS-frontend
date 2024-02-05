@@ -18,6 +18,7 @@ import { ZodSchema } from "zod";
 import useToastHook from "../hooks/useToast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { convertToBase64 } from "../utils/utils";
+import useProfileContext from "../hooks/useProfileContext";
 type Props = {
   type: string;
   name: string;
@@ -40,7 +41,6 @@ const UpdateProfileInfoModal: FC<Props> = ({
   name,
   placeHolderText,
   field,
-  onSubmit,
   buttonTitle,
 }) => {
   const {
@@ -49,6 +49,7 @@ const UpdateProfileInfoModal: FC<Props> = ({
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm({ resolver: zodResolver(schema) });
   const initialRef = useRef(null);
+  const { setProfile } = useProfileContext();
   const [newToast] = useToastHook();
   const finalRef = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -60,6 +61,7 @@ const UpdateProfileInfoModal: FC<Props> = ({
         name: data.newName,
       });
       setName(response.data.name);
+      setProfile((pv:object) => ({ ...pv, name:data.newName}));
       newToast({ message: response.data.message, condition: "success" });
     } catch (error) {
       newToast({ message: error.response.data.message, condition: "error" });
@@ -72,6 +74,7 @@ const UpdateProfileInfoModal: FC<Props> = ({
         avatar: file,
       });
       setImg(response.data.newAvatar.url);
+      setProfile((pv:object) => ({ ...pv, url:response.data.newAvatar.url}));
       newToast({ message: response.data.message, condition: "success" });
     } catch (error) {
       newToast({ message: error.response.data.message, condition: "error" });

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import {
   Button,
   Input,
@@ -13,7 +13,12 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
-const SearchBar: FC = () => {
+type params = {
+  inputText:string | undefined;
+  onClick:(e:object)=>void;
+  setInputText:Dispatch<SetStateAction<string | undefined>>
+}
+const SearchBar: FC<params> = ({inputText,onClick, setInputText}) => {
   return (
     <>
       <InputGroup borderRadius={0} size="lg">
@@ -23,19 +28,22 @@ const SearchBar: FC = () => {
         />
         <Input
           type="text"
+          value={inputText}
+          onChange={onClick}
           placeholder="Search any course"
           border="1px solid #949494"
         />
         <InputRightAddon p={0}>
-          <Button
+          {/* <Button
             borderRadius={0}
+            onClick={onClick}
             height={"100%"}
             variant={"solid"}
             colorScheme="teal"
             borderLeftRadius={0}
           >
             Search
-          </Button>
+          </Button> */}
           <Menu>
             <MenuButton
               borderLeftRadius={0}
@@ -44,7 +52,7 @@ const SearchBar: FC = () => {
               variant={"outline"}
               colorScheme="teal"
             >
-              Sort <ChevronDownIcon />
+              Filter <ChevronDownIcon />
             </MenuButton>
             <Portal>
               <MenuList>

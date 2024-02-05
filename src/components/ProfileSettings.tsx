@@ -1,11 +1,8 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useProfileContext from "../hooks/useProfileContext";
-import NavbarMobile from "../layouts/nav/NavbarMobile";
-import { profileOptions } from "../layouts/nav/navItems";
 import ProfileCard from "./ProfileCard";
-import { Box, Button, Flex, Heading, Skeleton } from "@chakra-ui/react";
-import CourseCard from "./CourseCard";
+import { Flex, Skeleton } from "@chakra-ui/react";
 import useFetchData from "../hooks/useFetchData";
 
 const ProfileSettings: FC = () => {
@@ -64,7 +61,7 @@ const ProfileSettings: FC = () => {
     <>
       <Skeleton isLoaded={!isLoading}>
         {
-          <Flex height={isLoading ? "60vh" : {base:"max-content",md:"60vh"}} justifyContent={"center"} alignItems={"center"}>
+          <Flex height={isLoading ? "60vh" : {base:"max-content",md:"60vh"}} justifyContent={"center"} alignItems={"center"} mt="50px">
             <ProfileCard
               setName={setName}
               setImg={setImg}
