@@ -69,7 +69,7 @@ const AnimatedText: FC<AnimatedTextProps> = ({
         variants={{
           visible: {
             transition: {
-              staggerChildren: 0.1,
+              staggerChildren: 0.06,
             },
           },
           hidden: {},

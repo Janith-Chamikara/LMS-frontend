@@ -18,6 +18,11 @@ export const panalItems: itemsType[] = [
     icon: MdOutlineDashboard,
   },
   {
+    name: "Notifications",
+    url: "notifications",
+    icon: MdOutlineNotificationsActive,
+  },
+  {
     name: "Manage courses",
     url: "manageCourses",
     icon: FaBookOpenReader,
@@ -42,9 +47,5 @@ export const panalItems: itemsType[] = [
     url: "upadateHeroImage",
     icon: RiImageEditFill,
   },
-  {
-    name: "Notifications",
-    url: "notifications",
-    icon: MdOutlineNotificationsActive,
-  },
+  
 ];

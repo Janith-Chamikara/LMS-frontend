@@ -65,7 +65,7 @@
 
 // export default DataGrid;
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useFetchData from "../hooks/useFetchData";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
@@ -89,20 +89,21 @@ import {
 import useToastHook from "../hooks/useToast";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateCourseSchema } from "../schemas/schema";
+import { updateCourseSchema, updateUserRoleSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
 import AvatarRenderer from "./AvatarRenderer";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const UsersGrid: FC = () => {
-  const axiosPrivate = useAxiosPrivate()
+  const axiosPrivate = useAxiosPrivate();
   const {
     formState: { errors, isSubmitting, isSubmitSuccessful },
     register,
     handleSubmit,
-  } = useForm({ resolver: zodResolver(updateCourseSchema) });
+  } = useForm({ resolver: zodResolver(updateUserRoleSchema) });
   const [selectedUser, setSelectedUser] = useState({
-    id: null,
+    id: "",
+    index: undefined,
     role: "",
     name: "",
   });
@@ -123,7 +124,7 @@ const UsersGrid: FC = () => {
       newToast({ message: error.data.message, condition: "error" });
     }
   };
-  const updateUserRole = async (data:FieldValues) => {
+  const updateUserRole = async (data: FieldValues) => {
     console.log(data);
     const { role } = data;
     try {
@@ -131,10 +132,16 @@ const UsersGrid: FC = () => {
         `/auth/admin/update-user-role/${selectedUser.id}`,
         {
           role,
+          id:selectedUser.id
         }
       );
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
+      setRowData([
+        ...rowData.slice(0, selectedUser.index),
+        {...response.data.updatedUser,avatar:response.data.updatedUser.avatar.url,courses: response.data.updatedUser.courses.map((course) => course.course_id)},
+        ...rowData.slice(selectedUser.index + 1),
+      ]);
     } catch (error) {
       console.log(error);
       newToast(error.data.message);
@@ -146,31 +153,39 @@ const UsersGrid: FC = () => {
     setSelectedUser({
       id: params.data._id,
       name: params.data.name,
+      index: params.rowIndex,
       role: params.data.roles,
     });
   };
   const [colDefs, setColDefs] = useState([
     { field: "avatar", cellRenderer: AvatarRenderer },
-    { field: "name",filter:true },
-    { field: "_id", headerName: "User ID",filter:true },
-    { field: "email",filter:true },
-    { field: "roles", headerName: "User Role",filter:true },
+    { field: "name", filter: true },
+    { field: "_id", headerName: "User ID", filter: true },
+    { field: "email", filter: true },
+    { field: "roles", headerName: "User Role", filter: true },
     { field: "createdAt" },
     { field: "updatedAt" },
     { field: "courses", headerName: "Paid Courses" },
   ]);
   const [data] = useFetchData("/auth/admin/get-all-users");
+  const [rowData, setRowData] = useState<Array<object>>();
+  useEffect(() => {
+    if (data) {
+      setRowData(
+        data?.users?.map((item) => ({
+          name: item.name,
+          _id: item._id,
+          email: item.email,
+          roles: item.roles,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
+          avatar: item.avatar.url,
+          courses: item.courses.map((course) => course.course_id),
+        }))
+      );
+    }
+  }, [data]);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const rowData = data?.users?.map((item) => ({
-    name: item.name,
-    _id: item._id,
-    email: item.email,
-    roles: item.roles,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-    avatar: item.avatar.url,
-    courses: item.courses.map((course) => course.course_id),
-  }));
 
   const color = useColorModeValue("ag-theme-quartz", "ag-theme-quartz-dark");
   return (
@@ -180,14 +195,17 @@ const UsersGrid: FC = () => {
       className={color}
       width={"99vw"}
       height={"90vh"}
-    ><Heading fontSize={'4xl'} mb={'2'}>Manage Users</Heading>
+    >
+      <Heading fontSize={"4xl"} mb={"2"}>
+        Manage Users
+      </Heading>
       <Flex my={"10px"} justify={"center"} alignItems={"center"}>
         <Button colorScheme="yellow" width={"100%"} onClick={onOpen}>
           Select row and click here to update data
         </Button>
       </Flex>
       <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay backdropFilter={'auto'} backdropBlur={'8px'}/>
+        <ModalOverlay backdropFilter={"auto"} backdropBlur={"8px"} />
         <ModalContent>
           {selectedUser.id ? (
             <>

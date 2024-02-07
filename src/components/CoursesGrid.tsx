@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useFetchData from "../hooks/useFetchData";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
@@ -26,10 +26,10 @@ import { updateCourseSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
 import { convertToBase64 } from "../utils/utils";
 import AvatarRenderer from "./AvatarRenderer";
-import { unknown } from "zod";
+
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 const CoursesGrid: FC = () => {
-  const axiosPrivate = useAxiosPrivate()
+  const axiosPrivate = useAxiosPrivate();
   const {
     formState: { errors, isSubmitting, isSubmitSuccessful },
     register,
@@ -37,6 +37,7 @@ const CoursesGrid: FC = () => {
   } = useForm({ resolver: zodResolver(updateCourseSchema) });
   const [currentCourse, setCurrentCourse] = useState({
     id: "",
+    index: undefined,
     name: "",
     level: "",
     thumbnail: "",
@@ -56,6 +57,11 @@ const CoursesGrid: FC = () => {
       console.log(isDeleting);
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
+      setRowData([
+        ...rowData.slice(0, currentCourse.index),
+
+        ...rowData.slice(currentCourse.index + 1),
+      ]);
     } catch (error) {
       newToast({ message: error.data.message, condition: "error" });
     }
@@ -76,6 +82,14 @@ const CoursesGrid: FC = () => {
       );
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
+      setRowData([
+        ...rowData.slice(0, currentCourse.index),
+        {
+          ...response.data.updatedCourse,
+          thumbnail: response.data.updatedCourse.thumbnail?.url,
+        },
+        ...rowData.slice(currentCourse.index + 1),
+      ]);
     } catch (error: unknown) {
       console.log(error);
       newToast(error.data.message);
@@ -86,6 +100,7 @@ const CoursesGrid: FC = () => {
     console.log(params);
     setCurrentCourse({
       id: params.data._id,
+      index: params.rowIndex,
       name: params.data.name,
       level: params.data.level,
       thumbnail: params.data.thumbnail,
@@ -94,25 +109,33 @@ const CoursesGrid: FC = () => {
   const [colDefs, setColDefs] = useState([
     { field: "thumbnail", cellRenderer: AvatarRenderer },
     {
-      field: "name",filter:true
+      field: "name",
+      filter: true,
     },
-    { field: "_id", headerName: "Course ID",filter:true },
+    { field: "_id", headerName: "Course ID", filter: true },
     { field: "price" },
     { field: "createdAt" },
     { field: "updatedAt" },
     { field: "level" },
   ]);
   const [data] = useFetchData("/courses/auth/admin/get-all-courses");
+  const [rowData, setRowData] = useState<Array<object>>();
+  useEffect(() => {
+    if (data) {
+      setRowData(
+        data.courses.map((course) => ({
+          name: course.name,
+          _id: course._id,
+          price: course.price,
+          createdAt: course.createdAt,
+          updatedAt: course.updatedAt,
+          thumbnail: course.thumbnail?.url,
+          level: course.level,
+        }))
+      );
+    }
+  }, [data]);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const rowData = data?.courses?.map((course) => ({
-    name: course.name,
-    _id: course._id,
-    price: course.price,
-    createdAt: course.createdAt,
-    updatedAt: course.updatedAt,
-    thumbnail: course.thumbnail?.url,
-    level: course.level,
-  }));
 
   const color = useColorModeValue("ag-theme-quartz", "ag-theme-quartz-dark");
   return (
@@ -122,14 +145,17 @@ const CoursesGrid: FC = () => {
       className={color}
       width={"99vw"}
       height={"90vh"}
-    ><Heading fontSize={'4xl'} mb={'2'}>Manage Courses</Heading>
+    >
+      <Heading fontSize={"4xl"} mb={"2"}>
+        Manage Courses
+      </Heading>
       <Flex my={"10px"} justify={"center"} alignItems={"center"}>
         <Button colorScheme="yellow" width={"100%"} onClick={onOpen}>
           Select row and click here to update data
         </Button>
       </Flex>
       <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay  backdropFilter={'auto'} backdropBlur={'8px'}/>
+        <ModalOverlay backdropFilter={"auto"} backdropBlur={"8px"} />
         <ModalContent>
           {currentCourse.id ? (
             <>

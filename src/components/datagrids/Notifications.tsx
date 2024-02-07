@@ -12,6 +12,7 @@ const Notifiactions: FC = () => {
     {
       field: "title",
       headerName: "Notification title",
+      filter: true
     },
     {
       field: "_id",
@@ -20,13 +21,16 @@ const Notifiactions: FC = () => {
     {
       field: "message",
       headerName: "Notification",
+      filter: true
     },
     {
       field: "date",
+      filter: true
     },
     {
       field: "status",
       headerName: "Notification status",
+      filter: true
     },
   ]);
   const autoSizeStrategy = {

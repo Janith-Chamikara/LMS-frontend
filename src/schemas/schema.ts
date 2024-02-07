@@ -178,12 +178,13 @@ export const courseSchema = z.object({
 });
 
 export const updateCourseSchema = z.object({
-  name: z.string().min(1, { message: "New course Name is required." }),
-  level: z.string().min(1, { message: "New Course level is required." }),
-  price: z.string().min(1, { message: "Course price is required." }),
-  estimatedPrice: z
-    .string()
-    .min(1, { message: "Course Estimated price is required." }),
+  name: z.string().optional(),
+  // .min(1, { message: "New course Name is required." }),
+  level: z.string().optional(),
+  // .min(1, { message: "New Course level is required." }),
+  price: z.string().optional(),
+  estimatedPrice: z.string().optional(),
+  // .min(1, { message: "Course Estimated price is required." }),
   thumbnail: thumbnailSchema,
 });
 export const updateUserRoleSchema = z.object({
