@@ -117,11 +117,16 @@ const UsersGrid: FC = () => {
       const response = await axiosPrivate.delete(
         `/auth/admin/delete-a-user/${selectedUser.id}`
       );
-      setIsDeleting(false);
+
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
+      setRowData([
+        ...rowData.slice(0, selectedUser.index),
+        ...rowData.slice(selectedUser.index + 1),
+      ]);
+      setIsDeleting(false);
     } catch (error) {
-      newToast({ message: error.data.message, condition: "error" });
+      newToast({ message: error.response.data.message, condition: "error" });
     }
   };
   const updateUserRole = async (data: FieldValues) => {
@@ -132,19 +137,25 @@ const UsersGrid: FC = () => {
         `/auth/admin/update-user-role/${selectedUser.id}`,
         {
           role,
-          id:selectedUser.id
+          id: selectedUser.id,
         }
       );
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
       setRowData([
         ...rowData.slice(0, selectedUser.index),
-        {...response.data.updatedUser,avatar:response.data.updatedUser.avatar.url,courses: response.data.updatedUser.courses.map((course) => course.course_id)},
+        {
+          ...response.data.updatedUser,
+          avatar: response.data.updatedUser.avatar.url,
+          courses: response.data.updatedUser.courses.map(
+            (course) => course.course_id
+          ),
+        },
         ...rowData.slice(selectedUser.index + 1),
       ]);
     } catch (error) {
       console.log(error);
-      newToast(error.data.message);
+      newToast(error.response.data.message);
     }
   };
 
@@ -253,7 +264,7 @@ const UsersGrid: FC = () => {
                   type="submit"
                   disabled={isSubmitSuccessful}
                   isLoading={isSubmitting}
-                  loadingText={"Updating Course"}
+                  loadingText={"Updating User"}
                   onClick={handleSubmit(updateUserRole)}
                   colorScheme="blue"
                   mr={3}
@@ -264,8 +275,8 @@ const UsersGrid: FC = () => {
                 <Button
                   type="button"
                   disabled={isSubmitSuccessful}
-                  isLoading={isDeleting}
-                  loadingText={"Deleting Course"}
+                  isLoading={isSubmitting}
+                  loadingText={"Deleting User"}
                   onClick={deleteUser}
                   colorScheme="red"
                   mr={3}

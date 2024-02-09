@@ -38,15 +38,15 @@ const ProfileSettings: FC = () => {
   // const sectionRefs = useRef<HTMLDivElement[]>(Array(3).fill(null));
   // console.log(sectionRefs.current);
   const [name, setName] = useState();
-  const [img , setImg] = useState()
-  useEffect(()=>{
-    if(data?.user?.name){
-      setName(data.user.name)
+  const [img, setImg] = useState();
+  useEffect(() => {
+    if (data?.user?.name) {
+      setName(data.user.name);
     }
-    if(data?.user?.avatar?.url){
-      setImg(data.user.avatar.url)
+    if (data?.user?.avatar?.url) {
+      setImg(data.user.avatar.url);
     }
-  },[data])
+  }, [data]);
   const handleNavItemClick = (index: number) => {
     console.log(index);
     const targetSection = sectionRefs.current[index];
@@ -61,7 +61,12 @@ const ProfileSettings: FC = () => {
     <>
       <Skeleton isLoaded={!isLoading}>
         {
-          <Flex height={isLoading ? "60vh" : {base:"max-content",md:"60vh"}} justifyContent={"center"} alignItems={"center"} mt="50px">
+          <Flex
+            height={isLoading ? "60vh" : { base: "max-content", md: "60vh" }}
+            justifyContent={"center"}
+            alignItems={"center"}
+            mt="50px"
+          >
             <ProfileCard
               setName={setName}
               setImg={setImg}

@@ -25,7 +25,7 @@ const Notifiactions: FC = () => {
     },
     {
       field: "date",
-      filter: true
+      filter: true,
     },
     {
       field: "status",
@@ -86,7 +86,7 @@ const Notifiactions: FC = () => {
       paddingX={"20px"}
       mb={"20px"}
       className={color}
-      width={"99vw"}
+      width={"100%"}
       height={"90vh"}
     >
       <Heading fontSize={"4xl"} mb={"2"}>
