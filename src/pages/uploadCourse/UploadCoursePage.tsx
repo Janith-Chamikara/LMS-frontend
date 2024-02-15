@@ -30,6 +30,7 @@ import UploadWidget from "../../components/uploadAssests/UploadWidget.tsx";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate.tsx";
 
 const UploadCoursePage: FC = () => {
+  const {profile} = useProfileContext();
   const [demoUrl, setDemoUrl] = useState<string>("");
   const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(false);
@@ -75,8 +76,9 @@ const UploadCoursePage: FC = () => {
         estimatedPrice: data.courseEstimatedPrice,
         thumbnail: file,
         tags: data.tags,
-        user: {
+        createdBy: {
           name: auth?.name,
+          url:profile.url,
           email: auth?.email,
         },
         level: data.level,
@@ -92,7 +94,9 @@ const UploadCoursePage: FC = () => {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      newToast({message:error.response.data.message, condition:"error"})
       setIsLoading(false);
+
     }
   };
 
@@ -522,7 +526,7 @@ const Section: FC<FormProps> = ({
           control={control}
           errors={errors}
           fieldName={`courseSections.${index}.links`}
-          propertyName="link"
+          propertyName="url"
           placeHolder="Add links here"
           register={register}
         />

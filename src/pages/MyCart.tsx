@@ -53,7 +53,7 @@ const MyCart: FC = () => {
             My Cart :
           </Heading>
           {(coursesData?.courses?.length === 0 || !coursesData?.courses) && (
-            <Text>Your cary is empty right now</Text>
+            <Text>Your cart is empty right now</Text>
           )}
           {(coursesData?.courses?.length !== 0 && coursesData?.courses) && (
             <SearchBar />

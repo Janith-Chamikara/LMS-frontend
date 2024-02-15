@@ -16,6 +16,7 @@ import { ImCheckmark } from "react-icons/im";
 import VideoPlayer from "./VideoPlayer";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
 import { FaLock } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 export type Content = {
   title: string;
   index: number;
@@ -24,7 +25,7 @@ export type Content = {
   videoTitle?: string;
   videoSrc?: string;
   description?: string;
-  subTopics?: string[];
+  links?: object[];
 };
 
 const CustomAcccordionItem: FC<Content> = ({
@@ -34,7 +35,7 @@ const CustomAcccordionItem: FC<Content> = ({
   videoTitle,
   videoSrc,
   videoThumbnail,
-  subTopics,
+  links,
 }) => {
   const { status } = useCourseStatusContext();
   const color = useColorModeValue("gray.300", "gray.600");
@@ -77,23 +78,38 @@ const CustomAcccordionItem: FC<Content> = ({
               </Box>
             )}
 
-            {subTopics &&
-              subTopics.map((subTopic, index) => (
-                <Stack
-                  key={index}
-                  direction={"row"}
-                  gap={"10px"}
-                  alignItems={"center"}
+            {links && (
+              <>
+                <Text
+                  fontStyle={"italic"}
+                  fontWeight={"semibold"}
+                  textDecorationLine={"underline"}
                 >
-                  <Icon as={ImCheckmark} w={8} color="green.300" />
-                  <Text fontWeight={"semibold"}>{subTopic}</Text>
-                </Stack>
-              ))}
+                  Related study materials
+                </Text>
+                <Flex direction="column">
+                  {links.map((link, index) => (
+                    <Text
+                      as={Link}
+                      fontSize={{ base: "sm" }}
+                      to={link.url}
+                      fontStyle={"italic"}
+                      _hover={{ color: "cyan.600" }}
+                    >
+                      {index + 1}.{link.url}
+                    </Text>
+                  ))}
+                </Flex>
+              </>
+            )}
           </Flex>
         ) : (
           <AccordionPanel>
             <Box position={"relative"}>
-              <Box height={'50vh'}  className="tw-shadow-[0px_0px_9px_4px_#319795]">
+              <Box
+                height={"50vh"}
+                className="tw-shadow-[0px_0px_9px_4px_#319795]"
+              >
                 <Image src={videoThumbnail} width={"100%"} height={"100%"} />
               </Box>
 

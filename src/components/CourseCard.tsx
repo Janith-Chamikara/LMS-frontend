@@ -103,7 +103,7 @@ const CourseCard: FC<CourseCardProps> = ({
               maxWidth={"sm"}
               overflow={"hidden"}
               borderRadius="lg"
-              maxHeight={"40vh"}
+              maxHeight={"30vh"}
             >
               <Image
                 src={course?.thumbnail?.url}

@@ -17,6 +17,7 @@ const CustomAccordion: FC<AccordionProps> = ({ contents }) => {
           videoThumbnail={content.videoThumbnail}
           videoSrc={content.videoUrl ? content.videoUrl : content.videoURL}
           key={index}
+          links = {content.links}
           title={content.section}
           description={content.videoDescription}
         />
