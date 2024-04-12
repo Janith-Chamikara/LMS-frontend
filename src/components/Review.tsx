@@ -6,15 +6,15 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { FC } from "react";
 import { ImStarFull } from "react-icons/im";
 import { FaQuoteLeft } from "react-icons/fa";
 
 
-type Review = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key:string]: any;
+type Props = {
+  review: object;
 };
-const Review = ({ review }:{review:Review}) => {
+const Review: FC<Props> = ({ review }) => {
   const color = useColorModeValue("gray.100", "gray.900");
   return (
     <>

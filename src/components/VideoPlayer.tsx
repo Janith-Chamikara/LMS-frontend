@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck 
 import { AspectRatio } from "@chakra-ui/react";
-import { FC, useEffect, useRef } from "react";
+import { CSSProperties, FC, useEffect, useRef } from "react";
 type VideoPlayerPrps = {
   width?: string | number | undefined;
   height?: string | number | undefined;

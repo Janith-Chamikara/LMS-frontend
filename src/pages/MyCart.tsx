@@ -4,18 +4,14 @@ import { Box, Flex, Heading, Skeleton, Text } from "@chakra-ui/react";
 import CourseCard from "../components/CourseCard";
 import SearchBar from "../components/SearchBar";
 import useProfileContext from "../hooks/useProfileContext";
-import { courseType } from "./courseInfo/CourseInfoWithParams";
-type cousrseData = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key : string]:any;
-}
+
 const MyCart: FC = () => {
   const { profile } = useProfileContext();
   // const [courses, setCourses] = useState();
   // const [coursesIsLoading, setCoursesIsLoading] = useState(true);
   // const axiosPrivate = useAxiosPrivate();
   const [coursesData, coursesDataIsLoading] = useFetchData(
-    `courses/get-cart-items/${profile?.id}`
+    `courses/get-cart-items/${profile.id}`
   );
   // useEffect(() => {
   //   const controller = new AbortController();
@@ -56,16 +52,11 @@ const MyCart: FC = () => {
           >
             My Cart :
           </Heading>
-<<<<<<< HEAD
-          {((coursesData as cousrseData)?.courses?.length === 0 || !(coursesData as cousrseData)?.courses) && (
-            <Text>Your cart is empty right now</Text>
-=======
           {(coursesData?.courses?.length === 0 || !coursesData?.courses) && (
-            <Text>Your cary is empty right now</Text>
->>>>>>> parent of 2b76085 (updated)
+            <Text>Your cart is empty right now</Text>
           )}
-          {((coursesData as cousrseData)?.courses?.length !== 0 && (coursesData as cousrseData)?.courses) && (
-            <SearchBar inputText="" onClick={()=>null} />
+          {(coursesData?.courses?.length !== 0 && coursesData?.courses) && (
+            <SearchBar />
           )}
           <Flex
             mt={"20px"}
@@ -76,12 +67,12 @@ const MyCart: FC = () => {
             gap={"20px"}
             width={"100%"}
           >
-            {(coursesData as cousrseData)?.courses?.map((course:courseType, index:number) => (
+            {coursesData?.courses?.map((course, index) => (
               <CourseCard
                 isOneButton={true}
                 buttonTitle="View Course"
                 key={index}
-                isLoading={coursesDataIsLoading as boolean}
+                isLoading={coursesDataIsLoading}
                 course={course}
               />
             ))}

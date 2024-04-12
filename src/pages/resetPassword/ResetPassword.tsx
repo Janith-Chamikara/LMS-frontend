@@ -9,7 +9,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import useToastHook from "../../hooks/useToast";
 import CustomLink from "../../components/CustomLink";
 import axios from "../../axios/axios";
-import { isAxiosError } from "axios";
 const ResetPassword: FC = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
@@ -46,7 +45,7 @@ const ResetPassword: FC = () => {
       newToast({ message: response.data.message, condition: "success" });
       setTimeout(() => navigate("/signIn"), 2000);
     } catch (error) {
-      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
+      newToast({ message: error.response.data.message, condition: "error" });
       setTimeout(() => navigate("/signIn"), 5000);
     }
   };

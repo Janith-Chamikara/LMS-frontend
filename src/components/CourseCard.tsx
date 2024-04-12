@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardFooter,
@@ -19,9 +20,16 @@ import { useNavigate } from "react-router-dom";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
 import useToastHook from "../hooks/useToast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { courseType } from "../pages/courseInfo/CourseInfoWithParams";
-import { isAxiosError } from "axios";
 
+type courseType = {
+  thumbnail: {
+    public_id: string;
+    url: string;
+  };
+  description: string;
+  name: string;
+  price: string;
+};
 
 type CourseCardProps = {
   course: courseType;
@@ -57,7 +65,7 @@ const CourseCard: FC<CourseCardProps> = ({
         body
       );
 
-      const result = await stripe?.redirectToCheckout({
+      const result = await stripe.redirectToCheckout({
         sessionId: response.data.id,
       });
       console.log(result);
@@ -75,7 +83,7 @@ const CourseCard: FC<CourseCardProps> = ({
       newToast({ message: response.data.message, condition: "success" });
       setCartButtonLoading(false);
     } catch (error) {
-      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
+      newToast({ message: error.response.data.message, condition: "error" });
       setCartButtonLoading(false);
     }
   };
@@ -95,7 +103,7 @@ const CourseCard: FC<CourseCardProps> = ({
               maxWidth={"sm"}
               overflow={"hidden"}
               borderRadius="lg"
-              maxHeight={"40vh"}
+              maxHeight={"30vh"}
             >
               <Image
                 src={course?.thumbnail?.url}

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import {
   Button,
   Input,
@@ -15,9 +15,10 @@ import {
 import { ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
 type params = {
   inputText:string | undefined;
-  onClick:(e:React.ChangeEvent<HTMLInputElement>)=>void;
+  onClick:(e:object)=>void;
+  setInputText:Dispatch<SetStateAction<string | undefined>>
 }
-const SearchBar: FC<params> = ({inputText,onClick}) => {
+const SearchBar: FC<params> = ({inputText,onClick, setInputText}) => {
   return (
     <>
       <InputGroup borderRadius={0} size="lg">
