@@ -5,6 +5,10 @@ import CustomButton from "../CustomButton";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
+type advantage = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key : string]:any;
+}
 type Width = {
 
   base:string;
@@ -16,13 +20,13 @@ type OfferProps = {
   propertyName?:string;
   price?: string;
   needButton?: boolean;
-  advantages: object[];
+  advantages: advantage[];
   width?:Width;
 };
 
 const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, needButton }) => {
   const color = useColorModeValue("gray.100", "gray.900");
-  console.log(advantages);
+
   return (
     <>
       <Stack
@@ -74,7 +78,7 @@ const Offer: FC<OfferProps> = ({ price,propertyName, tier, advantages,width, nee
               alignItems={"center"}
             >
               <Icon as={ImCheckmark} w={8} color="green.300" />
-              <Text fontWeight={"semibold"} textAlign={"left"} fontSize={{base:"sm",md:"md"}}>{advantage?.[propertyName]}</Text>
+              <Text fontWeight={"semibold"} textAlign={"left"} fontSize={{base:"sm",md:"md"}}>{advantage[propertyName as keyof typeof advantage]}</Text>
             </Stack>
           ))}
         </Stack>

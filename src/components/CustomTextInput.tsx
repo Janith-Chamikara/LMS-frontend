@@ -40,8 +40,6 @@ const CustomTextInput: FC<InputProps> = ({
   children,
   type,
   fieldName,
-  propertyName,
-  index,
   placeholder,
   name,
   flushed,
@@ -51,22 +49,23 @@ const CustomTextInput: FC<InputProps> = ({
 }) => {
   console.log(errors);
   // console.log(errors?.[fieldName]?.[index]?.[propertyName]?.message)
-  const isInvalid = useMemo(() => (name in errors || fieldName in errors), [errors, name]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const isInvalid = useMemo(() => (name in errors || (fieldName as string) in errors), [errors, name]);
   return (
     <FormControl isInvalid={isInvalid}>
       <FormLabel>{children}</FormLabel>
       <Input
         variant={flushed ? "flushed" : "filled"}
         type={type}
-        {...register(name as const)}
+        {...register(name as string)}
         placeholder={placeholder}
         isRequired={isRequired}
       />
       {errors[name] && (
-        <FormErrorMessage>{errors[name]?.message}</FormErrorMessage>
+        <FormErrorMessage>{`${errors?.[name as keyof typeof errors]?.message}`}</FormErrorMessage>
       )}
-      {(!errors[name] && errors[fieldName]) && (
-        <FormErrorMessage>{errors?.[fieldName]?.[index]?.[propertyName]?.message}</FormErrorMessage>
+      {(!errors[name] && errors[fieldName as keyof typeof errors]) && (
+        <FormErrorMessage>{`${errors?.[name as keyof typeof errors]?.message}`}</FormErrorMessage>
       )}
     </FormControl>
   );

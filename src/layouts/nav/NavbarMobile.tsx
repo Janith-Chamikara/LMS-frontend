@@ -24,6 +24,7 @@ import useProfileContext from "../../hooks/useProfileContext";
 import { Link, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
+import { isAxiosError } from "axios";
 type NavbarProps = {
   navItems: navType[];
   isNavbar?: boolean;
@@ -47,7 +48,7 @@ const NavbarMobile: FC<NavbarProps> = ({ navItems, title, isNavbar }) => {
       setTimeout(() => navigate("/signUp"), 2000);
       
     } catch (error) {
-      newToast({ message: error.response.data.message, condition: "error" });
+      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
     }
   };
 

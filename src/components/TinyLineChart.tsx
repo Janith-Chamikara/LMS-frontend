@@ -3,7 +3,6 @@ import {
   LineChart,
   Line,
   XAxis,
-  YAxis,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
@@ -14,14 +13,14 @@ type TinyLineChartProps = {
   dataKey: string;
 };
 
-const TinyLineChart: FC<TinyLineChartProps> = ({ data, dataKey }) => {
+const TinyLineChart: FC<TinyLineChartProps> = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart width={300} height={100} data={data}>
         <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={2} />
         <XAxis dataKey="name" display={"none"} />
         <Tooltip
-          content={<CustomTooltip bgColor={"transparent"} />}
+          content={<CustomTooltip />}
           contentStyle={{ backgroundColor: "#2a3447" }}
           cursor={{ fill: "none" }}
           labelStyle={{ display: "none" }}

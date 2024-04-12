@@ -22,20 +22,26 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { courseSchema } from "../../schemas/schema";
 import CustomTextInput from "../../components/CustomTextInput";
-import axios from "../../axios/axios";
 import useAuthContext from "../../hooks/useAuthContext";
 import { convertToBase64 } from "../../utils/utils";
 import useToastHook from "../../hooks/useToast";
-import UploadWidget from "../../components/uploadAssests/UploadWidget.tsx";
+import UploadWidget from "../../components/uploadAssests/UploadWidget";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate.tsx";
-
+import useProfileContext from "../../hooks/useProfileContext.tsx";
+import { isAxiosError } from "axios";
+type section = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+};
 const UploadCoursePage: FC = () => {
-  const {profile} = useProfileContext();
+<<<<<<< HEAD
+  const { profile } = useProfileContext();
+=======
+>>>>>>> parent of 2b76085 (updated)
   const [demoUrl, setDemoUrl] = useState<string>("");
   const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState(false);
   const [sectionUrls, setSectionUrls] = useState<string[]>([]);
-  console.log(demoUrl, sectionUrls);
   const { activeStep, goToNext, goToPrevious } = useSteps({
     index: 1,
     count: steps.length,
@@ -54,21 +60,19 @@ const UploadCoursePage: FC = () => {
   const onSubmit = async (data: FieldValues) => {
     try {
       setIsLoading(true);
-      console.log(data);
       const file = await convertToBase64(data.thumbnail["0"]);
-      const courseSectionPromises = data.courseSections.map(async (section) => {
-        const thumbnail = await convertToBase64(section.videoThumbnail["0"]);
-        return { ...section, videoThumbnail: thumbnail };
-      });
+      const courseSectionPromises = data.courseSections.map(
+        async (section: section) => {
+          const thumbnail = await convertToBase64(section.videoThumbnail["0"]);
+          return { ...section, videoThumbnail: thumbnail };
+        }
+      );
       const courseSections = await Promise.all(courseSectionPromises);
       const courseSectionsUpdated =
         sectionUrls.length > 0 &&
         courseSections.map((section, index) => {
           return { ...section, videoURL: sectionUrls[index] };
         });
-      console.log(courseSectionsUpdated);
-
-      console.log(file);
       const reqData = {
         name: data.courseName,
         description: data.courseDescription,
@@ -76,9 +80,12 @@ const UploadCoursePage: FC = () => {
         estimatedPrice: data.courseEstimatedPrice,
         thumbnail: file,
         tags: data.tags,
-        createdBy: {
+        user: {
           name: auth?.name,
-          url:profile.url,
+<<<<<<< HEAD
+          url: profile?.url,
+=======
+>>>>>>> parent of 2b76085 (updated)
           email: auth?.email,
         },
         level: data.level,
@@ -93,10 +100,13 @@ const UploadCoursePage: FC = () => {
       newToast({ message: response.data.message, condition: "success" });
       setIsLoading(false);
     } catch (error) {
+<<<<<<< HEAD
+      console.error(error);
+      if(isAxiosError(error)) newToast({ message: error?.response?.data?.message, condition: "error" });
+=======
       console.log(error);
-      newToast({message:error.response.data.message, condition:"error"})
+>>>>>>> parent of 2b76085 (updated)
       setIsLoading(false);
-
     }
   };
 
@@ -342,7 +352,7 @@ const Addons: FC<AddonsType> = ({
       </Button>{" "}
       {errors[fieldName] && (
         <p className="tw-text-red-400 tw-text-sm">
-          {errors[fieldName]?.message}
+          {`${errors[fieldName]?.message}`}
         </p>
       )}
     </Box>
@@ -440,7 +450,7 @@ const Step3Form: FC<FormProps> = ({
         </Button>
         {errors["courseSections"] && (
           <p className="tw-text-red-400 tw-text-sm">
-            {errors["courseSections"]?.message}
+            {`${errors["courseSections"]?.message}`}
           </p>
         )}
       </Flex>
@@ -526,7 +536,7 @@ const Section: FC<FormProps> = ({
           control={control}
           errors={errors}
           fieldName={`courseSections.${index}.links`}
-          propertyName="url"
+          propertyName="link"
           placeHolder="Add links here"
           register={register}
         />

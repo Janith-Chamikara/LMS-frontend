@@ -25,6 +25,35 @@ import { useParams } from "react-router-dom";
 import VideoPlayer from "../../components/VideoPlayer";
 import useFetchData from "../../hooks/useFetchData";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
+import { Content } from "../../components/CustomAccordionItem";
+
+export type courseType = {
+  _id:string;
+  thumbnail:{
+    url:string;
+    public_id:string;
+  };
+  courseInfo: Content[];
+  name:string;
+  price:number;
+  demoUrl:string;
+  description:string;
+  ratings:string;
+  reviews:object[];
+  purchased:string;
+  createdBy:{
+    name:string;
+    url:string;
+    email:string;
+  };
+  benifits:[{benifit:string}];
+  tags:[{tag:string}];
+  preRequisties:[{ requirement: string }];
+};
+
+type data = {
+  course: courseType
+};
 
 const CourseInfoWithParams: FC = () => {
   const initialReviewsPerRow = 1;
@@ -32,9 +61,10 @@ const CourseInfoWithParams: FC = () => {
   const { id } = useParams();
   const { status, setStatus } = useCourseStatusContext();
   const [data, isLoading] = useFetchData(`/courses/auth/get-paid-course/${id}`);
-  const course = data?.course;
-  if (course) setStatus(true);
-  const contents = course?.courseInfo?.map((content: object) => ({
+  const course = (data as data).course;
+  if (course)
+    (setStatus as React.Dispatch<React.SetStateAction<boolean>>)(true);
+  const contents:Content[] = course?.courseInfo?.map((content) => ({
     ...content,
   }));
   const color = useColorModeValue("gray.100", "gray.900");
@@ -164,9 +194,9 @@ const CourseInfoWithParams: FC = () => {
             <Flex alignItems={"center"} mt={"20px"}>
               <SkeletonText isLoaded={!isLoading}>
                 <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
-                  {course.tags.map((tag: object) => (
+                  {course.tags.map((tag,index) => (
                     <Tag
-                      key={tag}
+                      key={index}
                       rounded="full"
                       variant="subtle"
                       colorScheme="teal"
@@ -284,7 +314,7 @@ const CourseInfoWithParams: FC = () => {
                 )}
                 {status && (
                   <Skeleton isLoaded={!isLoading}>
-                    <ModalWithButton courseId={id} />
+                    <ModalWithButton courseId={id as string} />
                   </Skeleton>
                 )}
               </Flex>
@@ -301,7 +331,7 @@ const CourseInfoWithParams: FC = () => {
               <br />
               {status && (
                 <Skeleton isLoaded={!isLoading}>
-                  <ModalWithButton courseId={id} />
+                  <ModalWithButton courseId={id as string} />
                 </Skeleton>
               )}
             </Box>
@@ -331,7 +361,7 @@ const CourseInfoWithParams: FC = () => {
             zIndex={"500"}
             display={{ base: "none", lg: "block" }}
           >
-            <CourseCard course={course} isLoading={isLoading} />
+            <CourseCard course={course} isLoading={isLoading as boolean} />
           </Box>
         </Skeleton>
       </Flex>
