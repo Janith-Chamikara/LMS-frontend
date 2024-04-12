@@ -39,7 +39,6 @@ const LandingPage: FC = () => {
         bg={color}
         variants={heroBackVariant}
         initial="initial"
-        viewport={{once:true}}
         animate="animate"
         className="tw-hidden tw-absolute -tw-top-[80vh] tw-z-0 tw-w-[70vw] tw-h-[170vh] -tw-left-[28vw] lg:tw-block"
       />
@@ -58,7 +57,6 @@ const LandingPage: FC = () => {
           flex={"1"}
           src={hero}
           width={"50%"}
-          viewport={{once:true}}
           variants={heroImgVariant}
           initial="initial"
           whileInView={"animate"}
@@ -71,7 +69,6 @@ const LandingPage: FC = () => {
           direction={"column"}
           alignItems={"center"}
           textAlign={"center"}
-          viewport={{once:true}}
           gap={"30px"}
           variants={heroTextVariant}
           initial="initial"
@@ -101,11 +98,9 @@ const LandingPage: FC = () => {
               flex={"1"}
               fontWeight={"bold"}
               fontSize={{ base: "2xl", lg: "3xl" }}
+              
             >
-              Welcome,{" "}
-              <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500">
-                {profile.name}
-              </span>
+              Welcome, <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500">{profile.name}</span>
             </Heading>
           ) : (
             <Stack direction="row" gap="20px">

@@ -5,7 +5,7 @@ import useAxiosPrivate from "./useAxiosPrivate";
 const useFetchData = (
   url: string,
 ) => {
-  const [data, setData] = useState<object | null>(null);
+  const [data, setData] = useState();
   // const [newToast] = useToastHook();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   console.log(data,isLoading);
@@ -34,7 +34,6 @@ const useFetchData = (
       isMounted = false;
       controller.abort();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);
 
   return [ data,isLoading,setData ];

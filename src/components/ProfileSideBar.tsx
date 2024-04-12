@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import NavbarMobile from "../layouts/nav/NavbarMobile";
 import { Outlet } from "react-router-dom";
+import useProfileContext from "../hooks/useProfileContext";
 import { navType } from "../layouts/nav/navItems";
 
 const ProfileSideBar = () => {

@@ -1,4 +1,4 @@
-import  {useEffect, FC, ReactNode, useRef} from "react"
+import React, {useEffect, FC, ReactNode, useRef} from "react"
 import { useSearchParams } from "react-router-dom"
 type DialogProps = {
  title:string;

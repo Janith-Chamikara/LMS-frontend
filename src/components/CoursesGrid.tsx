@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck 
 import { FC, useEffect, useState } from "react";
 import useFetchData from "../hooks/useFetchData";
 import { AgGridReact } from "ag-grid-react";
@@ -108,7 +106,6 @@ const CoursesGrid: FC = () => {
       thumbnail: params.data.thumbnail,
     });
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [colDefs, setColDefs] = useState([
     { field: "thumbnail", cellRenderer: AvatarRenderer },
     {
