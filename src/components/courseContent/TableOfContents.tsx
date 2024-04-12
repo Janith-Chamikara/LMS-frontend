@@ -1,31 +1,32 @@
 import { FC } from "react"
 import CustomAccordion from "../CustionAccordion";
+import { Content } from "../CustomAccordionItem";
 
-const contents = [
- {
-   title: "JavaScript Fundamentals",
-   description: "Learn the basics of JavaScript, including variables, data types, operators, and control flow.",
- },
- {
-   title: "Arrays in JavaScript",
-   subTopics: ["Creating arrays", "Accessing elements", "Modifying arrays", "Array methods"],
- },
- {
-   title: "Object-Oriented Programming in JavaScript",
-   description: "Explore object-oriented concepts like classes, objects, inheritance, and polymorphism.",
- },
- {
-   title: "Asynchronous Programming in JavaScript",
-   subTopics: ["Callbacks", "Promises", "Async/await"],
- },
- {
-   title: "Building Web Applications with React",
-   description: "Learn how to create dynamic and interactive user interfaces using React.",
- },
-];
+// const contents = [
+//  {
+//    title: "JavaScript Fundamentals",
+//    description: "Learn the basics of JavaScript, including variables, data types, operators, and control flow.",
+//  },
+//  {
+//    title: "Arrays in JavaScript",
+//    subTopics: ["Creating arrays", "Accessing elements", "Modifying arrays", "Array methods"],
+//  },
+//  {
+//    title: "Object-Oriented Programming in JavaScript",
+//    description: "Explore object-oriented concepts like classes, objects, inheritance, and polymorphism.",
+//  },
+//  {
+//    title: "Asynchronous Programming in JavaScript",
+//    subTopics: ["Callbacks", "Promises", "Async/await"],
+//  },
+//  {
+//    title: "Building Web Applications with React",
+//    description: "Learn how to create dynamic and interactive user interfaces using React.",
+//  },
+// ];
 
 type Props = {
-  contents:[object]
+  contents:Content[]
 }
 
 

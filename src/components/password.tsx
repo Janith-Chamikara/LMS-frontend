@@ -24,7 +24,6 @@ const Password: FC<PasswordProps> = ({
   children,
   placeholder,
   name,
-  isRequired,
   register,
   errors,
 }) => {

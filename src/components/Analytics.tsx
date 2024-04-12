@@ -15,7 +15,7 @@ const Analytics: FC = () => {
       <Grid
         width={"100%"}
         borderRadius={"lg"}
-        templateColumns={"repeat(4,1fr)"}
+        templateColumns={["1fr","repeat(4,1fr)"]}
         gap={"10px"}
         gridAutoRows={"minmax(200px,auto)"}
       >
@@ -23,7 +23,8 @@ const Analytics: FC = () => {
           className="tw-shadow-[4px_4px_5px_0px_#38b2ac]"
           borderRadius={"lg"}
           bgColor={backgroundColor}
-          gridRow={"span 2"}
+          
+          gridRow={{lg:"span 2"}}
         >
           <Box width={"100%"} height={"100%"} padding={"20px"}>
             <BarChartComponent
@@ -40,7 +41,7 @@ const Analytics: FC = () => {
         >
           <ChartCard
             title="Users"
-            count={53}
+            count={14}
             percentage={66.5}
             chartData={data}
             dataKey="pv"
@@ -55,7 +56,7 @@ const Analytics: FC = () => {
         >
           <ChartCard
             title="Courses"
-            count={83}
+            count={13}
             percentage={-26.5}
             chartData={data}
             dataKey="pv"
@@ -67,7 +68,7 @@ const Analytics: FC = () => {
           className="tw-shadow-[4px_4px_5px_0px_#38b2ac]"
           borderRadius={"lg"}
           bgColor={backgroundColor}
-          gridRow={"span 2"}
+          gridRow={{lg:"span 2"}}
         >
           <Box width={"100%"} height={"100%"} padding={"20px"}>
             <CustomPieChart title="Leads by source" data={pieChartData} />
@@ -108,7 +109,7 @@ const Analytics: FC = () => {
           bgColor={backgroundColor}
           borderRadius={"lg"}
           gridColumn={"span 3"}
-          gridRow={"span 2"}
+          gridRow={{lg:"span 2"}}
         >
           <Box padding={"30px"} width={"100%"} height={"100%"}>
             <CustomAreaChart />
@@ -119,7 +120,7 @@ const Analytics: FC = () => {
           className="tw-shadow-[4px_4px_5px_0px_#38b2ac]"
           bgColor={backgroundColor}
           borderRadius={"lg"}
-          gridRow={"span 2"}
+          gridRow={{lg:"span 2"}}
         >
           <Box width={"100%"} height={"100%"} padding={"20px"}>
             <BarChartComponent

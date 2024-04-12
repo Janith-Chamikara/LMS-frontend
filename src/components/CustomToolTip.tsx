@@ -1,6 +1,7 @@
 import { Text } from "@chakra-ui/react";
 
-const CustomTooltip = ({ active, payload, label }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CustomTooltip = ({ active, payload, label }:{active?:any , payload?:any,label?:any}) => {
   if (active && payload && payload.length) {
     return (
       <div className={`tw-p-[10px] tw-bg-gray-700 tw-rounded-xl`}>
