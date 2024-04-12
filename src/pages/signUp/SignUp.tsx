@@ -11,8 +11,7 @@ import CustomButton from "../../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 import CustomLink from "../../components/CustomLink";
 import { convertToBase64 } from "../../utils/utils";
-import { isAxiosError } from "axios";
-
+import useProfileContext from "../../hooks/useProfileContext";
 const SignUp: FC = () => {
   const {
     register,
@@ -39,12 +38,17 @@ const SignUp: FC = () => {
       newToast({ message: response.data.message, condition: "success" });
       console.log(response);
       const token = response.data.token;
-      newToast({ message: response.data.message, condition: "success" });
-      setTimeout(() => navigate("/verify", { state: { token: token } }), 2000);
+      newToast({message:response.data.message,condition:'success'})
+      setTimeout(()=>navigate("/verify", { state: { token: token } }),2000);
     } catch (err) {
-      console.error(err);
-      if (isAxiosError(err)) {
-        newToast({ message: err?.response?.data?.message, condition: "error" });
+      console.log(err);
+      if (err.response) {
+        newToast({ message: err.response.data.message, condition: "error" });
+      } else if (err.request) {
+        // The client never received a response, and the request was never left
+        console.log(err.request);
+      } else {
+        console.log(err);
       }
     }
   };

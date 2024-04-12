@@ -17,15 +17,10 @@ const CustomAccordion: FC<AccordionProps> = ({ contents }) => {
           videoThumbnail={content.videoThumbnail}
           videoSrc={content.videoUrl ? content.videoUrl : content.videoURL}
           key={index}
-<<<<<<< HEAD
-          links={content.links}
-          title={content.section as string}
-          description={content.videoDescription}/>
-=======
+          links = {content.links}
           title={content.section}
           description={content.videoDescription}
         />
->>>>>>> parent of 2b76085 (updated)
       ))}
     </Accordion>
   );

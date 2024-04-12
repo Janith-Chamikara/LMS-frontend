@@ -33,11 +33,11 @@ const CustomStepper: FC<StepperProps> = ({ steps,activeStep }) => {
     <Stack>
       <Stepper size="sm" index={activeStep} gap="0">
         {steps.map((_, index) => (
-          <Step key={index}>
+          <Step key={index} gap="0">
             <StepIndicator>
               <StepStatus complete={<StepIcon />} />
             </StepIndicator>
-            <StepSeparator  />
+            <StepSeparator _horizontal={{ ml: "0" }} />
           </Step>
         ))}
       </Stepper>
