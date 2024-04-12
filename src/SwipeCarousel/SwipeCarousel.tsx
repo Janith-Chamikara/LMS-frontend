@@ -31,7 +31,6 @@ const SwipeCarousel: FC<SwipeCarouselProps> = ({ widthMax }) => {
       }
     }, delay);
     return () => clearInterval(timeOut);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onDragStart = () => {

@@ -17,7 +17,6 @@ import CustomTextInput from "./CustomTextInput";
 import { emailSchema } from "../schemas/schema";
 import useToastHook from "../hooks/useToast";
 import axios from "../axios/axios";
-import { isAxiosError } from "axios";
 type ModalProps = {
   buttonTitle: string;
 };
@@ -44,7 +43,7 @@ const CustomModalForResetPassword: FC<ModalProps> = ({ buttonTitle }) => {
       );
       newToast({ message: response.data.message, condition: "success" });
     } catch (error) {
-      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
+      newToast({ message: error.response.data.message, condition: "error" });
     }
   };
   const initialRef = useRef(null);

@@ -3,12 +3,6 @@ import useFetchData from "../hooks/useFetchData";
 import { Box, Flex, Heading, Skeleton, Text } from "@chakra-ui/react";
 import CourseCard from "../components/CourseCard";
 import SearchBar from "../components/SearchBar";
-import { courseType } from "./courseInfo/CourseInfoWithParams";
-
-type courseData = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key : string]:any;
-}
 
 const MyCourses: FC = () => {
   const [coursesData, coursesIsLoading] = useFetchData(
@@ -31,10 +25,10 @@ const MyCourses: FC = () => {
           >
             My courses :
           </Heading>
-          {(coursesData as courseData)?.purchasedCourses?.length === 0 && (
+          {coursesData?.purchasedCourses?.length === 0 && (
             <Text>Currently you haven't purchased any course yet.</Text>
           )}
-          {(coursesData as courseData)?.purchasedCourses?.length !== 0 && <SearchBar  inputText="" onClick={()=>null} />}
+          {coursesData?.purchasedCourses?.length !== 0 && <SearchBar />}
 
           <Flex
             mt={"20px"}
@@ -45,12 +39,12 @@ const MyCourses: FC = () => {
             gap={"20px"}
             width={"100%"}
           >
-            {(coursesData as courseData)?.purchasedCourses?.map((course: courseType, index: number) => (
+            {coursesData?.purchasedCourses?.map((course, index) => (
               <CourseCard
                 isOneButton={true}
                 buttonTitle="Start Learning"
                 key={index}
-                isLoading={coursesIsLoading as boolean}
+                isLoading={coursesIsLoading}
                 course={course}
               />
             ))}

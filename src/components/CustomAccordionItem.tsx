@@ -7,35 +7,25 @@ import {
   Flex,
   Icon,
   Image,
+  Stack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FC } from "react";
+import { ImCheckmark } from "react-icons/im";
 import VideoPlayer from "./VideoPlayer";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
 import { FaLock } from "react-icons/fa6";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
-
-type links = [{url:string}]
-=======
->>>>>>> parent of 2b76085 (updated)
 export type Content = {
   title: string;
   index: number;
   videoThumbnail: string;
-  videoUrl?: string;
-  videoURL?:string;
+  videoUrl: string;
   videoTitle?: string;
   videoSrc?: string;
   description?: string;
-<<<<<<< HEAD
-  links?: links;
-  section?:string;
-  videoDescription?:string;
-=======
-  subTopics?: string[];
->>>>>>> parent of 2b76085 (updated)
+  links?: object[];
 };
 
 const CustomAcccordionItem: FC<Content> = ({
@@ -45,7 +35,7 @@ const CustomAcccordionItem: FC<Content> = ({
   videoTitle,
   videoSrc,
   videoThumbnail,
-  subTopics,
+  links,
 }) => {
   const { status } = useCourseStatusContext();
   const color = useColorModeValue("gray.300", "gray.600");
@@ -88,8 +78,7 @@ const CustomAcccordionItem: FC<Content> = ({
               </Box>
             )}
 
-<<<<<<< HEAD
-            {(links as links ).length > 0 && (
+            {links && (
               <>
                 <Text
                   fontStyle={"italic"}
@@ -99,39 +88,28 @@ const CustomAcccordionItem: FC<Content> = ({
                   Related study materials
                 </Text>
                 <Flex direction="column">
-                  {(links as links).map((link, index) => (
+                  {links.map((link, index) => (
                     <Text
                       as={Link}
                       fontSize={{ base: "sm" }}
-                      to={link?.url}
+                      to={link.url}
                       fontStyle={"italic"}
                       _hover={{ color: "cyan.600" }}
                     >
-                      {index + 1}.{link?.url}
+                      {index + 1}.{link.url}
                     </Text>
                   ))}
                 </Flex>
               </>
             )}
-=======
-            {subTopics &&
-              subTopics.map((subTopic, index) => (
-                <Stack
-                  key={index}
-                  direction={"row"}
-                  gap={"10px"}
-                  alignItems={"center"}
-                >
-                  <Icon as={ImCheckmark} w={8} color="green.300" />
-                  <Text fontWeight={"semibold"}>{subTopic}</Text>
-                </Stack>
-              ))}
->>>>>>> parent of 2b76085 (updated)
           </Flex>
         ) : (
           <AccordionPanel>
             <Box position={"relative"}>
-              <Box height={'50vh'}  className="tw-shadow-[0px_0px_9px_4px_#319795]">
+              <Box
+                height={"50vh"}
+                className="tw-shadow-[0px_0px_9px_4px_#319795]"
+              >
                 <Image src={videoThumbnail} width={"100%"} height={"100%"} />
               </Box>
 

@@ -1,31 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck 
 import { FC, useEffect, useMemo, useState } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
-import { ColDef, ColGroupDef } from "@ag-grid-community/core";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import "./Style.css";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
-import { isAxiosError } from "axios";
-
-interface Notification {
-  title: string;
-  _id: string;
-  message: string;
-  date: string; // Assuming date is a string representation
-  status: string;
-}
-type Params = {
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-[key:string]:any;
-}
 const Notifiactions: FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-  const [colDefs, _] = useState<(ColDef<Notification, any> | ColGroupDef<Notification>)[]>([
+  const [colDefs, setColDefs] = useState([
     {
       field: "title",
       headerName: "Notification title",
@@ -55,19 +38,19 @@ const Notifiactions: FC = () => {
   };
   const rowClassRules = useMemo(
     () => ({
-      "status-unread": (params:Params ) => params.data.status === "unread",
-      "status-read": (params:Params) => params.data.status === "read",
+      "status-unread": (params) => params.data.status === "unread",
+      "status-read": (params) => params.data.status === "read",
     }),
     []
   );
   const color = useColorModeValue("ag-theme-quartz", "ag-theme-quartz-dark");
-  const [data] = useFetchData(
+  const [data, dataIsLoading] = useFetchData(
     "/auth/notifications/getallnotifications"
   );
-  const [rowData, setRowData] = useState<Array<Notification>>();
+  const [rowData, setRowData] = useState<Array>();
   useEffect(() => {
     if (data) {
-      setRowData((data as Params).notifications);
+      setRowData(data.notifications);
     }
   }, [data]);
 
@@ -76,12 +59,12 @@ const Notifiactions: FC = () => {
   const onRowSelected = async (params: object) => {
     const controller = new AbortController();
     controller.abort();
-    if ((params as Params).data.status === "read") {
+    if (params.data.status === "read") {
       // newToast({message:"Status has been already updated ",condition:'warning'})
       return;
     }
     try {
-      const notificationId = (params as Params).data._id;
+      const notificationId = params.data._id;
       const response = await axiosPrivate.put(
         `/auth/notifications/update/status/${notificationId}`,
         { signal: controller.signal }
@@ -89,12 +72,12 @@ const Notifiactions: FC = () => {
 
       newToast({ message: response.data.message, condition: "success" });
       setRowData([
-        ...(rowData as Notification[]).slice(0, (params as Params).rowIndex),
+        ...rowData.slice(0, params.rowIndex),
         response.data.updatedNotification,
-        ...(rowData as Notification[]).slice((params as Params).rowIndex + 1),
+        ...rowData.slice(params.rowIndex + 1),
       ]);
     } catch (error) {
-      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
+      newToast({ message: error.response.data.message, condition: "error" });
     }
   };
 
@@ -111,12 +94,11 @@ const Notifiactions: FC = () => {
       </Heading>
       <AgGridReact
         pagination={true}
-        autoSizeStrategy={autoSizeStrategy}
         rowClassRules={rowClassRules}
+        autoSizeStrategy={autoSizeStrategy}
         rowData={rowData}
         onRowSelected={onRowSelected}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        columnDefs={colDefs as (ColDef<Notification, any> | ColGroupDef<Notification>)[]}
+        columnDefs={colDefs}
         rowSelection={"single"}
       />
     </Box>

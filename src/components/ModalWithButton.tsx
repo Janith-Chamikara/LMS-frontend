@@ -1,6 +1,9 @@
 import {
   Box,
   Button,
+  FormControl,
+  FormLabel,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -17,7 +20,6 @@ import { reviewFormSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
 import useToastHook from "../hooks/useToast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { isAxiosError } from "axios";
 
 const ModalWithButton: FC<{ courseId: string }> = ({ courseId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,7 +42,7 @@ const ModalWithButton: FC<{ courseId: string }> = ({ courseId }) => {
       );
       newToast({ message: response.data?.message, condition: "success" });
     } catch (error) {
-      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
+      newToast({ message: error.response.data.message, condition: "error" });
     }
   };
   return (

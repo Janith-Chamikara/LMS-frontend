@@ -55,7 +55,6 @@ const AnimatedText: FC<AnimatedTextProps> = ({
       controls.start("hidden");
     }
     return () => clearTimeout(timeOut);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView]);
 
   const textArray = Array.isArray(text) ? text : [text];

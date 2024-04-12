@@ -19,8 +19,6 @@ import useToastHook from "../hooks/useToast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { convertToBase64 } from "../utils/utils";
 import useProfileContext from "../hooks/useProfileContext";
-import { Profile } from "../context/ProfileImageProvider";
-import { isAxiosError } from "axios";
 type Props = {
   type: string;
   name: string;
@@ -63,14 +61,10 @@ const UpdateProfileInfoModal: FC<Props> = ({
         name: data.newName,
       });
       setName(response.data.name);
-      (setProfile as Dispatch<SetStateAction<Profile | null>>)((pv) => ({ ...(pv as Profile), name: data.newName as string }));
+      setProfile((pv:object) => ({ ...pv, name:data.newName}));
       newToast({ message: response.data.message, condition: "success" });
     } catch (error) {
-      if (isAxiosError(error))
-        newToast({
-          message: error?.response?.data?.message,
-          condition: "error",
-        });
+      newToast({ message: error.response.data.message, condition: "error" });
     }
   };
   const handleAvatarUpdate = async (data: FieldValues) => {
@@ -80,17 +74,10 @@ const UpdateProfileInfoModal: FC<Props> = ({
         avatar: file,
       });
       setImg(response.data.newAvatar.url);
-      (setProfile as Dispatch<SetStateAction<Profile | null>>)((pv) => ({
-        ...(pv as Profile),
-        url: response.data.newAvatar.url as string,
-      }));
+      setProfile((pv:object) => ({ ...pv, url:response.data.newAvatar.url}));
       newToast({ message: response.data.message, condition: "success" });
     } catch (error) {
-      if (isAxiosError(error))
-        newToast({
-          message: error?.response?.data?.message,
-          condition: "error",
-        });
+      newToast({ message: error.response.data.message, condition: "error" });
     }
   };
 

@@ -9,8 +9,6 @@ import useToastHook from "../../hooks/useToast";
 import axios from "../../axios/axios";
 import CustomButton from "../../components/CustomButton";
 import useProfileContext from "../../hooks/useProfileContext";
-import { Profile } from "../../context/ProfileImageProvider";
-import { isAxiosError } from "axios";
 
 const VerifyOTP: FC = () => {
   const {
@@ -40,7 +38,7 @@ const VerifyOTP: FC = () => {
       );
       const user = response?.data?.user;
       response &&
-        (setProfile as React.Dispatch<React.SetStateAction<Profile | null>>)({
+        setProfile({
           id: user._id,
           roles: user.roles,
           name: user.name,
@@ -50,8 +48,14 @@ const VerifyOTP: FC = () => {
       setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       console.log(err);
-      if (isAxiosError(err))
-        newToast({ message: err?.response?.data?.message, condition: "error" });
+      if (err.response) {
+        newToast({ message: err.response.data.message, condition: "error" });
+      } else if (err.request) {
+        // The client never received a response, and the request was never left
+        console.log(err.request);
+      } else {
+        console.log(err);
+      }
     }
   };
   return (
@@ -66,7 +70,6 @@ const VerifyOTP: FC = () => {
         </Text>
         <div>
           <CustomTextInput
-            placeholder="Enter verfication code here"
             errors={errors}
             name="verification"
             register={register}

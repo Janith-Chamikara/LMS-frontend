@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const thumbnailSchema = z.any().refine((file) => {
+const thumbnailSchema = z.any().refine((file) => {
   if (!file || !file.length) {
     return "File is required";
   }
@@ -126,13 +126,13 @@ export const OTPSchema = z.object({
 //     }
 //   });
 
-export const sectionSchema = z.object({
+const sectionSchema = z.object({
   section: z.string().min(1, { message: "Video Section is required." }),
   videoTitle: z.string().min(1, { message: "Video title is required." }),
   videoDescription: z
     .string()
     .min(10, { message: "Video description is required." })
-    .max(3000, { message: "Please procide an abstractive description" }),
+    .max(300, { message: "Please procide an abstractive description" }),
   videoThumbnail: thumbnailSchema,
   links: z
     .array(z.object({ link: z.string() }))
