@@ -5,12 +5,14 @@ import { Link, useSearchParams } from "react-router-dom";
 import Stripe from "stripe";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
+import { Metadata } from "@stripe/stripe-js";
+import { isAxiosError } from "axios";
 const Success: FC = () => {
   const [newToast] = useToastHook();
   const color = useColorModeValue("gray.100", "gray.900");
   const axiosPrivate = useAxiosPrivate();
   const [searchParams] = useSearchParams();
-  const [data, setData] = useState();
+  const [data, setData] = useState<Metadata | null>(null);
   console.log(data);
   const sessionId = searchParams.get("session_id");
   console.log(sessionId);
@@ -21,14 +23,14 @@ const Success: FC = () => {
     const controller = new AbortController();
     const getSuccessData = async () => {
       try {
-        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        const session = await stripe.checkout.sessions.retrieve(sessionId as string);
         const orderData = session.metadata; // Your custom data stored in the session
         // Use orderData in your success page rendering
         setData(orderData);
         const response = await axiosPrivate.post(
           "/courses/auth/purchase-a-course",
           {
-            courseId: orderData.courseId,
+            courseId: (orderData as Metadata).courseId,
             paymentInfo: sessionId,
           },
           {
@@ -37,14 +39,15 @@ const Success: FC = () => {
         );
         newToast({ message: response.data.message, condition: "success" });
       } catch (error) {
-       console.log(error);
-        newToast({ message: error.response.data.message, condition: "error" });
+       console.error(error);
+        if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
       }
     };
     getSuccessData();
     return () => {
       controller.abort();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

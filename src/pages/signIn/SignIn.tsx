@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { FC } from "react";
+import React, { FC } from "react";
 import CustomTextInput from "../../components/CustomTextInput";
 import Password from "../../components/password";
 import { FieldValues, useForm } from "react-hook-form";
@@ -13,6 +13,9 @@ import useAuthContext from "../../hooks/useAuthContext";
 import axios from "../../axios/axios";
 import useProfileContext from "../../hooks/useProfileContext";
 import CustomModalForResetPassword from "../../components/CustomModalForResetPassword"
+import { Auth } from "../../context/AuthContext";
+import { Profile } from "../../context/ProfileImageProvider";
+import { isAxiosError } from "axios";
 
 const SignIn: FC = () => {
   const {
@@ -48,7 +51,7 @@ const SignIn: FC = () => {
         userInfo: { id, name, email, roles, courses, avatar },
       } = response.data;
       response &&
-        setAuth({
+          (setAuth as React.Dispatch<React.SetStateAction<Auth | null>> )({
           name,
           id,
           roles,
@@ -58,7 +61,7 @@ const SignIn: FC = () => {
           refreshToken,
         });
       response &&
-        setProfile({
+        (setProfile as React.Dispatch<React.SetStateAction<Profile | null>>)({
           id: id,
           roles: roles,
           name: name,
@@ -67,15 +70,7 @@ const SignIn: FC = () => {
 
       setTimeout(() => navigate("/"), 1000);
     } catch (err) {
-      console.log(err);
-      if (err.response) {
-        newToast({ message: err.response.data.message, condition: "error" });
-      } else if (err.request) {
-        // The client never received a response, and the request was never left
-        console.log(err.request);
-      } else {
-        console.log(err);
-      }
+      if(isAxiosError(err))newToast({ message: err?.response?.data?.message, condition: "error" });
     }
   };
 
