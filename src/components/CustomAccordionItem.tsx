@@ -16,14 +16,21 @@ import { ImCheckmark } from "react-icons/im";
 import VideoPlayer from "./VideoPlayer";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
 import { FaLock } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+
+type links = [{url:string}]
 export type Content = {
   title: string;
   index: number;
   videoThumbnail: string;
-  videoUrl: string;
+  videoUrl?: string;
+  videoURL?:string;
   videoTitle?: string;
   videoSrc?: string;
   description?: string;
+  links?: links;
+  section?:string;
+  videoDescription?:string;
   subTopics?: string[];
 };
 
@@ -31,6 +38,7 @@ const CustomAcccordionItem: FC<Content> = ({
   title,
   description,
   index,
+  links,
   videoTitle,
   videoSrc,
   videoThumbnail,
@@ -77,6 +85,30 @@ const CustomAcccordionItem: FC<Content> = ({
               </Box>
             )}
 
+            {(links as links ).length > 0 && (
+              <>
+                <Text
+                  fontStyle={"italic"}
+                  fontWeight={"semibold"}
+                  textDecorationLine={"underline"}
+                >
+                  Related study materials
+                </Text>
+                <Flex direction="column">
+                  {(links as links).map((link, index) => (
+                    <Text
+                      as={Link}
+                      fontSize={{ base: "sm" }}
+                      to={link?.url}
+                      fontStyle={"italic"}
+                      _hover={{ color: "cyan.600" }}
+                    >
+                      {index + 1}.{link?.url}
+                    </Text>
+                  ))}
+                </Flex>
+              </>
+            )}
             {subTopics &&
               subTopics.map((subTopic, index) => (
                 <Stack

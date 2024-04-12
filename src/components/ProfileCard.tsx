@@ -16,14 +16,21 @@ import { avatarSchema, nameSchema } from "../schemas/schema";
 
 type ProfileCardProps = {
   name: string;
-  setName:Dispatch<SetStateAction<undefined>>;
-  setImg:Dispatch<SetStateAction<undefined>>;
+  setName: Dispatch<SetStateAction<undefined>>;
+  setImg: Dispatch<SetStateAction<undefined>>;
   email: string;
   url: string;
   id: string;
 };
 
-const ProfileCard: FC<ProfileCardProps> = ({ name,setName,setImg, email, url, id }) => {
+const ProfileCard: FC<ProfileCardProps> = ({
+  name,
+  setName,
+  setImg,
+  email,
+  url,
+  id,
+}) => {
   return (
     <>
       <Card direction={{ base: "column", lg: "row" }} variant="filled">
@@ -99,7 +106,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ name,setName,setImg, email, url, id
               >
                 Email : {email}
               </Text>
-              
+
               <Stack justifyContent={"space-between"}>
                 <UpdateProfileInfoModal
                   schema={avatarSchema}
@@ -113,7 +120,12 @@ const ProfileCard: FC<ProfileCardProps> = ({ name,setName,setImg, email, url, id
                   text="New Profile Image"
                   placeHolderText="Provide your new avatar"
                 />
-                <Button as={Link} to="/resetPassword" variant={"outline"} colorScheme="facebook">
+                <Button
+                  as={Link}
+                  to="/resetPassword"
+                  variant={"outline"}
+                  colorScheme="facebook"
+                >
                   Forget Password?
                 </Button>
               </Stack>

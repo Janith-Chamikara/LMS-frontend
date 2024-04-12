@@ -1,9 +1,7 @@
 import {
-  Avatar,
   Box,
   Button,
   Flex,
-  HStack,
   Heading,
   Image,
   Skeleton,
@@ -20,7 +18,6 @@ import CourseCard from "../../components/CourseCard";
 import Offer from "../../components/offer/Offer";
 import TableOfContents from "../../components/courseContent/TableOfContents";
 import ScrollYProgress from "../../components/ScrollYProgress";
-// import SwipeCarousel from "../../SwipeCarousel/SwipeCarousel";
 import Review from "../../components/Review";
 import ModalWithButton from "../../components/ModalWithButton";
 import { useLocation } from "react-router-dom";
@@ -29,6 +26,12 @@ import useFetchData from "../../hooks/useFetchData";
 import useProfileContext from "../../hooks/useProfileContext";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
 
+type data = {
+  user:{
+    courses:[{course_id:string}];
+  }
+}
+
 const CourseInfo: FC = () => {
   const initialReviewsPerRow = 1;
   const [next, setNext] = useState(initialReviewsPerRow);
@@ -36,17 +39,18 @@ const CourseInfo: FC = () => {
   const { status, setStatus } = useCourseStatusContext();
   const [loading, setLoading] = useState(true);
   const { profile } = useProfileContext();
-  const [data, dataIsLoading] = useFetchData(`/auth/${profile.id}`);
+  const [data, dataIsLoading] = useFetchData(`/auth/${profile?.id}`);
   useEffect(() => {
-    if (data?.user?.courses.length === 0) setLoading(false);
-    data?.user?.courses?.map((item) => {
-      if (item.course_id === course._id) {
-        setStatus(true);
+    if ((data as data).user.courses.length <= 1) setLoading(false);
+    (data as data)?.user?.courses?.map((item) => {
+      if (item?.course_id === course._id) {
+        (setStatus as React.Dispatch<React.SetStateAction<boolean>>)(true);
         setLoading(false);
         return;
       }
       setLoading(false);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   console.log(loading);
 
@@ -185,9 +189,9 @@ const CourseInfo: FC = () => {
             <Flex alignItems={"center"} mt={"20px"}>
               <SkeletonText isLoaded={!isLoading}>
                 <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
-                  {course.tags.map((tag: object) => (
+                  {course.tags.map((tag: {tag:string},index:number) => (
                     <Tag
-                      key={tag}
+                      key={index}
                       rounded="full"
                       variant="subtle"
                       colorScheme="teal"

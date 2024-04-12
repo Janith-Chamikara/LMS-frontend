@@ -1,21 +1,26 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 
-type Profile = {
+export type Profile = {
   name: string;
   roles:string;
   url: string;
   id:string;
 };
 
-export const ProfileContext = createContext<Profile | null>(null);
+type contextValue = {
+  profile:Profile | null;
+  setProfile:React.Dispatch<React.SetStateAction<Profile | null>>;
+}
+
+export const ProfileContext = createContext<contextValue | null>(null);
 const ProfileImageProvider = ({ children }:{
  children:ReactNode
 }) => {
-  const [profile, setProfile] = useState<Profile>(() => {
+  const [profile, setProfile] = useState<Profile | null>(() => {
     try {
-      return JSON.parse(localStorage.getItem("profile")) as Profile;
+      return JSON.parse(localStorage.getItem("profile") as string);
     } catch (error) {
-      console.log("Item not available at local storage");
+      console.error("Profile is not available at local storage.To fix try log in again");
       return null
     }
   });
@@ -23,12 +28,12 @@ const ProfileImageProvider = ({ children }:{
     try {
       localStorage.setItem("profile", JSON.stringify(profile));
     } catch (error) {
-      console.log("Error storing auth in local storage:", error);
+      console.error("Error storing auth in local storage:", error);
     }
   }, [profile]);
 
   return (
-    <ProfileContext.Provider value={{ profile, setProfile }}>
+    <ProfileContext.Provider value={{profile, setProfile }}>
       {children}
     </ProfileContext.Provider>
   );

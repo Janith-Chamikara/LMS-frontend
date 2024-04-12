@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck 
 // import { FC, useState } from "react";
 // import useFetchData from "../hooks/useFetchData";
 // import { AgGridReact } from "ag-grid-react";
@@ -89,10 +91,16 @@ import {
 import useToastHook from "../hooks/useToast";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateCourseSchema, updateUserRoleSchema } from "../schemas/schema";
+import { updateUserRoleSchema } from "../schemas/schema";
 import CustomTextInput from "./CustomTextInput";
 import AvatarRenderer from "./AvatarRenderer";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { isAxiosError } from "axios";
+
+type obj = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key:string]:any;
+}
 
 const UsersGrid: FC = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -107,7 +115,8 @@ const UsersGrid: FC = () => {
     role: "",
     name: "",
   });
-  const [isDeleting, setIsDeleting] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setIsDeleting] = useState(false);
   console.log(selectedUser);
   const [newToast] = useToastHook();
 
@@ -117,11 +126,16 @@ const UsersGrid: FC = () => {
       const response = await axiosPrivate.delete(
         `/auth/admin/delete-a-user/${selectedUser.id}`
       );
-      setIsDeleting(false);
+
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
+      setRowData([
+        ...(rowData as object[]).slice(0, selectedUser.index),
+        ...(rowData as object[]).slice((selectedUser as obj).index + 1),
+      ]);
+      setIsDeleting(false);
     } catch (error) {
-      newToast({ message: error.data.message, condition: "error" });
+      if(isAxiosError(error)) newToast({ message: error?.response?.data?.message, condition: "error" });
     }
   };
   const updateUserRole = async (data: FieldValues) => {
@@ -132,24 +146,29 @@ const UsersGrid: FC = () => {
         `/auth/admin/update-user-role/${selectedUser.id}`,
         {
           role,
-          id:selectedUser.id
+          id: selectedUser.id,
         }
       );
       console.log(response);
       newToast({ message: response.data.message, condition: "success" });
       setRowData([
-        ...rowData.slice(0, selectedUser.index),
-        {...response.data.updatedUser,avatar:response.data.updatedUser.avatar.url,courses: response.data.updatedUser.courses.map((course) => course.course_id)},
-        ...rowData.slice(selectedUser.index + 1),
+        ...(rowData as object[]).slice(0, selectedUser.index),
+        {
+          ...response.data.updatedUser,
+          avatar: response.data.updatedUser.avatar.url,
+          courses: response.data.updatedUser.courses.map(
+            (course:obj) => course.course_id
+          ),
+        },
+        ...(rowData as object[]).slice((selectedUser as obj).index + 1),
       ]);
     } catch (error) {
-      console.log(error);
-      newToast(error.data.message);
+      console.error(error);
+      if(isAxiosError(error)) newToast({ message: error?.response?.data?.message, condition: "error" });
     }
   };
 
-  const onRowClicked = (params: object) => {
-    console.log(params);
+  const onRowClicked = (params: obj) => {
     setSelectedUser({
       id: params.data._id,
       name: params.data.name,
@@ -157,6 +176,7 @@ const UsersGrid: FC = () => {
       role: params.data.roles,
     });
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [colDefs, setColDefs] = useState([
     { field: "avatar", cellRenderer: AvatarRenderer },
     { field: "name", filter: true },
@@ -172,7 +192,7 @@ const UsersGrid: FC = () => {
   useEffect(() => {
     if (data) {
       setRowData(
-        data?.users?.map((item) => ({
+        (data as obj)?.users?.map((item:obj) => ({
           name: item.name,
           _id: item._id,
           email: item.email,
@@ -180,7 +200,7 @@ const UsersGrid: FC = () => {
           createdAt: item.createdAt,
           updatedAt: item.updatedAt,
           avatar: item.avatar.url,
-          courses: item.courses.map((course) => course.course_id),
+          courses: item.courses.map((course:obj) => course.course_id),
         }))
       );
     }
@@ -253,7 +273,7 @@ const UsersGrid: FC = () => {
                   type="submit"
                   disabled={isSubmitSuccessful}
                   isLoading={isSubmitting}
-                  loadingText={"Updating Course"}
+                  loadingText={"Updating User"}
                   onClick={handleSubmit(updateUserRole)}
                   colorScheme="blue"
                   mr={3}
@@ -264,8 +284,8 @@ const UsersGrid: FC = () => {
                 <Button
                   type="button"
                   disabled={isSubmitSuccessful}
-                  isLoading={isDeleting}
-                  loadingText={"Deleting Course"}
+                  isLoading={isSubmitting}
+                  loadingText={"Deleting User"}
                   onClick={deleteUser}
                   colorScheme="red"
                   mr={3}
@@ -293,7 +313,7 @@ const UsersGrid: FC = () => {
       <AgGridReact
         onRowSelected={onRowClicked}
         pagination={true}
-        rowData={rowData}
+        rowData={rowData}    
         columnDefs={colDefs}
         rowSelection={"single"}
       />

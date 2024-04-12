@@ -1,5 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
 import { Button } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const window:any;
 const UploadWidget = ({
   text,
@@ -30,6 +33,7 @@ const UploadWidget = ({
         // Handle the result or error here
       }
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>
