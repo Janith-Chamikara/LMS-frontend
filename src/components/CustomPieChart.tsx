@@ -8,6 +8,11 @@ type PieChart = {
   data: object[];
 };
 
+type obj ={
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key:string]:any;
+}
+
 const CustomPieChart: FC<PieChart> = ({ title, data }) => {
   return (
     <Flex width={"100%"} height={"100%"} gap={"10px"} direction={"column"}>
@@ -16,7 +21,7 @@ const CustomPieChart: FC<PieChart> = ({ title, data }) => {
       </Text>
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <PieChart>
-          <Tooltip content={<CustomTooltip bgColor={"slate-600"} />} />
+          <Tooltip content={<CustomTooltip/>} />
           <Pie
             data={data}
             innerRadius={50}
@@ -25,7 +30,7 @@ const CustomPieChart: FC<PieChart> = ({ title, data }) => {
             paddingAngle={5}
             dataKey="value"
           >
-            {data.map((item, index) => (
+            {data.map((item:obj,index) => (
               <Cell key={`cell-${index}`} fill={item.color} />
             ))}
           </Pie>

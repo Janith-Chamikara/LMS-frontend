@@ -1,4 +1,6 @@
+import { isAxiosError } from "axios";
 import axios from "../axios/axios";
+import { Auth } from "../context/AuthContext";
 import useAuthContext from "./useAuthContext";
 import useToastHook from "./useToast";
 
@@ -16,14 +18,12 @@ const useRefreshToken = () => {
       console.log(response);
       const newAccessToken = response?.data?.newAccessToken;
       const newRefreshToken = response?.data?.newRefreshToken;
-      console.log(newAccessToken,newRefreshToken)
-      console.log(auth)
-      setAuth({ ...auth, accessToken: newAccessToken,refreshToken:newRefreshToken });
+      (setAuth as React.Dispatch<React.SetStateAction<Auth | null>>)({ ...auth as Auth, accessToken: newAccessToken as string,refreshToken:newRefreshToken as string });
       
       if(newAccessToken)return newAccessToken;
     } catch (error) {
-      console.log(error.response.data.message);
-      newToast({ message: error.response.data.message, condition: "error" });
+      console.error(error);
+      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
     }
   };
   return refresh;

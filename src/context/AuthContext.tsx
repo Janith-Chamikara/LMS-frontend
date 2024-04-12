@@ -4,7 +4,7 @@ type Props = {
 };
 
 
-type Auth = {
+export type Auth = {
   id: string;
   roles: string;
   courses: string[];
