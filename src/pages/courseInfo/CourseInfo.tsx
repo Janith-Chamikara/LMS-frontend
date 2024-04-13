@@ -41,7 +41,7 @@ const CourseInfo: FC = () => {
   const { profile } = useProfileContext();
   const [data, dataIsLoading] = useFetchData(`/auth/${profile?.id}`);
   useEffect(() => {
-    if ((data as data).user.courses.length <= 1) setLoading(false);
+    if ((data as data)?.user?.courses?.length <= 1) setLoading(false);
     (data as data)?.user?.courses?.map((item) => {
       if (item?.course_id === course._id) {
         (setStatus as React.Dispatch<React.SetStateAction<boolean>>)(true);
@@ -356,7 +356,7 @@ const CourseInfo: FC = () => {
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>
-            <CourseCard  course={course} isLoading={loading} />
+            <div className="tw-max-h-[90vh] tw-overflow-auto"><CourseCard  course={course} isLoading={loading} /></div>
           </Skeleton>
         </Box>
       </Flex>

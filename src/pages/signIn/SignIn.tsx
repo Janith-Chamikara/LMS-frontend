@@ -70,6 +70,7 @@ const SignIn: FC = () => {
 
       setTimeout(() => navigate("/"), 1000);
     } catch (err) {
+      console.log(err)
       if(isAxiosError(err))newToast({ message: err?.response?.data?.message, condition: "error" });
     }
   };
