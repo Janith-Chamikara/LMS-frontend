@@ -66,8 +66,8 @@ const LandingPage: FC = () => {
         {/*hero content*/}
         <Flex
           as={motion.div}
+          height={"100%"}
           flex={{md:"1"}}
-          height={"auto"}
           width={{ base: "80vw" }}
           direction={"column"}
           alignItems={"center"}
