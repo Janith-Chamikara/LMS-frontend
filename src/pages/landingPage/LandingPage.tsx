@@ -46,7 +46,7 @@ const LandingPage: FC = () => {
       <Flex
         width={"90vw"}
         mx={"auto"}
-        height={"100vh"}
+        vlassName = "tw-h-[100dvh]"
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
         justifyContent={"center"}
