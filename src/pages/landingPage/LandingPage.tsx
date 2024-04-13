@@ -46,11 +46,10 @@ const LandingPage: FC = () => {
       <Flex
         width={"90vw"}
         mx={"auto"}
-        vlassName = "tw-h-[100dvh]"
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
         justifyContent={"center"}
-        className="tw-relative"
+        className="tw-relative tw-h-[100dvh]"
       >
         {/* hero image */}
         <Image
