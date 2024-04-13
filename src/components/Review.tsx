@@ -22,7 +22,7 @@ const Review = ({ review }:{review:Review}) => {
         direction="column"
         bgColor={color}
         spacing={0}
-        p={8}
+        p={{base:"10px",md:8}}
         rounded="lg"
         justifyContent="center"
         className="tw-shadow-[-5px_5px_16px_0px_#4fd1c5]"
@@ -35,10 +35,10 @@ const Review = ({ review }:{review:Review}) => {
         >
           <Text
             as="span"
-            fontSize="sm"
             fontStyle={"italic"}
             textAlign={"justify"}
             fontWeight="medium"
+            fontSize={{base:"xs",md:"md"}}
           >
             <FaQuoteLeft />{" "}
             {review.comment
@@ -48,19 +48,19 @@ const Review = ({ review }:{review:Review}) => {
 
           <Stack alignItems="center" justifyContent={"center"} spacing={0}>
             <Avatar
-              size="xl"
+              size={{base:"lg",md:"xl"}}
               showBorder={true}
               borderColor="green.400"
               name="avatar"
               src={review.avatar}
             />
             <Flex gap={"2px"} alignItems="center" fontWeight="bold" fontSize="sm">
-              <Text fontWeight="bold" fontSize="sm">
+              <Text fontWeight="bold" fontSize="xs">
                 {review.rating}
               </Text>
               <Icon as={ImStarFull} color={"yellow"} />
             </Flex>
-            <Text fontWeight="bold" fontSize="sm">
+            <Text fontWeight="bold" fontSize="xs">
               {review.name}
             </Text>
           </Stack>

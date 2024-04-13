@@ -98,7 +98,8 @@ const NavbarMobile: FC<NavbarProps> = ({ navItems, title, isNavbar }) => {
             </Flex>
           </DrawerBody>
           <DrawerFooter>
-            <Flex direction={"column"}>
+            {
+              profile && <Flex direction={"column"}>
               <CustomButton
                 as={Link}
                 isLoading={false}
@@ -122,6 +123,7 @@ const NavbarMobile: FC<NavbarProps> = ({ navItems, title, isNavbar }) => {
                 Logout
               </Button>
             </Flex>
+            }
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

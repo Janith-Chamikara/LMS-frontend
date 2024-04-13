@@ -51,7 +51,7 @@ const CustomAcccordionItem: FC<Content> = ({
       <AccordionItem>
         <h2>
           <AccordionButton _expanded={{ bgColor: color }}>
-            <Text as="span" flex="1" textAlign="left" fontWeight={"semibold"}>
+            <Text fontSize={{base:"sm",md:"lg"}} as="span" flex="1" textAlign="left" fontWeight={"semibold"}>
               {index + 1}.{title}
             </Text>
             <AccordionIcon />

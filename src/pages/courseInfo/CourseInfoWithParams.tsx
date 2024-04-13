@@ -360,9 +360,9 @@ const CourseInfoWithParams: FC = () => {
             top="16"
             zIndex={"500"}
             display={{ base: "none", lg: "block" }}
-          >
+          ><div className="tw-max-h-[90vh] tw-overflow-auto">
             <CourseCard course={course} isLoading={isLoading as boolean} />
-          </Box>
+          </div></Box>
         </Skeleton>
       </Flex>
     </>

@@ -27,10 +27,10 @@ import useProfileContext from "../../hooks/useProfileContext";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
 
 type data = {
-  user:{
-    courses:[{course_id:string}];
-  }
-}
+  user: {
+    courses: [{ course_id: string }];
+  };
+};
 
 const CourseInfo: FC = () => {
   const initialReviewsPerRow = 1;
@@ -50,7 +50,7 @@ const CourseInfo: FC = () => {
       }
       setLoading(false);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   console.log(loading);
 
@@ -189,7 +189,7 @@ const CourseInfo: FC = () => {
             <Flex alignItems={"center"} mt={"20px"}>
               <SkeletonText isLoaded={!isLoading}>
                 <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
-                  {course.tags.map((tag: {tag:string},index:number) => (
+                  {course.tags.map((tag: { tag: string }, index: number) => (
                     <Tag
                       key={index}
                       rounded="full"
@@ -263,7 +263,7 @@ const CourseInfo: FC = () => {
               mt={"80px"}
               width={"100%"}
               overflow={"auto"}
-              padding={"50px"}
+              padding={{ base: "10px", md: "50px" }}
               className="tw-shadow-[4px_4px_10px_0px_#319795]"
             >
               <Heading mb={"50px"}>Course Reviews :</Heading>
@@ -356,7 +356,9 @@ const CourseInfo: FC = () => {
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>
-            <div className="tw-max-h-[90vh] tw-overflow-auto"><CourseCard  course={course} isLoading={loading} /></div>
+            <div className="tw-max-h-[90vh] tw-overflow-auto">
+              <CourseCard course={course} isLoading={loading} />
+            </div>
           </Skeleton>
         </Box>
       </Flex>

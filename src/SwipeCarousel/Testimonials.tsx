@@ -39,21 +39,21 @@ const Testimonials: FC<TestimonialsProps> = ({ ID, review, index }) => {
         >
           <Stack direction="column" spacing={4} textAlign="left" maxW="4xl">
             <Icon as={ImQuotesLeft} w={10} h={10} color="gray.500" />
-            <Text fontSize="md" fontWeight="medium">
+            <Text fontSize={{base:"sm",md:"md"}} fontWeight="medium">
               {review.comment}
             </Text>
             <Stack alignItems="center" spacing={0}>
               <Avatar
-                size="xl"
+                size={{base:"md",md:"xl"}}
                 showBorder={true}
                 borderColor="green.400"
                 name="avatar"
                 src={review.avatar}
               />
-              <Text fontWeight="bold" fontSize="lg">
+              <Text fontWeight="bold" fontSize={{base:"sm",md:"md"}}>
                 {review.name}
               </Text>
-              <Text fontWeight="medium" fontSize="sm">
+              <Text fontWeight="medium" fontSize={{base:"xs",md:"sm"}}>
                 {review.position}, {review.company}
               </Text>
             </Stack>

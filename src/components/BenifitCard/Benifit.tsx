@@ -23,10 +23,10 @@ const Benifit: FC<BenifitProps> = ({ title, description, src,color }) => {
         padding={"20px"}
       >
         <Image src={src} width={"25%"} />
-        <Text  textAlign={"center"} fontWeight={"bold"}>
+        <Text  textAlign={"center"} fontSize={{base:"sm",md:"md"}} fontWeight={"bold"}>
           {title}
         </Text>
-        <Text  textAlign={"center"}>{description}</Text>
+        <Text  textAlign={"center"} fontSize={{base:"sm",md:"md"}}>{description}</Text>
       </Flex>
     </>
   );

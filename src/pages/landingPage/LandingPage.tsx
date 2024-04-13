@@ -46,9 +46,10 @@ const LandingPage: FC = () => {
       <Flex
         width={"90vw"}
         mx={"auto"}
+        height={"100vh"}
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
-        justifyContent={{ base: "space-between", lg: "center" }}
+        justifyContent={"center"}
         className="tw-relative"
       >
         {/* hero image */}
@@ -66,7 +67,8 @@ const LandingPage: FC = () => {
         {/*hero content*/}
         <Flex
           as={motion.div}
-          flex={"1"}
+          flex={{md:"1"}}
+          height={"auto"}
           width={{ base: "80vw" }}
           direction={"column"}
           alignItems={"center"}
@@ -78,7 +80,6 @@ const LandingPage: FC = () => {
           whileInView="animate"
         >
           <Heading
-            flex={"1"}
             fontWeight={"bold"}
             fontSize={{ base: "4xl", lg: "6xl" }}
           >
@@ -212,7 +213,7 @@ const LandingPage: FC = () => {
           text="Level up your skills and your future with Empower acedemy Plus."
           once={true}
         />
-        <Text mt={"30px"} textAlign={"center"}>
+        <Text mt={"30px"} fontSize={{base:"sm",md:"md"}} textAlign={"center"}>
           Get access to videos in over 90% of courses, Specializations, and
           Professional Certificates taught by top instructors from leading
           universities and companies.
