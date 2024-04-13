@@ -49,7 +49,7 @@ const LandingPage: FC = () => {
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
         justifyContent={"center"}
-        className="tw-relative tw-h-[100dvh]"
+        className="tw-relative tw-h-[100svh]"
       >
         {/* hero image */}
         <Image
