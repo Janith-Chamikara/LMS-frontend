@@ -24,8 +24,7 @@ const useAxiosPrivate = () => {
       async (error) => {
         console.log("resInter");
         const previousRequest = error?.config;
-        console.log(previousRequest);
-        console.log(error.response.status)
+       
         if (error.response.status === 404 && !previousRequest.sent) {
           previousRequest.sent = true;
           const newAccessToken = await refresh();
