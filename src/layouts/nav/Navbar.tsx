@@ -60,6 +60,10 @@ const NavbarForBiggerScreens: FC = () => {
   const { profile } = useProfileContext();
   console.log(profile);
   const [newToast] = useToastHook();
+  const onClick =()=>{
+    toggleColorMode();
+    if(colorMode === 'dark')newToast({condition:"info",message:"Trust me, Dark mode is better"})
+  }
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const handleSignOut = async () => {
@@ -94,7 +98,7 @@ const NavbarForBiggerScreens: FC = () => {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              <Button onClick={toggleColorMode}>
+              <Button onClick={onClick}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               <Menu>
