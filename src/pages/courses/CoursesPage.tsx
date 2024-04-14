@@ -11,7 +11,7 @@ import useProfileContext from "../../hooks/useProfileContext";
 const CoursesPage: FC = () => {
   const {profile} = useProfileContext()
   const axiosPrivate = useAxiosPrivate();
-  const [courses, setCourses] = useState<courseType [] | object[]>([]);
+  const [courses, setCourses] = useState<courseType [] | object[]>([{},{},{}]);
   const [apiCourses, setApiCourses] = useState<object [] >([]);
   const [isloading, setIsLoading] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
