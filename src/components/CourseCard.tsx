@@ -45,7 +45,7 @@ const CourseCard: FC<CourseCardProps> = ({
   const makePayment = async () => {
     try {
       const stripe = await loadStripe(
-        "pk_test_51Oc4LoFlCSzpCWS87PAVlq2H7392ZfucMn5AdAGDsZbjzCG5UHiqiFE5TsZhQyJNwvSkGQhEAuQuZqXSDy6pC26d00Rw6GGrGZ"
+        import.meta.env.STRIPE_KEY
       ); //add to .env
 
       const body = {
