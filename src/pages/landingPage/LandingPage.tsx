@@ -46,11 +46,10 @@ const LandingPage: FC = () => {
       <Flex
         width={"90vw"}
         mx={"auto"}
-        height={"100dvh"}
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
         justifyContent={"center"}
-        className="tw-relative"
+        className="tw-relative tw-h-[80vh] lg:tw-h-[100vh]"
       >
         {/* hero image */}
         <Image
@@ -68,7 +67,6 @@ const LandingPage: FC = () => {
         <Flex
           as={motion.div}
           flex={{md:"1"}}
-          height={"auto"}
           width={{ base: "80vw" }}
           direction={"column"}
           alignItems={"center"}
