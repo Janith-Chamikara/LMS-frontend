@@ -88,7 +88,7 @@ const CoursesPage: FC = () => {
       >
         {profile
           ? courses.map((course, index) => (
-              <Skeleton key={index} isLoaded={!isloading}>
+              <Skeleton key={index} isLoaded={!isloading} minWidth={"25vw"}>
                 <CourseCard
                   isOneButton={true}
                   buttonTitle="View Course"
