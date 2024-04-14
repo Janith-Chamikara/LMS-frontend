@@ -5,13 +5,13 @@ import CourseCard from "../../components/CourseCard";
 import { courseType } from "../courseInfo/CourseInfoWithParams";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
-import useAuthContext from "../../hooks/useAuthContext";
 import { isAxiosError } from "axios";
+import useProfileContext from "../../hooks/useProfileContext";
 
 const CoursesPage: FC = () => {
-  const {auth} = useAuthContext();
+  const {profile} = useProfileContext()
   const axiosPrivate = useAxiosPrivate();
-  const [courses, setCourses] = useState<courseType [] | object[]>([{}, {}, {}]);
+  const [courses, setCourses] = useState<courseType [] | object[]>([]);
   const [apiCourses, setApiCourses] = useState<object [] >([]);
   const [isloading, setIsLoading] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -86,7 +86,7 @@ const CoursesPage: FC = () => {
         gap={"20px"}
         width={"100%"}
       >
-        {auth
+        {profile
           ? courses.map((course, index) => (
               <Skeleton key={index} isLoaded={!isloading}>
                 <CourseCard
@@ -97,7 +97,7 @@ const CoursesPage: FC = () => {
                 />
               </Skeleton>
             ))
-          : "Seems like your refresh token has expired.Try log in agian"}
+          : "Please login or sign up first to access this page"}
       </Flex>
     </Flex>
   );

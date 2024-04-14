@@ -99,7 +99,7 @@ const CourseCard: FC<CourseCardProps> = ({
             >
               <Image
                 src={course?.thumbnail?.url}
-                alt="Green double couch with wooden legs"
+                alt="Course thumbnail"
                 width={"100%"}
                 className="tw-transition tw-duration-300 tw-ease-in-out hover:tw-scale-110"
               />
