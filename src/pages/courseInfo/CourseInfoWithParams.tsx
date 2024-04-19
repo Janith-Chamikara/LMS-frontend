@@ -85,7 +85,7 @@ const CourseInfoWithParams: FC = () => {
             {course?.name}
           </Box>
           <Skeleton isLoaded={!isLoading} rounded={"xl"}>
-            <AddOrBuy course={course} />
+            {course && <AddOrBuy course={course} />}
           </Skeleton>
         </Flex>
       </Box>
