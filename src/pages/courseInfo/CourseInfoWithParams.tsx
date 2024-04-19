@@ -62,10 +62,11 @@ const CourseInfoWithParams: FC = () => {
   const { id } = useParams();
   const { status, setStatus } = useCourseStatusContext();
   const [data, isLoading] = useFetchData(`/courses/auth/get-paid-course/${id}`);
-  const course = (data as data).course;
+  let course;
+  if (data) course = (data as data).course;
   if (course)
     (setStatus as React.Dispatch<React.SetStateAction<boolean>>)(true);
-  const contents: Content[] = course?.courseInfo?.map((content) => ({
+  const contents: Content[] = (course as courseType)?.courseInfo?.map((content) => ({
     ...content,
   }));
   const color = useColorModeValue("gray.100", "gray.900");
@@ -282,7 +283,7 @@ const CourseInfoWithParams: FC = () => {
                 justifyContent={"center"}
                 alignItems={"center"}
               >
-                {course?.reviews.length > 1 && (
+                {(course as courseType)?.reviews.length > 1 && (
                   <Skeleton isLoaded={!isLoading}>
                     <Button
                       onClick={() =>
@@ -356,7 +357,7 @@ const CourseInfoWithParams: FC = () => {
             display={{ base: "none", lg: "block" }}
           >
             <div className="tw-max-h-[90vh] tw-overflow-auto">
-              <CourseCard course={course} isLoading={isLoading as boolean} />
+              <CourseCard course={(course as courseType)} isLoading={isLoading as boolean} />
             </div>
           </Box>
         </Skeleton>
