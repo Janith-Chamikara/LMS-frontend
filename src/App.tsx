@@ -23,14 +23,12 @@ import MyCart from "./pages/MyCart";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
 import OrderGrid from "./components/datagrids/OrderGrid";
 import Notifiactions from "./components/datagrids/Notifications";
-import ErrorElement from "./pages/ErrorElement";
 import StillWorking from "./pages/StillWorking";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Navbar />,
-    errorElement:<ErrorElement/>,
     children: [
       {
         path: "/",
