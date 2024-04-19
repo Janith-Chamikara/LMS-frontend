@@ -26,33 +26,34 @@ import VideoPlayer from "../../components/VideoPlayer";
 import useFetchData from "../../hooks/useFetchData";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
 import { Content } from "../../components/CustomAccordionItem";
+import AddOrBuy from "../../components/AddOrBuy";
 
 export type courseType = {
-  _id:string;
-  thumbnail:{
-    url:string;
-    public_id:string;
+  _id: string;
+  thumbnail: {
+    url: string;
+    public_id: string;
   };
   courseInfo: Content[];
-  name:string;
-  price:number;
-  demoUrl:string;
-  description:string;
-  ratings:string;
-  reviews:object[];
-  purchased:string;
-  createdBy:{
-    name:string;
-    url:string;
-    email:string;
+  name: string;
+  price: number;
+  demoUrl: string;
+  description: string;
+  ratings: string;
+  reviews: object[];
+  purchased: string;
+  createdBy: {
+    name: string;
+    url: string;
+    email: string;
   };
-  benifits:[{benifit:string}];
-  tags:[{tag:string}];
-  preRequisties:[{ requirement: string }];
+  benifits: [{ benifit: string }];
+  tags: [{ tag: string }];
+  preRequisties: [{ requirement: string }];
 };
 
 type data = {
-  course: courseType
+  course: courseType;
 };
 
 const CourseInfoWithParams: FC = () => {
@@ -64,7 +65,7 @@ const CourseInfoWithParams: FC = () => {
   const course = (data as data).course;
   if (course)
     (setStatus as React.Dispatch<React.SetStateAction<boolean>>)(true);
-  const contents:Content[] = course?.courseInfo?.map((content) => ({
+  const contents: Content[] = course?.courseInfo?.map((content) => ({
     ...content,
   }));
   const color = useColorModeValue("gray.100", "gray.900");
@@ -80,19 +81,12 @@ const CourseInfoWithParams: FC = () => {
         zIndex={"50"}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box fontWeight={"bold"}>{course?.name}</Box>
-
-          <Stack
-            mr={"20px"}
-            direction={"row"}
-            spacing={2}
-            display={{ base: "flex", lg: "none" }}
-          >
-            <Button colorScheme="yellow">Buy Now</Button>
-            <Button colorScheme="yellow" variant={"outline"}>
-              Add to Cart
-            </Button>
-          </Stack>
+          <Box fontWeight={"bold"} fontSize={"xs"}>
+            {course?.name}
+          </Box>
+          <Skeleton isLoaded={!isLoading} rounded={"xl"}>
+            <AddOrBuy course={course} />
+          </Skeleton>
         </Flex>
       </Box>
       <ScrollYProgress />
@@ -194,7 +188,7 @@ const CourseInfoWithParams: FC = () => {
             <Flex alignItems={"center"} mt={"20px"}>
               <SkeletonText isLoaded={!isLoading}>
                 <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
-                  {course.tags.map((tag,index) => (
+                  {course.tags.map((tag, index) => (
                     <Tag
                       key={index}
                       rounded="full"
@@ -360,9 +354,11 @@ const CourseInfoWithParams: FC = () => {
             top="16"
             zIndex={"500"}
             display={{ base: "none", lg: "block" }}
-          ><div className="tw-max-h-[90vh] tw-overflow-auto">
-            <CourseCard course={course} isLoading={isLoading as boolean} />
-          </div></Box>
+          >
+            <div className="tw-max-h-[90vh] tw-overflow-auto">
+              <CourseCard course={course} isLoading={isLoading as boolean} />
+            </div>
+          </Box>
         </Skeleton>
       </Flex>
     </>

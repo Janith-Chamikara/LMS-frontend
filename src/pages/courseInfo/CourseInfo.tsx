@@ -25,6 +25,7 @@ import VideoPlayer from "../../components/VideoPlayer";
 import useFetchData from "../../hooks/useFetchData";
 import useProfileContext from "../../hooks/useProfileContext";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
+import AddOrBuy from "../../components/AddOrBuy";
 
 type data = {
   user: {
@@ -71,9 +72,9 @@ const CourseInfo: FC = () => {
         zIndex={"50"}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box fontWeight={"bold"}>{course.name}</Box>
+          <Box fontWeight={"bold"} fontSize={"xs"}>{course.name}</Box>
           <Skeleton isLoaded={!loading} rounded={"xl"}>
-            <Stack
+            {/* <Stack
               mr={"20px"}
               direction={"row"}
               spacing={2}
@@ -87,7 +88,8 @@ const CourseInfo: FC = () => {
                   </Button>
                 </>
               )}
-            </Stack>
+            </Stack> */}
+            <AddOrBuy course={course}/>
           </Skeleton>
         </Flex>
       </Box>
