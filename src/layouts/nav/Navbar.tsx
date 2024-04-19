@@ -97,7 +97,7 @@ const NavbarForBiggerScreens: FC = () => {
           </Stack>
 
           <Flex alignItems={"center"}>
-            <Stack direction={"row"} spacing={7}>
+            <Stack direction={"row"} spacing={{base:1,lg:7}}>
               <Button onClick={onClick}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
