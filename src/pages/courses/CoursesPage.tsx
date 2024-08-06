@@ -1,21 +1,25 @@
-import { Box, Flex, Heading, Skeleton, filter } from "@chakra-ui/react";
+import {  Flex, Heading, Skeleton } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import CourseCard from "../../components/CourseCard";
+import { courseType } from "../courseInfo/CourseInfoWithParams";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
+import { isAxiosError } from "axios";
+import useProfileContext from "../../hooks/useProfileContext";
 
 const CoursesPage: FC = () => {
+  const {profile} = useProfileContext()
   const axiosPrivate = useAxiosPrivate();
-  const [courses, setCourses] = useState<[object]>([{}, {}, {}]);
-  const [apiCourses, setApiCourses] = useState<[object]>([]);
+  const [courses, setCourses] = useState<courseType [] | object[]>([{},{},{}]);
+  const [apiCourses, setApiCourses] = useState<object [] >([]);
   const [isloading, setIsLoading] = useState(true);
-  const [isSearch, setIsSearching] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setIsSearching] = useState<boolean>(false);
   const [newToast] = useToastHook();
   const [inputText, setInputText] = useState<undefined | string>();
-  console.log(isloading);
   useEffect(() => {
-    let isMounted = true;
+    const isMounted = true;
 
     const fetchData = async () => {
       console.log("fetching");
@@ -27,20 +31,21 @@ const CoursesPage: FC = () => {
         setIsLoading(false);
 
         console.log(courses);
-      } catch (error: unknown) {
-        console.log(error.message);
+      } catch (error) {
+        if(isAxiosError(error)) newToast({message:error.response?.data.message, condition:'error'})
         setIsLoading(false);
       }
     };
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = (e:React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
     if (inputText) {
       setIsSearching(true);
-      const filterdCourses = courses.filter((course) =>
-        course.name.toLowerCase().includes(inputText.toLowerCase())
+      const filterdCourses = courses.filter((course:courseType | object) =>
+        (course as courseType).name.toLowerCase().includes(inputText.toLowerCase())
       );
       filterdCourses.length > 0 && setCourses(filterdCourses);
       if (filterdCourses.length === 0) {
@@ -72,7 +77,6 @@ const CoursesPage: FC = () => {
       <SearchBar
         onClick={handleSearch}
         inputText={inputText}
-        setInputText={setInputText}
       />
       <Flex
         direction={"row"}
@@ -82,16 +86,18 @@ const CoursesPage: FC = () => {
         gap={"20px"}
         width={"100%"}
       >
-        {courses.map((course, index) => (
-          <Skeleton key={index} isLoaded={!isloading}>
-            <CourseCard
-              isOneButton={true}
-              buttonTitle="View Course"
-              isLoading={isloading}
-              course={course}
-            />
-          </Skeleton>
-        ))}
+        {profile
+          ? courses.map((course, index) => (
+              <Skeleton key={index} isLoaded={!isloading} minWidth={"25vw"}>
+                <CourseCard
+                  isOneButton={true}
+                  buttonTitle="View Course"
+                  isLoading={isloading}
+                  course={course as courseType}
+                />
+              </Skeleton>
+            ))
+          : "Please login or sign up first to access this page"}
       </Flex>
     </Flex>
   );

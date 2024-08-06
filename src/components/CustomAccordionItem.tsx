@@ -17,21 +17,35 @@ import VideoPlayer from "./VideoPlayer";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
 import { FaLock } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
+=======
+
+type links = [{url:string}]
+>>>>>>> e5121811d9081d638c02986dd7ff208ebdb519c2
 export type Content = {
   title: string;
   index: number;
   videoThumbnail: string;
-  videoUrl: string;
+  videoUrl?: string;
+  videoURL?:string;
   videoTitle?: string;
   videoSrc?: string;
   description?: string;
+<<<<<<< HEAD
   links?: object[];
+=======
+  links?: links;
+  section?:string;
+  videoDescription?:string;
+  subTopics?: string[];
+>>>>>>> e5121811d9081d638c02986dd7ff208ebdb519c2
 };
 
 const CustomAcccordionItem: FC<Content> = ({
   title,
   description,
   index,
+  links,
   videoTitle,
   videoSrc,
   videoThumbnail,
@@ -44,7 +58,7 @@ const CustomAcccordionItem: FC<Content> = ({
       <AccordionItem>
         <h2>
           <AccordionButton _expanded={{ bgColor: color }}>
-            <Text as="span" flex="1" textAlign="left" fontWeight={"semibold"}>
+            <Text fontSize={{base:"sm",md:"lg"}} as="span" flex="1" textAlign="left" fontWeight={"semibold"}>
               {index + 1}.{title}
             </Text>
             <AccordionIcon />
@@ -78,12 +92,44 @@ const CustomAcccordionItem: FC<Content> = ({
               </Box>
             )}
 
+<<<<<<< HEAD
             {links.length > 0 && (
+=======
+            {(links as links ).length > 0 && (
+>>>>>>> e5121811d9081d638c02986dd7ff208ebdb519c2
               <>
                 <Text
                   fontStyle={"italic"}
                   fontWeight={"semibold"}
                   textDecorationLine={"underline"}
+<<<<<<< HEAD
+=======
+                >
+                  Related study materials
+                </Text>
+                <Flex direction="column">
+                  {(links as links).map((link, index) => (
+                    <Text
+                      as={Link}
+                      fontSize={{ base: "sm" }}
+                      to={link?.url}
+                      fontStyle={"italic"}
+                      _hover={{ color: "cyan.600" }}
+                    >
+                      {index + 1}.{link?.url}
+                    </Text>
+                  ))}
+                </Flex>
+              </>
+            )}
+            {subTopics &&
+              subTopics.map((subTopic, index) => (
+                <Stack
+                  key={index}
+                  direction={"row"}
+                  gap={"10px"}
+                  alignItems={"center"}
+>>>>>>> e5121811d9081d638c02986dd7ff208ebdb519c2
                 >
                   Related study materials
                 </Text>

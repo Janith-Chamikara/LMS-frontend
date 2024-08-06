@@ -26,6 +26,8 @@ import useProfileContext from "../../hooks/useProfileContext";
 import NavbarMobile from "./NavbarMobile";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
+import { isAxiosError } from "axios";
+import { Profile } from "../../context/ProfileImageProvider";
 
 export const NavLink: FC<{
   children: string;
@@ -58,6 +60,10 @@ const NavbarForBiggerScreens: FC = () => {
   const { profile } = useProfileContext();
   console.log(profile);
   const [newToast] = useToastHook();
+  const onClick =()=>{
+    toggleColorMode();
+    if(colorMode === 'dark')newToast({condition:"info",message:"Trust me, Dark mode is better"})
+  }
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const handleSignOut = async () => {
@@ -67,7 +73,7 @@ const NavbarForBiggerScreens: FC = () => {
       newToast({ message: response.data.message, condition: "success" });
       setTimeout(() => navigate("/signUp"), 2000);
     } catch (error) {
-      newToast({ message: error.response.data.message, condition: "error" });
+      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
     }
   };
   return (
@@ -91,8 +97,8 @@ const NavbarForBiggerScreens: FC = () => {
           </Stack>
 
           <Flex alignItems={"center"}>
-            <Stack direction={"row"} spacing={7}>
-              <Button onClick={toggleColorMode}>
+            <Stack direction={"row"} spacing={{base:1,lg:7}}>
+              <Button onClick={onClick}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               <Menu>
@@ -123,13 +129,13 @@ const NavbarForBiggerScreens: FC = () => {
                 >
                   <br />
                   <Center>
-                    <Avatar
+                    {profile && <Avatar
                       size="2xl"
                       showBorder={true}
                       className="tw-shadow-[0px_0px_18px_0px_#39D6B5F7]"
-                      name={profile && profile.name}
-                      src={profile && profile?.url}
-                    />
+                      name={(profile as Profile).name as string }
+                      src={(profile as Profile).url as string}
+                    />}
                   </Center>
                   {profile && (
                     <Stack

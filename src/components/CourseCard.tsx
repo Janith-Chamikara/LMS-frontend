@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   Card,
   CardBody,
   CardFooter,
@@ -20,16 +19,9 @@ import { useNavigate } from "react-router-dom";
 import useCourseStatusContext from "../hooks/useCourseStatusContex";
 import useToastHook from "../hooks/useToast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { courseType } from "../pages/courseInfo/CourseInfoWithParams";
+import { isAxiosError } from "axios";
 
-type courseType = {
-  thumbnail: {
-    public_id: string;
-    url: string;
-  };
-  description: string;
-  name: string;
-  price: string;
-};
 
 type CourseCardProps = {
   course: courseType;
@@ -53,7 +45,7 @@ const CourseCard: FC<CourseCardProps> = ({
   const makePayment = async () => {
     try {
       const stripe = await loadStripe(
-        "pk_test_51Oc4LoFlCSzpCWS87PAVlq2H7392ZfucMn5AdAGDsZbjzCG5UHiqiFE5TsZhQyJNwvSkGQhEAuQuZqXSDy6pC26d00Rw6GGrGZ"
+        `${import.meta.env.VITE_STRIPE_KEY}`
       ); //add to .env
 
       const body = {
@@ -65,7 +57,7 @@ const CourseCard: FC<CourseCardProps> = ({
         body
       );
 
-      const result = await stripe.redirectToCheckout({
+      const result = await stripe?.redirectToCheckout({
         sessionId: response.data.id,
       });
       console.log(result);
@@ -83,7 +75,7 @@ const CourseCard: FC<CourseCardProps> = ({
       newToast({ message: response.data.message, condition: "success" });
       setCartButtonLoading(false);
     } catch (error) {
-      newToast({ message: error.response.data.message, condition: "error" });
+      if(isAxiosError(error))newToast({ message: error?.response?.data?.message, condition: "error" });
       setCartButtonLoading(false);
     }
   };
@@ -109,6 +101,7 @@ const CourseCard: FC<CourseCardProps> = ({
                 src={course?.thumbnail?.url}
                 alt="Green double couch with wooden legs"
                 width={"100%"}
+                
                 className="tw-transition tw-duration-300 tw-ease-in-out hover:tw-scale-110"
               />
             </Box>

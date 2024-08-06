@@ -39,6 +39,7 @@ const LandingPage: FC = () => {
         bg={color}
         variants={heroBackVariant}
         initial="initial"
+        viewport={{once:true}}
         animate="animate"
         className="tw-hidden tw-absolute -tw-top-[80vh] tw-z-0 tw-w-[70vw] tw-h-[170vh] -tw-left-[28vw] lg:tw-block"
       />
@@ -47,8 +48,8 @@ const LandingPage: FC = () => {
         mx={"auto"}
         direction={{ base: "column-reverse", lg: "row" }}
         alignItems={"center"}
-        justifyContent={{ base: "space-between", lg: "center" }}
-        className="tw-relative"
+        justifyContent={"center"}
+        className="tw-relative tw-h-[80vh] lg:tw-h-[100vh]"
       >
         {/* hero image */}
         <Image
@@ -57,6 +58,7 @@ const LandingPage: FC = () => {
           flex={"1"}
           src={hero}
           width={"50%"}
+          viewport={{once:true}}
           variants={heroImgVariant}
           initial="initial"
           whileInView={"animate"}
@@ -64,18 +66,18 @@ const LandingPage: FC = () => {
         {/*hero content*/}
         <Flex
           as={motion.div}
-          flex={"1"}
+          flex={{md:"1"}}
           width={{ base: "80vw" }}
           direction={"column"}
           alignItems={"center"}
           textAlign={"center"}
+          viewport={{once:true}}
           gap={"30px"}
           variants={heroTextVariant}
           initial="initial"
           whileInView="animate"
         >
           <Heading
-            flex={"1"}
             fontWeight={"bold"}
             fontSize={{ base: "4xl", lg: "6xl" }}
           >
@@ -98,9 +100,11 @@ const LandingPage: FC = () => {
               flex={"1"}
               fontWeight={"bold"}
               fontSize={{ base: "2xl", lg: "3xl" }}
-              
             >
-              Welcome, <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500">{profile.name}</span>
+              Welcome,{" "}
+              <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-teal-600 tw-via-sky-400 tw-to-cyan-500">
+                {profile.name}
+              </span>
             </Heading>
           ) : (
             <Stack direction="row" gap="20px">
@@ -207,7 +211,7 @@ const LandingPage: FC = () => {
           text="Level up your skills and your future with Empower acedemy Plus."
           once={true}
         />
-        <Text mt={"30px"} textAlign={"center"}>
+        <Text mt={"30px"} fontSize={{base:"sm",md:"md"}} textAlign={"center"}>
           Get access to videos in over 90% of courses, Specializations, and
           Professional Certificates taught by top instructors from leading
           universities and companies.

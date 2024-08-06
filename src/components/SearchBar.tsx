@@ -1,24 +1,16 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import {
-  Button,
   Input,
   InputGroup,
   InputLeftElement,
-  InputRightAddon,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Portal,
+
 } from "@chakra-ui/react";
-import { ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
+import {  Search2Icon } from "@chakra-ui/icons";
 type params = {
   inputText:string | undefined;
-  onClick:(e:object)=>void;
-  setInputText:Dispatch<SetStateAction<string | undefined>>
+  onClick:(e:React.ChangeEvent<HTMLInputElement>)=>void;
 }
-const SearchBar: FC<params> = ({inputText,onClick, setInputText}) => {
+const SearchBar: FC<params> = ({inputText,onClick}) => {
   return (
     <>
       <InputGroup borderRadius={0} size="lg">
@@ -33,7 +25,7 @@ const SearchBar: FC<params> = ({inputText,onClick, setInputText}) => {
           placeholder="Search any course"
           border="1px solid #949494"
         />
-        <InputRightAddon p={0}>
+        {/* <InputRightAddon p={0}> */}
           {/* <Button
             borderRadius={0}
             onClick={onClick}
@@ -44,7 +36,7 @@ const SearchBar: FC<params> = ({inputText,onClick, setInputText}) => {
           >
             Search
           </Button> */}
-          <Menu>
+          {/* <Menu>
             <MenuButton
               borderLeftRadius={0}
               height={"100%"}
@@ -65,8 +57,8 @@ const SearchBar: FC<params> = ({inputText,onClick, setInputText}) => {
                 <MenuItem>Oldest</MenuItem>
               </MenuList>
             </Portal>
-          </Menu>
-        </InputRightAddon>
+          </Menu> */}
+        {/* </InputRightAddon> */}
       </InputGroup>
     </>
   );

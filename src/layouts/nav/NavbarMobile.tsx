@@ -10,6 +10,7 @@ import {
   Flex,
   Spacer,
   DrawerFooter,
+  Avatar,
 } from "@chakra-ui/react";
 import { FC, useRef } from "react";
 
@@ -24,6 +25,7 @@ import useProfileContext from "../../hooks/useProfileContext";
 import { Link, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useToastHook from "../../hooks/useToast";
+import { isAxiosError } from "axios";
 type NavbarProps = {
   navItems: navType[];
   isNavbar?: boolean;
@@ -45,9 +47,12 @@ const NavbarMobile: FC<NavbarProps> = ({ navItems, title, isNavbar }) => {
       const response = await axiosPrivate.post("auth/logout");
       newToast({ message: response.data.message, condition: "success" });
       setTimeout(() => navigate("/signUp"), 2000);
-      
     } catch (error) {
-      newToast({ message: error.response.data.message, condition: "error" });
+      if (isAxiosError(error))
+        newToast({
+          message: error?.response?.data?.message,
+          condition: "error",
+        });
     }
   };
 
@@ -55,14 +60,25 @@ const NavbarMobile: FC<NavbarProps> = ({ navItems, title, isNavbar }) => {
     <>
       <Button
         ref={btnRef}
-        colorScheme="gray"
+        colorScheme="none"
         onClick={onOpen}
         display={{
           base: "inline-block",
           lg: isNavbar ? "none" : "inline-block",
         }}
       >
-        <HamburgerIcon />
+        {/* <HamburgerIcon /> */}
+        {profile ? (
+          <Avatar
+            size="sm"
+            showBorder={true}
+            borderColor="green.400"
+            name="avatar"
+            src={profile && profile?.url}
+          />
+        ) : (
+          <HamburgerIcon />
+        )}
       </Button>
       <Drawer
         size={"xs"}
@@ -97,30 +113,32 @@ const NavbarMobile: FC<NavbarProps> = ({ navItems, title, isNavbar }) => {
             </Flex>
           </DrawerBody>
           <DrawerFooter>
-            <Flex direction={"column"}>
-              <CustomButton
-                as={Link}
-                isLoading={false}
-                loadingText="Loading"
-                text={
-                  profile?.roles === "Admin" ? "Admin Panel" : "Your Profile"
-                }
-                variant="outline"
-                colorSheme="teal"
-                width={"100%"}
-                to={profile?.roles === "Admin" ? `admin` : `/userProfile`}
-              />
-              <Button
-                mt={"2px"}
-                onClick={handleSignOut}
-                loadingText="logging out"
-                variant="outline"
-                colorScheme="teal"
-                width={"100%"}
-              >
-                Logout
-              </Button>
-            </Flex>
+            {profile && (
+              <Flex direction={"column"}>
+                <CustomButton
+                  as={Link}
+                  isLoading={false}
+                  loadingText="Loading"
+                  text={
+                    profile?.roles === "Admin" ? "Admin Panel" : "Your Profile"
+                  }
+                  variant="outline"
+                  colorSheme="teal"
+                  width={"100%"}
+                  to={profile?.roles === "Admin" ? `admin` : `/userProfile`}
+                />
+                <Button
+                  mt={"2px"}
+                  onClick={handleSignOut}
+                  loadingText="logging out"
+                  variant="outline"
+                  colorScheme="teal"
+                  width={"100%"}
+                >
+                  Logout
+                </Button>
+              </Flex>
+            )}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

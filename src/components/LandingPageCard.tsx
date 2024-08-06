@@ -25,7 +25,7 @@ const LandingPageCard: FC<CardProps> = ({
       alignItems={"center"}
       justifyContent={"space-between"}
       height={{ base: "auto", md: "70vh" }}
-      className="tw-transition tw-ease-in-out tw-mt-[10px] tw-p-[20px] tw-mx-10 tw-rounded-lg tw-shadow-md tw-shadow-cyan-500/50 hover:tw-shadow-cyan-500/90 hover:tw-shadow-lg tw-duration-[500]"
+      className="tw-transition tw-ease-in-out tw-mt-[10px] tw-p-[20px] tw-mx-2 md:tw-mx-10 tw-rounded-lg tw-shadow-md tw-shadow-cyan-500/50 hover:tw-shadow-cyan-500/90 hover:tw-shadow-lg tw-duration-[500]"
     >
       <Image
         flex={"1"}
@@ -49,6 +49,7 @@ const LandingPageCard: FC<CardProps> = ({
         </Heading>
         <Text
           fontWeight={"semi-bold"}
+          fontSize={{base:"small",md:"md"}}
           textAlign={{ base: "center", md: "left" }}
         >
           {description}

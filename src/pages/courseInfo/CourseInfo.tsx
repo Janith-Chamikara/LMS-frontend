@@ -1,9 +1,7 @@
 import {
-  Avatar,
   Box,
   Button,
   Flex,
-  HStack,
   Heading,
   Image,
   Skeleton,
@@ -20,7 +18,6 @@ import CourseCard from "../../components/CourseCard";
 import Offer from "../../components/offer/Offer";
 import TableOfContents from "../../components/courseContent/TableOfContents";
 import ScrollYProgress from "../../components/ScrollYProgress";
-// import SwipeCarousel from "../../SwipeCarousel/SwipeCarousel";
 import Review from "../../components/Review";
 import ModalWithButton from "../../components/ModalWithButton";
 import { useLocation } from "react-router-dom";
@@ -28,6 +25,13 @@ import VideoPlayer from "../../components/VideoPlayer";
 import useFetchData from "../../hooks/useFetchData";
 import useProfileContext from "../../hooks/useProfileContext";
 import useCourseStatusContext from "../../hooks/useCourseStatusContex";
+import AddOrBuy from "../../components/AddOrBuy";
+
+type data = {
+  user: {
+    courses: [{ course_id: string }];
+  };
+};
 
 const CourseInfo: FC = () => {
   const initialReviewsPerRow = 1;
@@ -36,17 +40,18 @@ const CourseInfo: FC = () => {
   const { status, setStatus } = useCourseStatusContext();
   const [loading, setLoading] = useState(true);
   const { profile } = useProfileContext();
-  const [data, dataIsLoading] = useFetchData(`/auth/${profile.id}`);
+  const [data, dataIsLoading] = useFetchData(`/auth/${profile?.id}`);
   useEffect(() => {
-    if (data?.user?.courses.length === 0) setLoading(false);
-    data?.user?.courses?.map((item) => {
-      if (item.course_id === course._id) {
-        setStatus(true);
+    if ((data as data)?.user?.courses?.length <= 1) setLoading(false);
+    (data as data)?.user?.courses?.map((item) => {
+      if (item?.course_id === course._id) {
+        (setStatus as React.Dispatch<React.SetStateAction<boolean>>)(true);
         setLoading(false);
         return;
       }
       setLoading(false);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   console.log(loading);
 
@@ -67,9 +72,9 @@ const CourseInfo: FC = () => {
         zIndex={"50"}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box fontWeight={"bold"}>{course.name}</Box>
+          <Box fontWeight={"bold"} fontSize={"xs"}>{course.name}</Box>
           <Skeleton isLoaded={!loading} rounded={"xl"}>
-            <Stack
+            {/* <Stack
               mr={"20px"}
               direction={"row"}
               spacing={2}
@@ -83,7 +88,8 @@ const CourseInfo: FC = () => {
                   </Button>
                 </>
               )}
-            </Stack>
+            </Stack> */}
+            <AddOrBuy course={course}/>
           </Skeleton>
         </Flex>
       </Box>
@@ -185,9 +191,9 @@ const CourseInfo: FC = () => {
             <Flex alignItems={"center"} mt={"20px"}>
               <SkeletonText isLoaded={!isLoading}>
                 <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
-                  {course.tags.map((tag: object) => (
+                  {course.tags.map((tag: { tag: string }, index: number) => (
                     <Tag
-                      key={tag}
+                      key={index}
                       rounded="full"
                       variant="subtle"
                       colorScheme="teal"
@@ -259,7 +265,7 @@ const CourseInfo: FC = () => {
               mt={"80px"}
               width={"100%"}
               overflow={"auto"}
-              padding={"50px"}
+              padding={{ base: "10px", md: "50px" }}
               className="tw-shadow-[4px_4px_10px_0px_#319795]"
             >
               <Heading mb={"50px"}>Course Reviews :</Heading>
@@ -352,7 +358,9 @@ const CourseInfo: FC = () => {
           display={{ base: "none", lg: "block" }}
         >
           <Skeleton isLoaded={!isLoading}>
-            <CourseCard  course={course} isLoading={loading} />
+            <div className="tw-max-h-[90vh] tw-overflow-auto">
+              <CourseCard course={course} isLoading={loading} />
+            </div>
           </Skeleton>
         </Box>
       </Flex>
