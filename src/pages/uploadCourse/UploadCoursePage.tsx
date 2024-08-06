@@ -28,6 +28,7 @@ import { convertToBase64 } from "../../utils/utils";
 import useToastHook from "../../hooks/useToast";
 import UploadWidget from "../../components/uploadAssests/UploadWidget.tsx";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate.tsx";
+import useProfileContext from "../../hooks/useProfileContext.tsx";
 
 const UploadCoursePage: FC = () => {
   const {profile} = useProfileContext();

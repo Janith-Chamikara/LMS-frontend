@@ -78,7 +78,7 @@ const CustomAcccordionItem: FC<Content> = ({
               </Box>
             )}
 
-            {links && (
+            {links.length > 0 && (
               <>
                 <Text
                   fontStyle={"italic"}
