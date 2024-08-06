@@ -1,23 +1,7 @@
-import {
-  Stack,
-  HStack,
-  Link,
-  Divider,
-  IconButton,
-  LinkProps,
-} from "@chakra-ui/react";
+import { Stack, Link, IconButton } from "@chakra-ui/react";
 import { FC } from "react";
-// Here we have used react-icons package for the icons
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa";
 
-const links = [
-  "Blog",
-  "Documentation",
-  "Careers",
-  "Sign up",
-  "Terms of use",
-  "Privacy policy",
-];
 const accounts = [
   {
     url: "https://github.com/Janith-Chamikara",
@@ -30,6 +14,12 @@ const accounts = [
     label: "LinkedIn Account",
     type: "linkedin",
     icon: <FaLinkedin />,
+  },
+  {
+    url: "https://youtu.be/wwZABPAmIVM?si=R61j1FrBoGlPFPqZ",
+    label: "Yt Account",
+    type: "gray",
+    icon: <FaYoutube />,
   },
 ];
 
@@ -55,36 +45,8 @@ const Footer: FC<FooterProps> = ({ color }) => {
       direction={{ base: "column", md: "row" }}
     >
       <Link href="" isExternal>
-        EMBARK ACEDEMY
+        EMPOWER ACADEMY
       </Link>
-
-      {/* Desktop Screen */}
-      <HStack
-        spacing={4}
-        alignItems="center"
-        display={{ base: "none", md: "flex" }}
-      >
-        {links.map((link, index) => (
-          <CustomLink key={index}>{link}</CustomLink>
-        ))}
-      </HStack>
-
-      {/* Mobile and Tablet Screens */}
-      <Stack display={{ base: "flex", md: "none" }} alignItems="center">
-        <HStack alignItems="center">
-          <CustomLink>Sign up</CustomLink>
-          <Divider h="1rem" orientation="vertical" />
-          <CustomLink>Blog</CustomLink>
-          <Divider h="1rem" orientation="vertical" />
-          <CustomLink>Career</CustomLink>
-        </HStack>
-        <HStack alignItems="center">
-          <CustomLink>Documentation</CustomLink>
-          <Divider h="1rem" orientation="vertical" />
-          <CustomLink>Terms of use</CustomLink>
-        </HStack>
-        <CustomLink>Privacy policy</CustomLink>
-      </Stack>
 
       <Stack
         direction="row"
@@ -106,14 +68,6 @@ const Footer: FC<FooterProps> = ({ color }) => {
         ))}
       </Stack>
     </Stack>
-  );
-};
-
-const CustomLink = ({ children, ...props }: LinkProps) => {
-  return (
-    <Link href="#" fontSize="sm" {...props}>
-      {children}
-    </Link>
   );
 };
 
